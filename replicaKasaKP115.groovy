@@ -1,5 +1,5 @@
 /**
-*  Copyright 2023 Bloodtick
+*  Copyright 2023 bthrock
 *
 *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 *  in compliance with the License. You may obtain a copy of the License at:
@@ -16,7 +16,7 @@ public static String version() {return "1.3.0"}
 
 metadata 
 {
-    definition(name: "Replica KP115", namespace: "replica", author: "bloodtick", importUrl:"https://raw.githubusercontent.com/bloodtick/Hubitat/main/hubiThingsReplica/devices/replicaSwitch.groovy")
+    definition(name: "Replica KP115", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Dev/main/replicaKasaKP115.groovy?token=GHSAT0AAAAAABZUPG4NF3VTOQJ33HTO2LIKY64DGHQ")
     {
         capability "Actuator"
         capability "Configuration"

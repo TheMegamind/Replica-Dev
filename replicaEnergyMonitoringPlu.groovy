@@ -16,14 +16,14 @@ public static String version() {return "1.3.0"}
 
 metadata 
 {
-    definition(name: "Replica KP115", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Dev/main/replicaKasaKP115.groovy?token=GHSAT0AAAAAABZUPG4NF3VTOQJ33HTO2LIKY64DGHQ")
+    definition(name: "Replica Energy Monitoring Plug", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Dev/main/replicaEnergyMonitoringPlug.groovy?token=GHSAT0AAAAAABZUPG4NF3VTOQJ33HTO2LIKY64DGHQ")
     {
-        capability "Actuator"
-        capability "Configuration"
-	capability "EnergyMeter
+	capability "Actuator"
+	capability "Configuration"
+	capability "EnergyMeter"
 	capability "PowerMeter"
-        capability "Switch"
-        capability "Refresh"
+	capability "Switch"
+	capability "Refresh"
         
         attribute "healthStatus", "enum", ["offline", "online"]
     }

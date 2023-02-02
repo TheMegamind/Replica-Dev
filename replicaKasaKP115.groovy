@@ -16,10 +16,11 @@ public static String version() {return "1.3.0"}
 
 metadata 
 {
-    definition(name: "Replica Switch", namespace: "replica", author: "bloodtick", importUrl:"https://raw.githubusercontent.com/bloodtick/Hubitat/main/hubiThingsReplica/devices/replicaSwitch.groovy")
+    definition(name: "Replica KP115", namespace: "replica", author: "bloodtick", importUrl:"https://raw.githubusercontent.com/bloodtick/Hubitat/main/hubiThingsReplica/devices/replicaSwitch.groovy")
     {
         capability "Actuator"
         capability "Configuration"
+	capability "PowerMeter"
         capability "Switch"
         capability "Refresh"
         
@@ -52,7 +53,11 @@ def configure() {
 
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
 Map getReplicaCommands() {
-    return ([ "setSwitchValue":[[name:"switch*",type:"ENUM"]], "setSwitchOff":[], "setSwitchOn":[], "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]])
+    return ([ 
+	    "setSwitchValue":[[name:"switch*",type:"ENUM"]], 
+	    	"setSwitchOff":[], "setSwitchOn":[], 
+	    "setPowerValue":[[name:"power*",type:"NUMBER"]],
+	    "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]])
 }
 
 def setSwitchValue(value) {
@@ -67,6 +72,12 @@ def setSwitchOff() {
 
 def setSwitchOn() {
     setSwitchValue("on")    
+}
+
+def setPowerValue(value) {
+    String descriptionText = "${device.displayName} power is $value"
+    sendEvent(name: "power", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
 }
 
 def setHealthStatusValue(value) {    

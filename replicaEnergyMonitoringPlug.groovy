@@ -78,7 +78,7 @@ def setSwitchOn() {
 
 def setEnergyValue(value) {
     String descriptionText = "${device.displayName} energy is $value kWh"
-    sendEvent(name: "power", value: value, descriptionText: descriptionText)
+    sendEvent(name: "energy", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 

@@ -20,6 +20,7 @@ metadata
     {
         capability "Actuator"
         capability "Configuration"
+	capability "EnergyMeter
 	capability "PowerMeter"
         capability "Switch"
         capability "Refresh"
@@ -56,6 +57,7 @@ Map getReplicaCommands() {
     return ([ 
 	    "setSwitchValue":[[name:"switch*",type:"ENUM"]], 
 	    	"setSwitchOff":[], "setSwitchOn":[], 
+	    "setEnergyValue":[[name:"energy*",type:"NUMBER"]],
 	    "setPowerValue":[[name:"power*",type:"NUMBER"]],
 	    "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]])
 }
@@ -74,8 +76,14 @@ def setSwitchOn() {
     setSwitchValue("on")    
 }
 
+def setEnergyValue(value) {
+    String descriptionText = "${device.displayName} energy is $value kWh"
+    sendEvent(name: "power", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
 def setPowerValue(value) {
-    String descriptionText = "${device.displayName} power is $value"
+    String descriptionText = "${device.displayName} power is $value W"
     sendEvent(name: "power", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }

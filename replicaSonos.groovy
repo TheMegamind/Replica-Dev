@@ -16,14 +16,19 @@ public static String version() {return "1.3.0"}
 
 metadata 
 {
-    definition(name: "Replica Sonos", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/bloodtick/Hubitat/main/hubiThingsReplica/devices/replicaSwitch.groovy")
+    definition(name: "Replica Sonos", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Dev/main/replicaSonos.groovy?token=GHSAT0AAAAAABZUPG4MQOALSJWA7L2FO7I6Y7AHFDQ")
     {
         capability "Actuator"
         capability "Configuration"
-        capability "Switch"
+	capability "AudioVolume"
+        capability "MusicPlayer"
         capability "Refresh"
         
+	attribute "presets", "JSON_OBJECT" //capability mediaPreset in SmartThings 
         attribute "healthStatus", "enum", ["offline", "online"]
+	    
+	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]
+	command "setAirConditionerMode", [[name: "mode*", type: "STRING", description: "Set the air conditioner mode"]]
     }
     preferences {
         input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)

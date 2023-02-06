@@ -141,10 +141,9 @@ Map getReplicaTriggers() {
 	    "stop":[],
 	    "volumeDown":[]
 	    "volumeUp":[]
-	    "setVolume":[]....
-	    "setLevel":[]....
-	    "playPreset":[]...
-	   
+	    "setVolume":[[name:"volume*",type:"NUMBER"]
+	    "setLevel":[[name:"level*",type:"NUMBER"]
+	    "playPreset":[[name:"presetId*",type:"STRING"]
 	    
 	    "refresh":[]
     ])

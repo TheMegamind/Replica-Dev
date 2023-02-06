@@ -63,17 +63,16 @@ def configure() {
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
 Map getReplicaCommands() {
     return ([ 
-	        "setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]],
-	        "setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
-		"setMuteValue":[[name:"mute*",type:"ENUM"]],
-		"setPresetsValue":[[name:"presets*",type:"JSON_OBJECT"]],
-		"setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],
-		"setAudioTrackDataValue":[[name:"audioTrackData*",type:"JSON_OBJECT"]],
-		"setElapsedTimeValue":[[name:"elapsedTime*",type:"NUMBER"]],
-		"setVolumeValue":[[name:"totalTime*",type:"NUMBER"]],
-		    	
-		    	
-	     	"setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
+		    "setAudioTrackDataValue":[[name:"audioTrackData*",type:"JSON_OBJECT"]],
+		    "setElapsedTimeValue":[[name:"elapsedTime*",type:"NUMBER"]],
+		    "setMuteValue":[[name:"mute*",type:"ENUM"]],
+		    "setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
+		    "setPresetsValue":[[name:"presets*",type:"JSON_OBJECT"]],
+		    "setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]], 
+		    "setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],
+		    "setVolumeValue":[[name:"volume*",type:"NUMBER"]],
+
+		    "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
 	    ])
 }
 
@@ -131,7 +130,7 @@ def setHealthStatusValue(value) {
 
 // Methods documented here will show up in the Replica Trigger Configuration. These should be all of the native capability commands
 Map getReplicaTriggers() {
-    return ([ 
+    return ([
 	    "mute":[], 
 	    "unmute":[],
 	    "nextTrack":[],
@@ -139,11 +138,11 @@ Map getReplicaTriggers() {
 	    "pause":[],
 	    "play":[],
 	    "stop":[],
-	    "volumeDown":[]
-	    "volumeUp":[]
-	    "setVolume":[[name:"volume*",type:"NUMBER"]
-	    "setLevel":[[name:"level*",type:"NUMBER"]
-	    "playPreset":[[name:"presetId*",type:"STRING"]
+	    "volumeDown":[],
+	    "volumeUp":[],
+	    "setVolume":[[name:"volume*",type:"NUMBER"]],
+	    "setLevel":[[name:"level*",type:"NUMBER"]],
+	    "playPreset":[[name:"presetId*",type:"STRING"]],
 	    
 	    "refresh":[]
     ])

@@ -24,11 +24,16 @@ metadata
         capability "MusicPlayer"
         capability "Refresh"
         
-	attribute "presets", "JSON_OBJECT" //capability mediaPreset in SmartThings 
+	attribute "supportedPlaybackCommands", "JSON_OBJECT" //capability "mediaPlayback" in SmartThings
+	attribute "presets", "JSON_OBJECT"           //capability mediaPreset in SmartThings 
+	attribute "totalTime", "number"              //capability audioTrackData in SmartThings 
+	attribute "audioTrackData", "JSON_OBJECT"    //capability audioTrackData in SmartThings 
+	attribute "elapsedTime", "number"    	     //capability audioTrackData in SmartThings 
+	    
         attribute "healthStatus", "enum", ["offline", "online"]
 	    
 	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]
-	command "setAirConditionerMode", [[name: "mode*", type: "STRING", description: "Set the air conditioner mode"]]
+	
     }
     preferences {
         input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
@@ -57,7 +62,19 @@ def configure() {
 
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
 Map getReplicaCommands() {
-    return ([ "setSwitchValue":[[name:"switch*",type:"ENUM"]], "setSwitchOff":[], "setSwitchOn":[], "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]])
+    return ([ 
+	        "setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]],
+	        "setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
+		"setMuteValue":[[name:"mute*",type:"ENUM"]],
+		"setPresetsValue":[[name:"presets*",type:"JSON_OBJECT"]],
+		"setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],
+		"setAudioTrackDataValue":[[name:"audioTrackData*",type:"JSON_OBJECT"]],
+		"setElapsedTimeValue":[[name:"elapsedTime*",type:"NUMBER"]],
+		"setVolumeValue":[[name:"totalTime*",type:"NUMBER"]],
+		    	
+		    	
+	     	"setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
+	    ])
 }
 
 def setSwitchValue(value) {

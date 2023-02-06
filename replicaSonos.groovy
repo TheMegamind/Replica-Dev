@@ -24,12 +24,12 @@ metadata
         capability "MusicPlayer"
         capability "Refresh"
         
-	attribute "supportedPlaybackCommands", "JSON_OBJECT" //capability "mediaPlayback" in SmartThings
-	attribute "presets", "JSON_OBJECT"           //capability mediaPreset in SmartThings 
-	attribute "totalTime", "number"              //capability audioTrackData in SmartThings 
 	attribute "audioTrackData", "JSON_OBJECT"    //capability audioTrackData in SmartThings 
 	attribute "elapsedTime", "number"    	     //capability audioTrackData in SmartThings 
-	    
+	attribute "presets", "JSON_OBJECT"           //capability mediaPreset in SmartThings 
+	attribute "supportedPlaybackCommands", "JSON_OBJECT" //capability "mediaPlayback" in SmartThings
+	attribute "totalTime", "number"              //capability audioTrackData in SmartThings 
+		
         attribute "healthStatus", "enum", ["offline", "online"]
 	    
 	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]

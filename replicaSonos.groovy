@@ -77,18 +77,52 @@ Map getReplicaCommands() {
 	    ])
 }
 
-def setSwitchValue(value) {
-    String descriptionText = "${device.displayName} was turned $value"
-    sendEvent(name: "switch", value: value, descriptionText: descriptionText)
+def setSupportedPlaybackCommandsValue(value) {
+    String descriptionText = "${device.displayName} are $value"
+    sendEvent(name: "supportedPlaybackCommands", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
-def setSwitchOff() {
-    setSwitchValue("off")
+def setPlaybackStatusValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "playbackStatus", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
 }
 
-def setSwitchOn() {
-    setSwitchValue("on")    
+def setMuteValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "mute", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setPresetsValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "presets", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setTotalTimeValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "totalTime", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setAudioTrackDataValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "audioTrackData", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setElapsedTimeValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "elapsedTime", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setVolumeValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "volume", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
 }
 
 def setHealthStatusValue(value) {    

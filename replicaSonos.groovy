@@ -24,8 +24,8 @@ metadata
         //capability "MusicPlayer"                   //Exposes Unsupported Commands in Device Presentation
         capability "Refresh"
         
-	attribute "audioTrackData", "JSON_OBJECT"    //capability audioTrackData in SmartThings 
-	attribute "presets", "JSON_OBJECT"           //capability mediaPreset in SmartThings 
+	attribute "audioTrackData", "enum"    //capability audioTrackData in SmartThings 
+	attribute "presets", "enum"           //capability mediaPreset in SmartThings 
 	attribute "elapsedTime", "number"    	     //capability audioTrackData in SmartThings - Not Currently Reported
 	attribute "playbackStatus", "enum"           //capability mediaPlayback in SmartThings 
 	attribute "totalTime", "number"              //capability audioTrackData in SmartThings - Not Currently Reported
@@ -68,18 +68,16 @@ def configure() {
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
 Map getReplicaCommands() {
     return ([ 
-		    "setAudioTrackDataValue":[[name:"audioTrackData*",type:"JSON_OBJECT"]],
-		   
+		    "setAudioTrackDataValue":[[name:"audioTrackData*",type:"ENUM"]],
 		    "setMuteValue":[[name:"mute*",type:"ENUM"]],
 		    "setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
-		    "setPresetsValue":[[name:"presets*",type:"JSON_OBJECT"]],
+		    "setPresetsValue":[[name:"presets*",type:"ENUM"]],
 		    "setVolumeValue":[[name:"volume*",type:"NUMBER"]],
 	            "setElapsedTimeValue":[[name:"elapsedTime*",type:"NUMBER"]],
 	            "setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]], 
 		    "setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],
 
 		    "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
-
 	    ])
 }
 
@@ -104,6 +102,7 @@ def setMuteValue(value) {
 def setPresetsValue(presets) {
     String descriptionText = "${device.displayName} is $presets"
     sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
+    state.presets = presets
     logInfo descriptionText
 }
 
@@ -126,8 +125,9 @@ def setElapsedTimeValue(value) {
 }
 
 def setVolumeValue(value) {
-    String descriptionText = "${device.displayName} is $value"
-    sendEvent(name: "volume", value: value, descriptionText: descriptionText)
+    String unit = "%"
+    String descriptionText = "${device.displayName} is $value $unit"
+    sendEvent(name: "volume", value: value, unit: unit, descriptionText: descriptionText)
     logInfo descriptionText
 }
 

@@ -21,11 +21,11 @@ metadata
         capability "Actuator"
         capability "Configuration"
 	capability "AudioVolume"
-        //capability "MusicPlayer"                   //Exposes Unsupported Commands in Device Presentation
+        capability "MusicPlayer"                     //Exposes Unsupported Commands in Device Presentation
         capability "Refresh"
         
-	attribute "audioTrackData", "string"    //capability audioTrackData in SmartThings 
-	attribute "presets", "enum"           //capability mediaPreset in SmartThings 
+	attribute "audioTrackData", "string"         //capability audioTrackData in SmartThings 
+	attribute "presets", "enum"                  //capability mediaPreset in SmartThings 
 	attribute "elapsedTime", "number"    	     //capability audioTrackData in SmartThings - Not Currently Reported
 	attribute "playbackStatus", "enum"           //capability mediaPlayback in SmartThings 
 	attribute "totalTime", "number"              //capability audioTrackData in SmartThings - Not Currently Reported
@@ -33,11 +33,11 @@ metadata
         attribute "healthStatus", "enum", ["offline", "online"]
 	    
 	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]
-	command "nextTrack"			//Supported Sonos Command
-	command "previousTrack"			//Supported Sonos Command (Has Limited Utility)
-	command "play"                          //Supported Sonos Command
-	command "pause"                         //Supported Sonos Command
-	command "stop"                          //Supported Sonos Command
+	//command "nextTrack"			     //Supported Sonos Command
+	//command "previousTrack"		     //Supported Sonos Command (Has Limited Utility)
+	//command "play"                             //Supported Sonos Command
+	//command "pause"                            //Supported Sonos Command
+	//command "stop"                             //Supported Sonos Command
 	
     }
     preferences {

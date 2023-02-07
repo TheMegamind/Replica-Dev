@@ -18,26 +18,43 @@ metadata
 {
     definition(name: "Replica Sonos Beta", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Drivers/main/replicaSonos.groovy")
     {
-        capability "Actuator"
-        capability "Configuration"
+	capability "Actuator"
+	capability "Configuration"
 	capability "AudioVolume"
-        capability "MusicPlayer"                     //Exposes Unsupported Commands in Device Presentation
-        capability "Refresh"
-        
-	attribute "audioTrackData", "string"         //capability audioTrackData in SmartThings 
-	attribute "presets", "enum"                  //capability mediaPreset in SmartThings 
-	attribute "elapsedTime", "number"    	     //capability audioTrackData in SmartThings - Not Currently Reported
-	attribute "playbackStatus", "enum"           //capability mediaPlayback in SmartThings 
-	attribute "totalTime", "number"              //capability audioTrackData in SmartThings - Not Currently Reported
-		
-        attribute "healthStatus", "enum", ["offline", "online"]
+	capability "MusicPlayer"			//Exposes Unsupported Commands in Device Presentation
+	capability "Refresh"
+
+	attribute "audioTrackData", "string"         	//capability audioTrackData in SmartThings 
+	attribute "elapsedTime", "number"    	    	//capability audioTrackData in SmartThings - Not Currently Reported
+	attribute "totalTime", "number"             	//capability audioTrackData in SmartThings - Not Currently Reported
+
+	attribute "groupMute", "enum"	             	//capability mediaGroup in SmartThings
+	attribute "groupPrimaryDeviceId", "string"   	//capability mediaGroup in SmartThings
+	attribute "groupId", "string"   		//capability mediaGroup in SmartThings    
+	attribute "groupVolume", "number"   	     	//capability mediaGroup in SmartThings
+	attribute "groupRole", "enum"   	     	//capability mediaGroup in SmartThings
+
+	attribute "playbackStatus", "enum"           	//capability mediaPlayback in SmartThings
+	attribute "supportedPlaybackCommands","enum	//capability mediaPlayback in SmartThings
+	    
+	attribute "presets", "enum"                  	//capability mediaPreset in SmartThings 
+
+	attribute "healthStatus", "enum", ["offline", "online"]
 	    
 	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]
-	//command "nextTrack"			     //Supported Sonos Command
-	//command "previousTrack"		     //Supported Sonos Command (Has Limited Utility)
-	//command "play"                             //Supported Sonos Command
-	//command "pause"                            //Supported Sonos Command
-	//command "stop"                             //Supported Sonos Command
+	command "groupVolumeUp"				//capability mediaGroup in SmartThings
+	command "groupVolumeDown"			//capability mediaGroup in SmartThings
+	command "muteGroup"				//capability mediaGroup in SmartThings
+	command "setGroupVolume",			//capability mediaGroup in SmartThings
+	command "unmuteGroup"				//capability mediaGroup in SmartThings
+	command "setGroupMute"				//capability mediaGroup in SmartThings
+
+
+	//command "nextTrack"				//Supported Sonos Command
+	//command "previousTrack"			//Supported Sonos Command (Has Limited Utility)
+	//command "play"				//Supported Sonos Command
+	//command "pause"				//Supported Sonos Command
+	//command "stop"				//Supported Sonos Command
 	
     }
     preferences {
@@ -68,48 +85,25 @@ def configure() {
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
 Map getReplicaCommands() {
     return ([ 
-		    "setAudioTrackDataValue":[[name:"audioTrackData*",type:"string"]],
-		    "setMuteValue":[[name:"mute*",type:"ENUM"]],
-		    "setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
-		    "setPresetsValue":[[name:"presets*",type:"ENUM"]],
-		    "setVolumeValue":[[name:"volume*",type:"NUMBER"]],
-	            "setElapsedTimeValue":[[name:"elapsedTime*",type:"NUMBER"]],
-	            "setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]], 
-		    "setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],
+		"setAudioTrackDataValue":[[name:"audioTrackData*",type:"ENUM"]],
+		"setElapsedTimeValue":[[name:"elapsedTime*",type:"NUMBER"]],
+		"setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],
+
+		"setGroupMuteValue":[[name:"groupMute*",type:"ENUM"]],
+		"setGroupPrimaryDeviceIdValue":[[name:"groupPrimaryDeviceId*",type:"STRING"]],
+		"setGroupIdValue":[[name:"groupId*",type:"STRING"]],
+		"setGroupVolumeValue":[[name:"groupVolume*",type:"NUMBER"]],
+		"setGroupRoleValue":[[name:"groupRole*",type:"ENUM"]],
+	    
+		"setMuteValue":[[name:"mute*",type:"ENUM"]],
+		"setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
+		"setPresetsValue":[[name:"presets*",type:"ENUM"]],
+		"setVolumeValue":[[name:"volume*",type:"NUMBER"]],
+		"setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]], 
+		    
 
 		    "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
 	    ])
-}
-
-def setSupportedPlaybackCommandsValue(value) {
-    String descriptionText = "${device.displayName} is $value"
-    sendEvent(name: "supportedPlaybackCommands", value: value, descriptionText: descriptionText)
-    logInfo descriptionText
-}
-
-def setPlaybackStatusValue(value) {
-    String descriptionText = "${device.displayName} is $value"
-    sendEvent(name: "playbackStatus", value: value, descriptionText: descriptionText)
-    logInfo descriptionText
-}
-
-def setMuteValue(value) {
-    String descriptionText = "${device.displayName} is $value"
-    sendEvent(name: "mute", value: value, descriptionText: descriptionText)
-    logInfo descriptionText
-}
-
-def setPresetsValue(presets) {
-    String descriptionText = "${device.displayName} is $presets"
-    sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
-    state.presets = presets
-    logInfo descriptionText
-}
-
-def setTotalTimeValue(value) {
-    String descriptionText = "${device.displayName} is $value"
-    sendEvent(name: "totalTime", value: value, descriptionText: descriptionText)
-    logInfo descriptionText
 }
 
 def setAudioTrackDataValue(audioTrackData) {
@@ -124,10 +118,72 @@ def setElapsedTimeValue(value) {
     logInfo descriptionText
 }
 
+def setTotalTimeValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "totalTime", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setGroupMuteValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "groupMute", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setGroupPrimaryDeviceIdValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "groupPrimaryDeviceId", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setGroupIdValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "groupId", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setGroupVolumeValue(value) {
+    String unit = "%"
+    String descriptionText = "${device.displayName} is $value $unit"
+    sendEvent(name: "groupVolume", value: value, unit: unit, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setGroupRoleValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "groupRole", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setMuteValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "mute", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setPlaybackStatusValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "playbackStatus", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setPresetsValue(presets) {
+    String descriptionText = "${device.displayName} is $presets"
+    sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
+    state.presets = presets
+    logInfo descriptionText
+}
+
 def setVolumeValue(value) {
     String unit = "%"
     String descriptionText = "${device.displayName} is $value $unit"
     sendEvent(name: "volume", value: value, unit: unit, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setSupportedPlaybackCommandsValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "supportedPlaybackCommands", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
@@ -149,6 +205,15 @@ Map getReplicaTriggers() {
 	    "volumeUp":[],
 	    "setVolume":[[name:"volume*",type:"NUMBER"]],
 	    "playPreset":[[name:"presetId*",type:"STRING"]],
+	    "groupVolumeUp":[],
+	    "groupVolumeDown":[],
+	    "muteGroup":[],
+	    "unmuteGroup:[],
+	    "setGroupMute":[[name:"presetId*",type:"ENUM"]],		// Needed? If so, Provide ENUM options
+	    "setGroupVolume":[[name:"groupMute*",type:"NUMBER"]],
+	    "playTrack":[],						// Needs further definition
+	    "playTrackAndRestore":[],					// Needs further definition
+	    "playTrackAndResume":[],					// Needs further definition
 	    
 	    "refresh":[]
     ])
@@ -202,6 +267,42 @@ def setVolume(volume) {
 def playPreset(presetId) {
     sendCommand("playPreset",presetId)
 }
+
+def groupVolumeUp() {
+    sendCommand("groupVolumeUp")
+}
+		
+def groupVolumeDown() {
+    sendCommand("groupVolumeDown")
+}
+		
+def muteGroup() {
+    sendCommand("muteGroup")
+}
+
+def unmuteGroup() {
+    sendCommand("unmuteGroup")
+}
+
+def setGroupMute() {
+    sendCommand("setGroupMute",groupMute)
+}
+
+def setPlayTrack() {
+    sendCommand("playTrack",value)
+}
+
+def setPlayTrackAndRestore() {
+    sendCommand("playTrackAndRestore",value)
+}
+
+def setPlayTrackAndResume() {
+    sendCommand("playTrackAndResume",value)
+}
+
+		
+		
+
 
 void refresh() {
     sendCommand("refresh")

@@ -25,8 +25,8 @@ metadata
         capability "Refresh"
         
 	attribute "audioTrackData", "JSON_OBJECT"    //capability audioTrackData in SmartThings 
-	attribute "elapsedTime", "number"    	     //capability audioTrackData in SmartThings 
 	attribute "presets", "JSON_OBJECT"           //capability mediaPreset in SmartThings 
+	attribute "elapsedTime", "number"    	     //capability audioTrackData in SmartThings 
 	attribute "totalTime", "number"              //capability audioTrackData in SmartThings 
 		
         attribute "healthStatus", "enum", ["offline", "online"]
@@ -68,17 +68,24 @@ def configure() {
 Map getReplicaCommands() {
     return ([ 
 		    "setAudioTrackDataValue":[[name:"audioTrackData*",type:"JSON_OBJECT"]],
-		    "setElapsedTimeValue":[[name:"elapsedTime*",type:"NUMBER"]],
+		   
 		    "setMuteValue":[[name:"mute*",type:"ENUM"]],
 		    "setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
 		    "setPresetsValue":[[name:"presets*",type:"JSON_OBJECT"]],
-	            //"setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]], 
-		    "setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],
 		    "setVolumeValue":[[name:"volume*",type:"NUMBER"]],
+	            "setElapsedTimeValue":[[name:"elapsedTime*",type:"NUMBER"]],
+	            "setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]], 
+		    "setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],
 
 		    "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
 
 	    ])
+}
+
+def setSupportedPlaybackCommandsValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "playbackStatus", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
 }
 
 def setPlaybackStatusValue(value) {

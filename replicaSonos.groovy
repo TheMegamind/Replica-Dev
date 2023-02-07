@@ -35,7 +35,7 @@ metadata
 	attribute "groupRole", "enum"   	     	//capability mediaGroup in SmartThings
 
 	attribute "playbackStatus", "enum"           	//capability mediaPlayback in SmartThings
-	attribute "supportedPlaybackCommands","enum	//capability mediaPlayback in SmartThings
+	attribute "supportedPlaybackCommands","enum"	//capability mediaPlayback in SmartThings
 	    
 	attribute "presets", "enum"                  	//capability mediaPreset in SmartThings 
 
@@ -45,7 +45,7 @@ metadata
 	command "groupVolumeUp"				//capability mediaGroup in SmartThings
 	command "groupVolumeDown"			//capability mediaGroup in SmartThings
 	command "muteGroup"				//capability mediaGroup in SmartThings
-	command "setGroupVolume",			//capability mediaGroup in SmartThings
+	command "setGroupVolume"			//capability mediaGroup in SmartThings
 	command "unmuteGroup"				//capability mediaGroup in SmartThings
 	command "setGroupMute"				//capability mediaGroup in SmartThings
 
@@ -208,7 +208,7 @@ Map getReplicaTriggers() {
 	    "groupVolumeUp":[],
 	    "groupVolumeDown":[],
 	    "muteGroup":[],
-	    "unmuteGroup:[],
+	    "unmuteGroup":[],
 	    "setGroupMute":[[name:"presetId*",type:"ENUM"]],		// Needed? If so, Provide ENUM options
 	    "setGroupVolume":[[name:"groupMute*",type:"NUMBER"]],
 	    "playTrack":[],						// Needs further definition

@@ -21,7 +21,7 @@ metadata
         capability "Actuator"
         capability "Configuration"
 	capability "AudioVolume"
-        capability "MusicPlayer"
+        //capability "MusicPlayer"
         capability "Refresh"
         
 	attribute "audioTrackData", "JSON_OBJECT"    //capability audioTrackData in SmartThings 
@@ -33,6 +33,11 @@ metadata
         attribute "healthStatus", "enum", ["offline", "online"]
 	    
 	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]
+	command "nextTrack"
+	command "previousTrack"
+	command "play"
+	command "pause"
+	command "stop"
 	
     }
     preferences {

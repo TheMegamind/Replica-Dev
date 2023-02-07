@@ -101,9 +101,9 @@ def setMuteValue(value) {
     logInfo descriptionText
 }
 
-def setPresetsValue(value) {
-    String descriptionText = "${device.displayName} is $value"
-    sendEvent(name: "presets", value: value, descriptionText: descriptionText)
+def setPresetsValue(presets) {
+    String descriptionText = "${device.displayName} is $presets"
+    sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
@@ -113,9 +113,9 @@ def setTotalTimeValue(value) {
     logInfo descriptionText
 }
 
-def setAudioTrackDataValue(value) {
-    String descriptionText = "${device.displayName} is $value"
-    sendEvent(name: "audioTrackData", value: value, descriptionText: descriptionText)
+def setAudioTrackDataValue(audioTrackData) {
+    String descriptionText = "${device.displayName} is $audioTrackData"
+    sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
     logInfo descriptionText
 }
 

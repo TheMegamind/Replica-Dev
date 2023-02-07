@@ -82,11 +82,11 @@ Map getReplicaCommands() {
 	    ])
 }
 
-def setSupportedPlaybackCommandsValue(value) {
-    String descriptionText = "${device.displayName} are $value"
-    sendEvent(name: "supportedPlaybackCommands", value: value, descriptionText: descriptionText)
-    logInfo descriptionText
-}
+// def setSupportedPlaybackCommandsValue(value) {
+//    String descriptionText = "${device.displayName} are $value"
+//    sendEvent(name: "supportedPlaybackCommands", value: value, descriptionText: descriptionText)
+//    logInfo descriptionText
+//}
 
 def setPlaybackStatusValue(value) {
     String descriptionText = "${device.displayName} is $value"

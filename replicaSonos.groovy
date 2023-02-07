@@ -26,14 +26,14 @@ metadata
         
 	attribute "audioTrackData", "JSON_OBJECT"    //capability audioTrackData in SmartThings 
 	attribute "presets", "JSON_OBJECT"           //capability mediaPreset in SmartThings 
-	attribute "elapsedTime", "number"    	     //capability audioTrackData in SmartThings 
-	attribute "totalTime", "number"              //capability audioTrackData in SmartThings 
+	attribute "elapsedTime", "number"    	     //capability audioTrackData in SmartThings - Not Currently Reported
+	attribute "totalTime", "number"              //capability audioTrackData in SmartThings - Not Currently Reported
 		
         attribute "healthStatus", "enum", ["offline", "online"]
 	    
 	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]
 	command "nextTrack"			//Supported Sonos Command
-	command "previousTrack"			//Supported Sonos Command (Not Always Available)
+	command "previousTrack"			//Supported Sonos Command (Has Limited Value)
 	command "play"                          //Supported Sonos Command
 	command "pause"                         //Supported Sonos Command
 	command "stop"                          //Supported Sonos Command

@@ -21,23 +21,23 @@ metadata
         capability "Actuator"
         capability "Configuration"
 	capability "AudioVolume"
-        //capability "MusicPlayer"
+        //capability "MusicPlayer"                  //Add Unsupported Command to Device Page
         capability "Refresh"
         
 	attribute "audioTrackData", "JSON_OBJECT"    //capability audioTrackData in SmartThings 
 	attribute "elapsedTime", "number"    	     //capability audioTrackData in SmartThings 
 	attribute "presets", "JSON_OBJECT"           //capability mediaPreset in SmartThings 
-	attribute "supportedPlaybackCommands", "JSON_OBJECT" //capability "mediaPlayback" in SmartThings
+	// attribute "supportedPlaybackCommands", "JSON_OBJECT" //capability "mediaPlayback" in SmartThings   //Not Presently Needed
 	attribute "totalTime", "number"              //capability audioTrackData in SmartThings 
 		
         attribute "healthStatus", "enum", ["offline", "online"]
 	    
 	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]
-	command "nextTrack"
-	command "previousTrack"
-	command "play"
-	command "pause"
-	command "stop"
+	command "nextTrack"			//Supported Sonos Command
+	command "previousTrack"			//Supported Sonos Command (Not Always Available)
+	command "play"                          //Supported Sonos Command
+	command "pause"                         //Supported Sonos Command
+	command "stop"                          //Supported Sonos Command
 	
     }
     preferences {
@@ -73,11 +73,12 @@ Map getReplicaCommands() {
 		    "setMuteValue":[[name:"mute*",type:"ENUM"]],
 		    "setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
 		    "setPresetsValue":[[name:"presets*",type:"JSON_OBJECT"]],
-		    "setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]], 
+	            //"setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]], 
 		    "setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],
 		    "setVolumeValue":[[name:"volume*",type:"NUMBER"]],
 
 		    "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
+
 	    ])
 }
 
@@ -146,7 +147,6 @@ Map getReplicaTriggers() {
 	    "volumeDown":[],
 	    "volumeUp":[],
 	    "setVolume":[[name:"volume*",type:"NUMBER"]],
-	    "setLevel":[[name:"level*",type:"NUMBER"]],
 	    "playPreset":[[name:"presetId*",type:"STRING"]],
 	    
 	    "refresh":[]
@@ -198,10 +198,6 @@ def setVolume(volume) {
     sendCommand("setVolume",volume)
 }
 
-def setLevel(level) {
-    sendCommand("setVolume",level)
-}
-
 def playPreset(presetId) {
     sendCommand("playPreset",presetId)
 }
@@ -209,7 +205,6 @@ def playPreset(presetId) {
 void refresh() {
     sendCommand("refresh")
 }
-
 
 
 String getReplicaRules() {

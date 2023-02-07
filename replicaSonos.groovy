@@ -16,17 +16,18 @@ public static String version() {return "1.3.0"}
 
 metadata 
 {
-    definition(name: "Replica Sonos", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Dev/main/replicaSonos.groovy?token=GHSAT0AAAAAABZUPG4MQOALSJWA7L2FO7I6Y7AHFDQ")
+    definition(name: "Replica Sonos Beta", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Drivers/main/replicaSonos.groovy")
     {
         capability "Actuator"
         capability "Configuration"
 	capability "AudioVolume"
-        //capability "MusicPlayer"                  //Add Unsupported Commands to Device Presentation
+        //capability "MusicPlayer"                   //Exposes Unsupported Commands in Device Presentation
         capability "Refresh"
         
 	attribute "audioTrackData", "JSON_OBJECT"    //capability audioTrackData in SmartThings 
 	attribute "presets", "JSON_OBJECT"           //capability mediaPreset in SmartThings 
 	attribute "elapsedTime", "number"    	     //capability audioTrackData in SmartThings - Not Currently Reported
+	attribute "playbackStatus", "enum"           //capability mediaPlayback in SmartThings 
 	attribute "totalTime", "number"              //capability audioTrackData in SmartThings - Not Currently Reported
 		
         attribute "healthStatus", "enum", ["offline", "online"]

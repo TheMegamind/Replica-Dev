@@ -57,12 +57,12 @@ metadata
 	command "muteGroup"				
 	command "setGroupVolume"			
 	command "unmuteGroup"				
-	command "setGroupMute:
+	command "setGroupMute"
 	    
         //capability audioNotification in SmartThings 
-	command "playTrackAndResume", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume Level (0-100)%"]]
-	command "playTrackAndRestore", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume Level (0-100)%"]]
-    	command "playTrack", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume Level (0-100)%"]]
+	command "playTrackAndResume", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume (0-100)%"]]
+	command "playTrackAndRestore", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume (0-100)%"]]
+    	command "playTrack", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume  (0-100)%"]]
 
 	//Supported Sonos Commands
 	//command "nextTrack"				

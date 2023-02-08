@@ -186,7 +186,6 @@ def setMuteValue(value) {
 }
 
 //capability mediaPlayback in SmartThings
-def setGroupRoleValue(value) {
 def setPlaybackStatusValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "playbackStatus", value: value, descriptionText: descriptionText)
@@ -194,7 +193,6 @@ def setPlaybackStatusValue(value) {
 }
 
 //capability mediaPresets in SmartThings
-def setGroupRoleValue(value) {
 def setPresetsValue(presets) {
     String descriptionText = "${device.displayName} is $presets"
     sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
@@ -203,7 +201,6 @@ def setPresetsValue(presets) {
 }
 
 //capability audioVolume in SmartThings
-def setGroupRoleValue(value) {
 def setVolumeValue(value) {
     String unit = "%"
     String descriptionText = "${device.displayName} is $value $unit"

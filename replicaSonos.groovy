@@ -318,15 +318,15 @@ def unmuteGroup() {
     sendCommand("unmuteGroup")
 }
 
-def setPlayTrack() {
+def playTrack() {
     sendCommand("playTrack",uri,level)
 }
 
-def setPlayTrackAndRestore() {
+def playTrackAndRestore() {
     sendCommand("playTrackAndRestore",uri,level)
 }
 
-def setPlayTrackAndResume() {
+def playTrackAndResume() {
     sendCommand("playTrackAndResume",uri,level)
 }
 

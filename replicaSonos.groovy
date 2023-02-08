@@ -319,15 +319,15 @@ def unmuteGroup() {
 }
 
 def setPlayTrack() {
-    sendCommand("playTrack",value)
+    sendCommand("playTrack",uri,level)
 }
 
 def setPlayTrackAndRestore() {
-    sendCommand("playTrackAndRestore",value)
+    sendCommand("playTrackAndRestore",uri,level)
 }
 
 def setPlayTrackAndResume() {
-    sendCommand("playTrackAndResume",value)
+    sendCommand("playTrackAndResume",uri,level)
 }
 
 void refresh() {

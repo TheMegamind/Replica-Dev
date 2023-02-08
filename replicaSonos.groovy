@@ -21,42 +21,55 @@ metadata
 	capability "Actuator"
 	capability "Configuration"
 	capability "AudioVolume"
-	capability "MusicPlayer"			//Exposes Unsupported Commands in Device Presentation
+	capability "MusicPlayer"			//Exposes Unsupported Commands in Device Presentation (i.e., Rew, FF)
 	capability "Refresh"
 
-	attribute "audioTrackData", "string"         	//capability audioTrackData in SmartThings 
-	attribute "elapsedTime", "number"    	    	//capability audioTrackData in SmartThings - Not Currently Reported
-	attribute "totalTime", "number"             	//capability audioTrackData in SmartThings - Not Currently Reported
+	//capability audioTrackData in SmartThings 
+	attribute "audioTrackData", "string"         	// trackData in Hubitat 
+	attribute "elapsedTime", "number"    	    	// Not Currently Reported
+	attribute "totalTime", "number"             	// Not Currently Reported
 
-	attribute "groupMute", "enum"	             	//capability mediaGroup in SmartThings
-	attribute "groupPrimaryDeviceId", "string"   	//capability mediaGroup in SmartThings
-	attribute "groupId", "string"   		//capability mediaGroup in SmartThings    
-	attribute "groupVolume", "number"   	     	//capability mediaGroup in SmartThings
-	attribute "groupRole", "enum"   	     	//capability mediaGroup in SmartThings
+	//capability mediaGroup in SmartThings
+	attribute "groupMute", "enum"	             	
+	attribute "groupPrimaryDeviceId", "string"   	
+	attribute "groupId", "string"   		    
+	attribute "groupVolume", "number"   	     	
+	attribute "groupRole", "enum"   	     	
 
-	attribute "playbackStatus", "enum"           	//capability mediaPlayback in SmartThings
-	attribute "supportedPlaybackCommands","enum"	//capability mediaPlayback in SmartThings
+	//capability mediaPlayback in SmartThings
+	attribute "playbackStatus", "enum"           	
+	attribute "supportedPlaybackCommands","enum"	
+	
+	//capability mediaPreset in SmartThings
+	//attribute "presets", "enum"                  	//Exclude from Current States
 
-	//attribute "presets", "enum"                  	//capability mediaPreset in SmartThings 
-
-	attribute "supportedTrackControlCommands","enum"	//capability mediaTrackControl in SmartThings
-
+	attribute "supportedTrackControlCommands","enum"	
+	    
+	//capability mediaTrackControl in SmartThings
 	attribute "healthStatus", "enum", ["offline", "online"]
-
+	    
+	//capability mediaPreset in SmartThings
 	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]
-	command "groupVolumeUp"				//capability mediaGroup in SmartThings
-	command "groupVolumeDown"			//capability mediaGroup in SmartThings
-	command "muteGroup"				//capability mediaGroup in SmartThings
-	command "setGroupVolume"			//capability mediaGroup in SmartThings
-	command "unmuteGroup"				//capability mediaGroup in SmartThings
-	command "setGroupMute"				//capability mediaGroup in SmartThings
+	    
+    	//capability mediaGroup in SmartThings
+	command "groupVolumeUp"				
+	command "groupVolumeDown"			
+	command "muteGroup"				
+	command "setGroupVolume"			
+	command "unmuteGroup"				
+	command "setGroupMute:
+	    
+        //capability audioNotification in SmartThings 
+	command "playTrackAndResume", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume Level (0-100)%"]]
+	command "playTrackAndRestore", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume Level (0-100)%"]]
+    	command "playTrack", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume Level (0-100)%"]]
 
-
-	//command "nextTrack"				//Supported Sonos Command
-	//command "previousTrack"			//Supported Sonos Command (Has Limited Utility)
-	//command "play"				//Supported Sonos Command
-	//command "pause"				//Supported Sonos Command
-	//command "stop"				//Supported Sonos Command
+	//Supported Sonos Commands
+	//command "nextTrack"				
+	//command "previousTrack"			// Has Limited Utility
+	//command "play"				
+	//command "pause"				
+	//command "stop"				
 
     }
     preferences {
@@ -108,42 +121,49 @@ Map getReplicaCommands() {
 	    ])
 }
 
+//capability audioTrackData in SmartThings 
 def setAudioTrackDataValue(audioTrackData) {
     String descriptionText = "${device.displayName} is $audioTrackData"
     sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
+//capability audioTrackData in SmartThings 
 def setElapsedTimeValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "elapsedTime", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
+//capability audioTrackData in SmartThings 
 def setTotalTimeValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "totalTime", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
+//capability mediaGroup in SmartThings
 def setGroupMuteValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "groupMute", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
+//capability mediaGroup in SmartThings
 def setGroupPrimaryDeviceIdValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "groupPrimaryDeviceId", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
+//capability mediaGroup in SmartThings
 def setGroupIdValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "groupId", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
+//capability mediaGroup in SmartThings
 def setGroupVolumeValue(value) {
     String unit = "%"
     String descriptionText = "${device.displayName} is $value $unit"
@@ -151,24 +171,30 @@ def setGroupVolumeValue(value) {
     logInfo descriptionText
 }
 
+//capability mediaGroup in SmartThings
 def setGroupRoleValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "groupRole", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
+//capability audioMute in SmartThings
 def setMuteValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "mute", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
+//capability mediaPlayback in SmartThings
+def setGroupRoleValue(value) {
 def setPlaybackStatusValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "playbackStatus", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
+//capability mediaPresets in SmartThings
+def setGroupRoleValue(value) {
 def setPresetsValue(presets) {
     String descriptionText = "${device.displayName} is $presets"
     sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
@@ -176,6 +202,8 @@ def setPresetsValue(presets) {
     logInfo descriptionText
 }
 
+//capability audioVolume in SmartThings
+def setGroupRoleValue(value) {
 def setVolumeValue(value) {
     String unit = "%"
     String descriptionText = "${device.displayName} is $value $unit"
@@ -183,18 +211,21 @@ def setVolumeValue(value) {
     logInfo descriptionText
 }
 
+//capability mediaPlayback in SmartThings
 def setSupportedPlaybackCommandsValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "supportedPlaybackCommands", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
+//capability mediaTrackControl in SmartThings
 def setSupportedTrackControlCommandsValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "supportedTrackControlCommands", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
-
+	
+//capability audioNotification in SmartThings 
 def setHealthStatusValue(value) {    
     sendEvent(name: "healthStatus", value: value, descriptionText: "${device.displayName} healthStatus set to $value")
 }
@@ -217,11 +248,11 @@ Map getReplicaTriggers() {
 	    "groupVolumeDown":[],
 	    "muteGroup":[],
 	    "unmuteGroup":[],
-	    "setGroupMute":[[name:"groupMute*",type:"ENUM"]],		// Needed? If so, Provide ENUM options
+	    "setGroupMute":[[name:"groupMute*",type:"ENUM"]],
 	    "setGroupVolume":[[name:"groupVolume*",type:"NUMBER"]],
-	    "playTrack":[],						// Needs further definition
-	    "playTrackAndRestore":[],					// Needs further definition
-	    "playTrackAndResume":[],					// Needs further definition
+	    "playTrack":[[name: "uri*", type: "STRING"],[name: "level", type: "NUMBER"]],						
+	    "playTrackAndRestore":[[name: "uri*", type: "STRING"],[name: "level", type: "NUMBER"]],					
+	    "playTrackAndResume":[[name: "uri*", type: "STRING"],[name: "level", type: "NUMBER"]],					
 	    
 	    "refresh":[]
     ])

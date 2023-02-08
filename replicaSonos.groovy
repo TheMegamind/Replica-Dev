@@ -193,8 +193,8 @@ def setPlaybackStatusValue(value) {
 
 //capability mediaPresets in SmartThings
 def setPresetsValue(presets) {
-    String descriptionText = "${device.displayName} is $presets"
-    sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
+//    String descriptionText = "${device.displayName} is $presets"
+//    sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
     state.presets = presets
     logInfo descriptionText
 }

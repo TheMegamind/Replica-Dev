@@ -247,9 +247,9 @@ Map getReplicaTriggers() {
 	    "muteGroup":[],
 	    "unmuteGroup":[],
 	    "setGroupVolume":[[name:"groupVolume*",type:"NUMBER"]],
-	    "playTrack":[[name: "uri*", type: "STRING"],[name: "level", type: "NUMBER"]],						
-	    "playTrackAndRestore":[[name: "uri*", type: "STRING"],[name: "level", type: "NUMBER"]],					
-	    "playTrackAndResume":[[name: "uri*", type: "STRING"],[name: "level", type: "NUMBER"]],					
+	    "playTrack":[[name: "trackuri*", type: "STRING"],[name: "volumelevel", type: "NUMBER"]],						
+	    "playTrackAndRestore":[[name: "trackuri*", type: "STRING"],[name: "volumelevel", type: "NUMBER"]],					
+	    "playTrackAndResume":[[name: "trackuri*", type: "STRING"],[name: "volumelevel", type: "NUMBER"]],					
 	    
 	    "refresh":[]
     ])
@@ -320,16 +320,16 @@ def unmuteGroup() {
     sendCommand("unmuteGroup")
 }
 
-def playTrack(uri,level) {
-    sendCommand("playTrack",uri,level)
+def playTrack(trackuri,volumelevel) {
+    sendCommand("playTrack",trackuri,volumelevel)
 }
 
-def playTrackAndRestore(uri,level) {
-    sendCommand("playTrackAndRestore",uri,level)
+def playTrackAndRestore(trackuri,volumelevel) {
+    sendCommand("playTrackAndRestore",trackuri,volumelevel)
 }
 
-def playTrackAndResume(uri,level) {
-    sendCommand("playTrackAndResume",uri,level)
+def playTrackAndResume(trackuri,volumelevel) {
+    sendCommand("playTrackAndResume",trackuri,volumelevel)
 }
 
 void refresh() {

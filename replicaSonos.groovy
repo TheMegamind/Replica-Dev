@@ -36,11 +36,13 @@ metadata
 
 	attribute "playbackStatus", "enum"           	//capability mediaPlayback in SmartThings
 	attribute "supportedPlaybackCommands","enum"	//capability mediaPlayback in SmartThings
-	    
+
 	attribute "presets", "enum"                  	//capability mediaPreset in SmartThings 
 
+	attribute "supportedTrackControlCommands","enum"	//capability mediaPlayback in SmartThings
+
 	attribute "healthStatus", "enum", ["offline", "online"]
-	    
+
 	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]
 	command "groupVolumeUp"				//capability mediaGroup in SmartThings
 	command "groupVolumeDown"			//capability mediaGroup in SmartThings
@@ -55,7 +57,7 @@ metadata
 	//command "play"				//Supported Sonos Command
 	//command "pause"				//Supported Sonos Command
 	//command "stop"				//Supported Sonos Command
-	
+
     }
     preferences {
         input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
@@ -99,7 +101,8 @@ Map getReplicaCommands() {
 		"setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
 		"setPresetsValue":[[name:"presets*",type:"ENUM"]],
 		"setVolumeValue":[[name:"volume*",type:"NUMBER"]],
-		"setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]], 
+		"setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]],
+	    	"setSupportedTrackControlCommandsValue":[[name:"supportedTrackControlCommands*",type:"ENUM"]],
 		    
 
 		    "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
@@ -184,6 +187,12 @@ def setVolumeValue(value) {
 def setSupportedPlaybackCommandsValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "supportedPlaybackCommands", value: value, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+def setSupportedTrackControlCommandsValue(value) {
+    String descriptionText = "${device.displayName} is $value"
+    sendEvent(name: "supportedTrackControlCommands", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
@@ -299,10 +308,6 @@ def setPlayTrackAndRestore() {
 def setPlayTrackAndResume() {
     sendCommand("playTrackAndResume",value)
 }
-
-		
-		
-
 
 void refresh() {
     sendCommand("refresh")

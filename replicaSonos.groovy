@@ -39,7 +39,7 @@ metadata
 
 	//attribute "presets", "enum"                  	//capability mediaPreset in SmartThings 
 
-	attribute "supportedTrackControlCommands","enum"	//capability mediaPlayback in SmartThings
+	attribute "supportedTrackControlCommands","enum"	//capability mediaTrackControl in SmartThings
 
 	attribute "healthStatus", "enum", ["offline", "online"]
 
@@ -103,9 +103,8 @@ Map getReplicaCommands() {
 		"setVolumeValue":[[name:"volume*",type:"NUMBER"]],
 		"setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]],
 	    	"setSupportedTrackControlCommandsValue":[[name:"supportedTrackControlCommands*",type:"ENUM"]],
-		    
 
-		    "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
+		"setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
 	    ])
 }
 

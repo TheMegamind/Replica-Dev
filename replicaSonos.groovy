@@ -19,9 +19,10 @@ metadata
     definition(name: "Replica Sonos", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Drivers/main/replicaSonos.groovy")
     {
 	capability "Actuator"
-	capability "Configuration"
+	capability "AudioNotification"
 	capability "AudioVolume"
-	capability "MusicPlayer"			//Exposes Unsupported Commands in Device Presentation (i.e., Rew, FF)
+	capability "Configuration"
+	capability "MusicPlayer"			
 	capability "Refresh"
 
 	//capability audioTrackData in SmartThings 
@@ -52,23 +53,24 @@ metadata
 	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]
 
 	//capability mediaGroup in SmartThings
-	command "groupVolumeUp"				
-	command "groupVolumeDown"			
-	command "muteGroup"				
-	command "setGroupVolume"			
-	command "unmuteGroup"				
+	command "groupVolumeUp"
+	command "groupVolumeDown"
+	command "muteGroup"
+	command "setGroupVolume"
+	command "unmuteGroup"
 
-	//capability audioNotification in SmartThings 
-	command "playTrackAndResume", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume (0-100)%"]]
-	command "playTrackAndRestore", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume (0-100)%"]]
-	command "playTrack", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume  (0-100)%"]]
 
 	//Supported Sonos Commands
-	//command "nextTrack"				
-	//command "previousTrack"			// Has Limited Utility
-	//command "play"				
-	//command "pause"				
-	//command "stop"				
+	//command "nextTrack"
+	//command "previousTrack"			
+	//command "play"
+	//command "pause"
+	//command "stop"
+
+	//command "playTrackAndResume", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume (0-100)%"]]
+	//command "playTrackAndRestore", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume (0-100)%"]]
+	//command "playTrack", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume  (0-100)%"]]
+
 
     }
     preferences {
@@ -318,15 +320,15 @@ def unmuteGroup() {
     sendCommand("unmuteGroup")
 }
 
-def playTrack() {
+def playTrack(uri,level) {
     sendCommand("playTrack",uri,level)
 }
 
-def playTrackAndRestore() {
+def playTrackAndRestore(uri,level) {
     sendCommand("playTrackAndRestore",uri,level)
 }
 
-def playTrackAndResume() {
+def playTrackAndResume(uri,level) {
     sendCommand("playTrackAndResume",uri,level)
 }
 

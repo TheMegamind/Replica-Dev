@@ -16,7 +16,7 @@ public static String version() {return "1.3.0"}
 
 metadata 
 {
-    definition(name: "Replica Sonos Beta", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Drivers/main/replicaSonos.groovy")
+    definition(name: "Replica Sonos", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Drivers/main/replicaSonos.groovy")
     {
 	capability "Actuator"
 	capability "Configuration"
@@ -39,30 +39,30 @@ metadata
 	//capability mediaPlayback in SmartThings
 	attribute "playbackStatus", "enum"           	
 	attribute "supportedPlaybackCommands","enum"	
-	
+
 	//capability mediaPreset in SmartThings
 	//attribute "presets", "enum"                  	//Exclude from Current States
 
 	attribute "supportedTrackControlCommands","enum"	
-	    
+
 	//capability mediaTrackControl in SmartThings
 	attribute "healthStatus", "enum", ["offline", "online"]
-	    
+
 	//capability mediaPreset in SmartThings
 	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]
-	    
-    	//capability mediaGroup in SmartThings
+
+	//capability mediaGroup in SmartThings
 	command "groupVolumeUp"				
 	command "groupVolumeDown"			
 	command "muteGroup"				
 	command "setGroupVolume"			
 	command "unmuteGroup"				
 	command "setGroupMute"
-	    
-        //capability audioNotification in SmartThings 
+
+	//capability audioNotification in SmartThings 
 	command "playTrackAndResume", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume (0-100)%"]]
 	command "playTrackAndRestore", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume (0-100)%"]]
-    	command "playTrack", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume  (0-100)%"]]
+	command "playTrack", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "level", type: "NUMBER", description: "Volume  (0-100)%"]]
 
 	//Supported Sonos Commands
 	//command "nextTrack"				
@@ -109,13 +109,13 @@ Map getReplicaCommands() {
 		"setGroupIdValue":[[name:"groupId*",type:"STRING"]],
 		"setGroupVolumeValue":[[name:"groupVolume*",type:"NUMBER"]],
 		"setGroupRoleValue":[[name:"groupRole*",type:"ENUM"]],
-	    
+
 		"setMuteValue":[[name:"mute*",type:"ENUM"]],
 		"setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
 		"setPresetsValue":[[name:"presets*",type:"ENUM"]],
 		"setVolumeValue":[[name:"volume*",type:"NUMBER"]],
 		"setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]],
-	    	"setSupportedTrackControlCommandsValue":[[name:"supportedTrackControlCommands*",type:"ENUM"]],
+		"setSupportedTrackControlCommandsValue":[[name:"supportedTrackControlCommands*",type:"ENUM"]],
 
 		"setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
 	    ])
@@ -225,7 +225,7 @@ def setSupportedTrackControlCommandsValue(value) {
     logInfo descriptionText
 }
 	
-//capability audioNotification in SmartThings 
+	
 def setHealthStatusValue(value) {    
     sendEvent(name: "healthStatus", value: value, descriptionText: "${device.displayName} healthStatus set to $value")
 }

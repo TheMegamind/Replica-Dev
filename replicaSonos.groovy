@@ -10,6 +10,7 @@
 *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
 *  for the specific language governing permissions and limitations under the License.
 *
+*  Special thanks to @bloodtick_jones who created the foundational code used in the development of this driver
 */
 @SuppressWarnings('unused')
 public static String version() {return "1.3.0"}
@@ -106,7 +107,7 @@ Map getReplicaCommands() {
 		"setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
 		"setPresetsValue":[[name:"presets*",type:"ENUM"]],
 		"setVolumeValue":[[name:"volume*",type:"NUMBER"]],
-	    	// "setLevel Value":[[name:"volume*",type:"NUMBER"]],  	
+	    	"setLevel Value":[[name:"volume*",type:"NUMBER"]],  			//level and volume both present in native HE integration
 		"setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]],
 		"setSupportedTrackControlCommandsValue":[[name:"supportedTrackControlCommands*",type:"ENUM"]],
 

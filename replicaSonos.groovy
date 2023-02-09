@@ -94,6 +94,7 @@ Map getReplicaCommands() {
     return ([ 
 	    	"setAudioTrackDataValue":[[name:"audioTrackData*",type:"ENUM"]],
 		"setTrackDataValue":[[name:"trackData*",type:"JSON_OBJECT"]],		//trackData used in native HE integration
+	    	"setTrackDescriptionValue":[[name:"trackDescription*",type:"STRING"]],  //No Matching ST Attribute. Pull from audioTrackData?
 		"setElapsedTimeValue":[[name:"elapsedTime*",type:"NUMBER"]],
 		"setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],
 

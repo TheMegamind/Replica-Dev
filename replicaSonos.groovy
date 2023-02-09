@@ -107,7 +107,7 @@ Map getReplicaCommands() {
 		"setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
 		"setPresetsValue":[[name:"presets*",type:"ENUM"]],
 		"setVolumeValue":[[name:"volume*",type:"NUMBER"]],
-	    	"setLevel Value":[[name:"volume*",type:"NUMBER"]],  			//level and volume both present in native HE integration
+	    	"setLevel Value":[[name:"level*",type:"NUMBER"]],  			//level and volume both present in native HE integration
 		"setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]],
 		"setSupportedTrackControlCommandsValue":[[name:"supportedTrackControlCommands*",type:"ENUM"]],
 

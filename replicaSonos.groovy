@@ -58,6 +58,9 @@ metadata
 	command "muteGroup"
 	command "setGroupVolume"
 	command "unmuteGroup"
+	    
+	//custom command to work around native mediaPlayer 'playTrack' command, which does not have the volumelevel argument
+	command "playTrack", [[name: "uri*", type: "STRING", description: "Play the selected track"],[name: "volumelevel", type: "NUMBER", description: "Volume (0-100)%"]]
 
     }
     preferences {

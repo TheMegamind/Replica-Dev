@@ -26,10 +26,10 @@ metadata
 	capability "Refresh"
 
 	//capability audioTrackData in SmartThings 
-	//attribute "audioTrackData", "string"         	// trackData in Hubitat - Note: type mismatch issue
-	//attribute "elapsedTime", "number"    	    	// Currently reports null values only
-	//attribute "totalTime", "number"             	// Currently reports null values only
-
+	attribute "audioTrackData", "string"         	// trackData in Hubitat (data mismatch?)
+	//attribute "elapsedTime", "number"    	    	// Omitted as elapsedTime is reporting null values
+	//attribute "totalTime", "number"             	// Omitted as totalTime is reporting null values
+	    
 	//capability mediaGroup in SmartThings
 	attribute "groupMute", "enum"	             	
 	attribute "groupPrimaryDeviceId", "string"   	
@@ -88,7 +88,8 @@ def configure() {
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
 Map getReplicaCommands() {
     return ([ 
-        "setTrackDataValue":[[name:"trackData*",type:"ENUM"]],
+	    	"setAudioTrackDataValue":[[name:"audioTrackData*",type:"ENUM"]],
+		"setTrackDataValue":[[name:"trackData*",type:"JSON_OBJECT"]],		//trackData used in native HE integration
 		"setElapsedTimeValue":[[name:"elapsedTime*",type:"NUMBER"]],
 		"setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],
 
@@ -102,11 +103,19 @@ Map getReplicaCommands() {
 		"setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
 		"setPresetsValue":[[name:"presets*",type:"ENUM"]],
 		"setVolumeValue":[[name:"volume*",type:"NUMBER"]],
+	    	// "setLevel Value":[[name:"volume*",type:"NUMBER"]],  	
 		"setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]],
 		"setSupportedTrackControlCommandsValue":[[name:"supportedTrackControlCommands*",type:"ENUM"]],
 
 		"setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
 	    ])
+}
+
+//capability audioTrackData in SmartThings 
+def setAudioTrackDataValue(audioTrackData) {
+    String descriptionText = "${device.displayName} is $audioTrackData"
+    sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
+    logInfo descriptionText
 }
 
 //capability audioTrackData in SmartThings 
@@ -117,7 +126,7 @@ def setTrackDataValue(trackData) {
 }
 
 //capability audioTrackData in SmartThings 
-// elapsedTime currently reports null values only
+//Omitted as elapsedTime is reporting null values
 //def setElapsedTimeValue(value) {
 //    String descriptionText = "${device.displayName} is $value"
 //    sendEvent(name: "elapsedTime", value: value, descriptionText: descriptionText)
@@ -125,7 +134,7 @@ def setTrackDataValue(trackData) {
 //}
 
 //capability audioTrackData in SmartThings 
-// elapsedTime currently reports null values only
+//Omitted as total Time is reporting null values
 //def setTotalTimeValue(value) {
 //    String descriptionText = "${device.displayName} is $value"
 //    sendEvent(name: "totalTime", value: value, descriptionText: descriptionText)
@@ -195,6 +204,14 @@ def setVolumeValue(value) {
     String unit = "%"
     String descriptionText = "${device.displayName} is $value $unit"
     sendEvent(name: "volume", value: value, unit: unit, descriptionText: descriptionText)
+    logInfo descriptionText
+}
+
+//capability audioVolume in SmartThings
+def setLevel(value) {
+    String unit = "%"
+    String descriptionText = "${device.displayName} is $value $unit"
+    sendEvent(name: "level", value: value, unit: unit, descriptionText: descriptionText)
     logInfo descriptionText
 }
 

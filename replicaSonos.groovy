@@ -43,8 +43,7 @@ metadata
 	attribute "supportedPlaybackCommands","enum"	
 
 	//capability mediaPreset in SmartThings
-	//attribute "presets", "enum"                  	//Exclude from Current States
-
+	//attribute "presets", "enum"                  		//Exclude from Current States
 	attribute "supportedTrackControlCommands","enum"	
 
 	//capability mediaTrackControl in SmartThings

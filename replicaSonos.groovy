@@ -92,7 +92,7 @@ def configure() {
 Map getReplicaCommands() {
     return ([ 
 	    	"setAudioTrackDataValue":[[name:"audioTrackData*",type:"ENUM"]],
-		"setTrackDataValue":[[name:"trackData*",type:"STRING"]],		//trackData used in native HE integration (JSON_OBJECT)
+		"setTrackDataValue":[[name:"trackData*",type:"ENUM"]],			//trackData used in native HE integration (JSON_OBJECT)
 	    	"setTrackDescriptionValue":[[name:"trackDescription*",type:"STRING"]],  //No Matching ST Attribute. Pull from audioTrackData?
 		"setElapsedTimeValue":[[name:"elapsedTime*",type:"NUMBER"]],
 		"setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],

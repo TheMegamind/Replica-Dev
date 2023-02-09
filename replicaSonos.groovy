@@ -10,7 +10,7 @@
 *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
 *  for the specific language governing permissions and limitations under the License.
 *
-*  Special thanks to @bloodtick_jones who created the foundational code used in the development of this driver
+*  Special thanks to @bloodtick_jones who created the code framework used in the development of this driver
 */
 @SuppressWarnings('unused')
 public static String version() {return "1.3.0"}

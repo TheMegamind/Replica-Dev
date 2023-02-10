@@ -327,7 +327,7 @@ def playTrack(trackuri) {
 }
 
 def playTrackAtLevel(trackuri, volumelevel) {
-    sendCommand("playTrack",trackuri, null, [volumelevel:volumelevel])
+    sendCommand("playTrackAtLevel",trackuri, null, [volumelevel:volumelevel])
 }
 
 def playTrackAndResume(trackuri, volumelevel) {

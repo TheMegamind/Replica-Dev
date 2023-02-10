@@ -14,6 +14,7 @@
 */
 @SuppressWarnings('unused')
 public static String version() {return "1.3.0"}
+
 import groovy.json.JsonSlurper
 
 metadata 
@@ -117,15 +118,13 @@ Map getReplicaCommands() {
 
 //capability audioTrackData in SmartThings 
 def setAudioTrackDataValue(audioTrackData) {
+    audioTrackData = new JsonSlurper().parseText(getDataValue("audioTrackData"))
+    log.info event.title
+    log.info event.album
+    log.info event.artist
+    log.info event.mediaSource
     String descriptionText = "${device.displayName} is $audioTrackData"
     sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
-    logInfo descriptionText
-}
-
-//capability audioTrackData in SmartThings 
-def setTrackDataValue(trackData) {
-    String descriptionText = "${device.displayName} is $trackData"
-    sendEvent(name: "trackData", value: trackData, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
@@ -250,7 +249,7 @@ Map getReplicaTriggers() {
 		"unmuteGroup":[],
 		"setGroupVolume":[[name:"groupVolume*",type:"NUMBER"]],
 		"playTrack":[[name:"trackuri*",type:"STRING"]],
-	    	"playTrackAtLevel":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
+	    "playTrackAtLevel":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
 		"playTrackAndResume":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
 		"playTrackAndRestore":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
 	    
@@ -328,7 +327,7 @@ def playTrack(trackuri) {
 }
 
 def playTrackAtLevel(trackuri, volumelevel) {
-    sendCommand("playTrackAtLevel",trackuri, null, [volumelevel:volumelevel])
+    sendCommand("playTrackAtLevel", trackuri, null, [volumelevel:volumelevel])
 }
 
 def playTrackAndResume(trackuri, volumelevel) {

@@ -14,6 +14,7 @@
 */
 @SuppressWarnings('unused')
 public static String version() {return "1.3.0"}
+import groovy.json.JsonSlurper
 
 metadata 
 {
@@ -116,6 +117,11 @@ Map getReplicaCommands() {
 
 //capability audioTrackData in SmartThings 
 def setAudioTrackDataValue(audioTrackData) {
+    event = new JsonSlurper().parseText(getDataValue("event"))
+    log.info event.title
+    log.info event.album
+    log.info event.artist
+    log.info event.mediaSource
     String descriptionText = "${device.displayName} is $audioTrackData"
     sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
     logInfo descriptionText

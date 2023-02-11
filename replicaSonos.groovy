@@ -10,11 +10,12 @@
 *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
 *  for the specific language governing permissions and limitations under the License.
 *
-***** Thanks to the developer of HubiThings Replica, @bloodtick_jones, for providing the framework used to construct this driver *****
+***** Thanks to @bloodtick_jones, developer of HubiThings Replica and the framework used in constructing this driver *****
 */
 @SuppressWarnings('unused')
 public static String version() {return "1.3.0"}
 import groovy.json.JsonSlurper
+import groovy.json.JsonBuilder
 
 metadata 
 {
@@ -116,11 +117,14 @@ Map getReplicaCommands() {
 
 //capability audioTrackData in SmartThings 
 def setAudioTrackDataValue(audioTrackData) {
-    audioTrackData = new JsonSlurper().parseText(audioTrackData)
-    log.info event.title
-    log.info event.album
-    log.info event.artist
-    log.info event.mediaSource
+    log.info audioTrackData
+    //audioTrackData = new JsonSlurper().parseText(audioTrackData)
+    audioTrackData = new JsonBuilder(audioTrackData).toPrettyString()
+    //log.info audioTrackData
+    //log.info event.title
+    //log.info event.album
+    //log.info event.artist
+    //log.info event.mediaSource
     String descriptionText = "${device.displayName} is $audioTrackData"
     sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
     logInfo descriptionText
@@ -196,6 +200,7 @@ def setPlaybackStatusValue(value) {
 def setPresetsValue(presets) {
 //    String descriptionText = "${device.displayName} is $presets"
 //    sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
+    presets = new JsonBuilder(presets).toPrettyString()
     state.presets = presets
     logInfo descriptionText
 }

@@ -29,13 +29,13 @@ metadata
 	capability "Refresh"
 
 	//capability audioTrackData in SmartThings 
-	//attribute "audioTrackData", "JSON_OBJECT"		// use native 'trackData' in Hubitat 
-	attribute "elapsedTime", "number"			// Omitted from rules as elapsedTime is reporting null values
-	attribute "totalTime", "number"				// Omitted from rules as totalTime is reporting null values
-	attribute "artist", "string"
-	attribute "album", "string"
-	attribute "title", "string"
-	attribute "albumArtUrl", "string"
+	//attribute "audioTrackData", "JSON_OBJECT"         	// use native 'trackData' in Hubitat 
+	attribute "elapsedTime", "number"    	    	    // Omitted as elapsedTime is reporting null values
+	attribute "totalTime", "number"             	    // Omitted as totalTime is reporting null values
+    attribute "artist", "string"
+    attribute "album", "string"
+    attribute "title", "string"
+    attribute "albumArtUrl", "string"
         
 	    
 	//capability mediaGroup in SmartThings
@@ -46,12 +46,12 @@ metadata
 	attribute "groupRole", "enum"   	     	
 
 	//capability mediaPlayback in SmartThings
-	//attribute "playbackStatus", "enum"			// Use native 'status' in Hubitat    	
-	attribute "supportedPlaybackCommands","enum"		// Not required; could be excluded from Rules
+	//attribute "playbackStatus", "enum"               // use native 'status' in Hubitat    	
+	attribute "supportedPlaybackCommands","enum"	
 
 	//capability mediaPreset in SmartThings
-	attribute "presets", "JSON_OBJECT"			// Exclude from Current States
-	attribute "supportedTrackControlCommands","enum"	// Not required; could be excluded from Rules	
+	attribute "presets", "JSON_OBJECT"                  		//Exclude from Current States
+	attribute "supportedTrackControlCommands","enum"	
 
 	//capability mediaTrackControl in SmartThings
 	attribute "healthStatus", "enum", ["offline", "online"]
@@ -206,17 +206,14 @@ def setPlaybackStatusValue(value) {
 
 //capability mediaPresets in SmartThings
 def setPresetsValue(event) {
-    log.trace event
-    
-    presets = event
-    logInfo presets
-    
+    //log.trace event  
+    presets = event.value
     presets = new JsonBuilder(event).toPrettyString()
-    logInfo presets
-//  String descriptionText = "${device.displayName} is $presets"
-//  sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
-state.presets = presets
-//  logInfo descriptionText
+    state.presets = presets
+    //  String descriptionText = "${device.displayName} is $presets"
+    //  sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
+    //  logInfo descriptionText
+
 }
 
 //capability audioVolume in SmartThings

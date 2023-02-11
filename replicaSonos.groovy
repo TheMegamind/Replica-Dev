@@ -10,7 +10,7 @@
 *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
 *  for the specific language governing permissions and limitations under the License.
 *
-***** Thanks to @bloodtick_jones, creator of HubiThings Replica for the foundational code used in constructing this driver *****
+***** Thanks to @bloodtick_jones, developer of HubiThings Replica and the framework used in constructing this driver *****
 */
 @SuppressWarnings('unused')
 public static String version() {return "1.3.0"}
@@ -120,11 +120,15 @@ def setAudioTrackDataValue(audioTrackData) {
     audioTrackData = new JsonBuilder(audioTrackData).toPrettyString()
     String descriptionText = "${device.displayName} is $audioTrackData"
     sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
-    logInfo descriptionText
+    trackDescription = new JsonSlurper().parseText(audioTrackData)
+    trackDescription = "$trackDescription.title by $trackDescription.artist"
+    String nowPlayingText = "${device.displayName} is now playing $trackDescription"
+    sendEvent(name: "trackDescription", value: trackDescription, nowPlayingText: nowPlayingText)
+    logInfo nowPlayingText
 }
 
 //capability audioTrackData in SmartThings 
-//Omitted from rules as elapsedTime is reporting null values
+//No rules defined as elapsedTime is reporting null values
 def setElapsedTimeValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "elapsedTime", value: value, descriptionText: descriptionText)
@@ -132,7 +136,7 @@ def setElapsedTimeValue(value) {
 }
 
 //capability audioTrackData in SmartThings 
-//Omitted from rules as total Time is reporting null values
+//No rules defined as totalTime is reporting null values
 def setTotalTimeValue(value) {
     String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "totalTime", value: value, descriptionText: descriptionText)

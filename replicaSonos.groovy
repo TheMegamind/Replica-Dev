@@ -10,7 +10,7 @@
 *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
 *  for the specific language governing permissions and limitations under the License.
 *
-***** Thanks to @bloodtick_jones, developer of HubiThings Replica and the framework used in constructing this driver *****
+***** Thanks to @bloodtick_jones, developer of HubiThings Replica provided the code framework used to create this driver *****
 */
 @SuppressWarnings('unused')
 public static String version() {return "1.3.0"}
@@ -45,7 +45,7 @@ metadata
 	attribute "supportedPlaybackCommands","enum"	
 
 	//capability mediaPreset in SmartThings
-	//attribute "presets", "enum"                  		//Exclude from Current States
+	attribute "presets", "JSON_OBJECT"                  		//Exclude from Current States
 	attribute "supportedTrackControlCommands","enum"	
 
 	//capability mediaTrackControl in SmartThings
@@ -106,7 +106,7 @@ Map getReplicaCommands() {
 
 		"setMuteValue":[[name:"mute*",type:"ENUM"]],
 		"setPlaybackStatusValue":[[name:"playbackStatus*",type:"ENUM"]],
-		"setPresetsValue":[[name:"presets*",type:"ENUM"]],
+		"setPresetsValue":[[name:"presets*",type:"JSON_OBJECT"]],
 		"setVolumeValue":[[name:"volume*",type:"NUMBER"]],
 		"setSupportedPlaybackCommandsValue":[[name:"supportedPlaybackCommands*",type:"ENUM"]],
 		"setSupportedTrackControlCommandsValue":[[name:"supportedTrackControlCommands*",type:"ENUM"]],
@@ -116,15 +116,22 @@ Map getReplicaCommands() {
 }
 
 //capability audioTrackData in SmartThings 
-def setAudioTrackDataValue(audioTrackData) {
-    audioTrackData = new JsonBuilder(audioTrackData).toPrettyString()
-    String descriptionText = "${device.displayName} is $audioTrackData"
+def setAudioTrackDataValue(event) {
+    audioTrackData = event.value
+    log.trace event
+    log.trace event.value
+    log.trace event.value.album
+    log.trace event.value.artist
+    log.trace event.value.title
+    log.trace event.value.albumArtUrl
+    logInfo audioTrackData
+//    String descriptionText = "${device.displayName} is $audioTrackData"
     sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
-    trackDescription = new JsonSlurper().parseText(audioTrackData)
-    trackDescription = "$trackDescription.title by $trackDescription.artist"
-    String nowPlayingText = "${device.displayName} is now playing $trackDescription"
-    sendEvent(name: "trackDescription", value: trackDescription, nowPlayingText: nowPlayingText)
-    logInfo nowPlayingText
+//    trackDescription = new JsonSlurper().parseText(audioTrackData)
+//    trackDescription = "$trackDescription.title by $trackDescription.artist"
+//    String nowPlayingText = "${device.displayName} is now playing $trackDescription"
+//    sendEvent(name: "trackDescription", value: trackDescription, nowPlayingText: nowPlayingText)
+//    logInfo nowPlayingText
 }
 
 //capability audioTrackData in SmartThings 
@@ -194,12 +201,18 @@ def setPlaybackStatusValue(value) {
 }
 
 //capability mediaPresets in SmartThings
-def setPresetsValue(presets) {
-    presets = new JsonBuilder(presets).toPrettyString()
+def setPresetsValue(event) {
+    log.trace event
+    
+    presets = event
+    logInfo presets
+    
+    presets = new JsonBuilder(event).toPrettyString()
+    logInfo presets
 //  String descriptionText = "${device.displayName} is $presets"
 //  sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
-    state.presets = presets
-    logInfo descriptionText
+state.presets = presets
+//  logInfo descriptionText
 }
 
 //capability audioVolume in SmartThings

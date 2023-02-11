@@ -118,7 +118,7 @@ Map getReplicaCommands() {
 
 //capability audioTrackData in SmartThings 
 def setAudioTrackDataValue(audioTrackData) {
-    audioTrackData = new JsonSlurper().parseText(getDataValue("audioTrackData"))
+    audioTrackData = new JsonSlurper().parseText(getDataValue(audioTrackData))
     log.info event.title
     log.info event.album
     log.info event.artist

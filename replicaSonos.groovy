@@ -124,7 +124,8 @@ Map getReplicaCommands() {
 def setAudioTrackDataValue(event) {
     audioTrackData = event.value
     // sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
-    // String descriptionText = "${device.displayName} current track data is $audioTrackData"
+    String descriptionText = "${device.displayName}'s trackData is $audioTrackData"
+    logInfo descriptionText
     state.audioTrackData = audioTrackData
     album = event.value.album
     sendEvent(name: "album", value: album)
@@ -132,15 +133,8 @@ def setAudioTrackDataValue(event) {
     sendEvent(name: "artist", value: artist)
     title = event.value.title
     sendEvent(name: "title", value: title)
-    albumArtUrl = event.value.albumArtUrl
+    albumArtUrl = event.value.albumArtUrl                //May be null
     sendEvent(name: "albumArtUrl", value: albumArtUrl)
-        
-//    log.trace event
-//    log.trace event.value
-//    log.trace event.value.album
-//    log.trace event.value.artist   
-//    log.trace event.value.title
-//    log.trace event.value.albumArtUrl                //Not always present
 }
 
 //capability audioTrackData in SmartThings 

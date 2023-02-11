@@ -29,13 +29,13 @@ metadata
 	capability "Refresh"
 
 	//capability audioTrackData in SmartThings 
-	//attribute "audioTrackData", "JSON_OBJECT"         	// trackData in Hubitat (data mismatch?)
-	attribute "elapsedTime", "number"    	    	    // Omitted as elapsedTime is reporting null values
-	attribute "totalTime", "number"             	    // Omitted as totalTime is reporting null values
-    attribute "artist", "string"
-    attribute "album", "string"
-    attribute "title", "string"
-    attribute "albumArtUrl", "string"
+	//attribute "audioTrackData", "JSON_OBJECT"		// use native 'trackData' in Hubitat 
+	attribute "elapsedTime", "number"			// Omitted from rules as elapsedTime is reporting null values
+	attribute "totalTime", "number"				// Omitted from rules as totalTime is reporting null values
+	attribute "artist", "string"
+	attribute "album", "string"
+	attribute "title", "string"
+	attribute "albumArtUrl", "string"
         
 	    
 	//capability mediaGroup in SmartThings
@@ -46,12 +46,12 @@ metadata
 	attribute "groupRole", "enum"   	     	
 
 	//capability mediaPlayback in SmartThings
-	attribute "playbackStatus", "enum"           	
-	attribute "supportedPlaybackCommands","enum"	
+	//attribute "playbackStatus", "enum"			// Use native 'status' in Hubitat    	
+	attribute "supportedPlaybackCommands","enum"		// Not required; could be excluded from Rules
 
 	//capability mediaPreset in SmartThings
-	attribute "presets", "JSON_OBJECT"                  		//Exclude from Current States
-	attribute "supportedTrackControlCommands","enum"	
+	attribute "presets", "JSON_OBJECT"			// Exclude from Current States
+	attribute "supportedTrackControlCommands","enum"	// Not required; could be excluded from Rules	
 
 	//capability mediaTrackControl in SmartThings
 	attribute "healthStatus", "enum", ["offline", "online"]
@@ -200,7 +200,7 @@ def setMuteValue(value) {
 //capability mediaPlayback in SmartThings
 def setPlaybackStatusValue(value) {
     String descriptionText = "${device.displayName} is $value"
-    sendEvent(name: "playbackStatus", value: value, descriptionText: descriptionText)
+    sendEvent(name: "status", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
@@ -220,10 +220,12 @@ state.presets = presets
 }
 
 //capability audioVolume in SmartThings
+//Native HE Integration uses both Volume and Level
 def setVolumeValue(value) {
     String unit = "%"
     String descriptionText = "${device.displayName} is $value $unit"
-    sendEvent(name: "volume", value: value, unit: unit, descriptionText: descriptionText)
+    sendEvent(name: "volume", value: value, unit: unit)
+    sendEvent(name: "level", value: value, unit: unit)
     logInfo descriptionText
 }
 

@@ -29,9 +29,9 @@ metadata
 	capability "Refresh"
 
 	//capability audioTrackData in SmartThings 
-	attribute "audioTrackData", "string"         	// trackData in Hubitat (data mismatch?)
-	attribute "elapsedTime", "number"    	    	// Omitted as elapsedTime is reporting null values
-	attribute "totalTime", "number"             	// Omitted as totalTime is reporting null values
+	attribute "audioTrackData", "JSON_OBJECT"         	// trackData in Hubitat (data mismatch?)
+	attribute "elapsedTime", "number"    	    	    // Omitted as elapsedTime is reporting null values
+	attribute "totalTime", "number"             	    // Omitted as totalTime is reporting null values
 	    
 	//capability mediaGroup in SmartThings
 	attribute "groupMute", "enum"	             	
@@ -93,7 +93,7 @@ def configure() {
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
 Map getReplicaCommands() {
     return ([ 
-	    	"setAudioTrackDataValue":[[name:"audioTrackData*",type:"ENUM"]],
+	    	"setAudioTrackDataValue":[[name:"audioTrackData*",type:"JSON_OBJECT"]],
 	    	"setTrackDescriptionValue":[[name:"trackDescription*",type:"STRING"]],  //No Matching ST Attribute. Pull from audioTrackData?
 		"setElapsedTimeValue":[[name:"elapsedTime*",type:"NUMBER"]],
 		"setTotalTimeValue":[[name:"totalTime*",type:"NUMBER"]],
@@ -117,14 +117,7 @@ Map getReplicaCommands() {
 
 //capability audioTrackData in SmartThings 
 def setAudioTrackDataValue(audioTrackData) {
-    log.info audioTrackData
-    //audioTrackData = new JsonSlurper().parseText(audioTrackData)
     audioTrackData = new JsonBuilder(audioTrackData).toPrettyString()
-    //log.info audioTrackData
-    //log.info event.title
-    //log.info event.album
-    //log.info event.artist
-    //log.info event.mediaSource
     String descriptionText = "${device.displayName} is $audioTrackData"
     sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
     logInfo descriptionText
@@ -198,9 +191,9 @@ def setPlaybackStatusValue(value) {
 
 //capability mediaPresets in SmartThings
 def setPresetsValue(presets) {
-//    String descriptionText = "${device.displayName} is $presets"
-//    sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
     presets = new JsonBuilder(presets).toPrettyString()
+//  String descriptionText = "${device.displayName} is $presets"
+//  sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
     state.presets = presets
     logInfo descriptionText
 }

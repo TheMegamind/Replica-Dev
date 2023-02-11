@@ -29,8 +29,8 @@ metadata
 
 	//capability audioTrackData in SmartThings 
 	attribute "audioTrackData", "string"         	// trackData in Hubitat (data mismatch?)
-	//attribute "elapsedTime", "number"    	    	// Omitted as elapsedTime is reporting null values
-	//attribute "totalTime", "number"             	// Omitted as totalTime is reporting null values
+	attribute "elapsedTime", "number"    	    	// Omitted as elapsedTime is reporting null values
+	attribute "totalTime", "number"             	// Omitted as totalTime is reporting null values
 	    
 	//capability mediaGroup in SmartThings
 	attribute "groupMute", "enum"	             	

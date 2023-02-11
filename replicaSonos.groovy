@@ -246,11 +246,11 @@ Map getReplicaTriggers() {
 		"muteGroup":[],
 		"unmuteGroup":[],
 		"setGroupVolume":[[name:"groupVolume*",type:"NUMBER"]],
-        "playTrack":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
+		"playTrack":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
 		"playTrackAndResume":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
 		"playTrackAndRestore":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
 	    
-	    "refresh":[]
+		"refresh":[]
     ])
 }
 
@@ -318,10 +318,6 @@ def muteGroup() {
 def unmuteGroup() {
     sendCommand("unmuteGroup")
 }
-
-//def playTrack(trackuri) {
-//    sendCommand("playTrack",trackuri)//
-//}
 
 def playTrack(trackuri, volumelevel=null) {
     sendCommand("playTrack",trackuri, null, [volumelevel:volumelevel])

@@ -32,6 +32,11 @@ metadata
 	attribute "audioTrackData", "JSON_OBJECT"         	// trackData in Hubitat (data mismatch?)
 	attribute "elapsedTime", "number"    	    	    // Omitted as elapsedTime is reporting null values
 	attribute "totalTime", "number"             	    // Omitted as totalTime is reporting null values
+    attribute "artist", "string"
+    attribute "album", "string"
+    attribute "title", "string"
+    attribute "albumArtUrl", "string"
+        
 	    
 	//capability mediaGroup in SmartThings
 	attribute "groupMute", "enum"	             	
@@ -118,14 +123,24 @@ Map getReplicaCommands() {
 //capability audioTrackData in SmartThings 
 def setAudioTrackDataValue(event) {
     audioTrackData = event.value
-    String descriptionText = "${device.displayName} trackData is $audioTrackData"
-    sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
-    log.trace event
-    log.trace event.value
-    log.trace event.value.album
-    log.trace event.value.artist   
-    log.trace event.value.title
-    log.trace event.value.albumArtUrl                //Not always present
+    // sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
+    // String descriptionText = "${device.displayName} current track data is $audioTrackData"
+    state.audioTrackData = audioTrackData
+    album = event.value.album
+    sendEvent(name: "album", value: album)
+    artist = event.value.artist
+    sendEvent(name: "artist", value: artist)
+    title = event.value.title
+    sendEvent(name: "title", value: title)
+    albumArtUrl = event.value.albumArtUrl
+    sendEvent(name: "albumArtUrl", value: albumArtUrl)
+        
+//    log.trace event
+//    log.trace event.value
+//    log.trace event.value.album
+//    log.trace event.value.artist   
+//    log.trace event.value.title
+//    log.trace event.value.albumArtUrl                //Not always present
 }
 
 //capability audioTrackData in SmartThings 

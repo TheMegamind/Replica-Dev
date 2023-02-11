@@ -29,7 +29,7 @@ metadata
 	capability "Refresh"
 
 	//capability audioTrackData in SmartThings 
-	attribute "audioTrackData", "JSON_OBJECT"         	// trackData in Hubitat (data mismatch?)
+	//attribute "audioTrackData", "JSON_OBJECT"         	// trackData in Hubitat (data mismatch?)
 	attribute "elapsedTime", "number"    	    	    // Omitted as elapsedTime is reporting null values
 	attribute "totalTime", "number"             	    // Omitted as totalTime is reporting null values
     attribute "artist", "string"
@@ -122,11 +122,10 @@ Map getReplicaCommands() {
 
 //capability audioTrackData in SmartThings 
 def setAudioTrackDataValue(event) {
-    audioTrackData = event.value
-    // sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
-    String descriptionText = "${device.displayName}'s trackData is $audioTrackData"
+    trackData = new JsonBuilder(event.value).toPrettyString()
+    sendEvent(name: "trackData", value: trackData)
+    String descriptionText = "${device.displayName}'s trackData is $trackData"
     logInfo descriptionText
-    state.audioTrackData = audioTrackData
     album = event.value.album
     sendEvent(name: "album", value: album)
     artist = event.value.artist
@@ -135,6 +134,8 @@ def setAudioTrackDataValue(event) {
     sendEvent(name: "title", value: title)
     albumArtUrl = event.value.albumArtUrl                //May be null
     sendEvent(name: "albumArtUrl", value: albumArtUrl)
+    trackDescription = "$title by $artist"
+    sendEvent(name: "trackDescription", value: trackDescription)
 }
 
 //capability audioTrackData in SmartThings 

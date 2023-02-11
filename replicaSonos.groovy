@@ -10,7 +10,7 @@
 *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
 *  for the specific language governing permissions and limitations under the License.
 *
-***** Thanks to @bloodtick_jones, developer of HubiThings Replica provided the code framework used to create this driver *****
+***** Thanks to @bloodtick_jones, developer of HubiThings Replica and the framework used in constructing this driver *****
 */
 @SuppressWarnings('unused')
 public static String version() {return "1.3.0"}
@@ -118,20 +118,14 @@ Map getReplicaCommands() {
 //capability audioTrackData in SmartThings 
 def setAudioTrackDataValue(event) {
     audioTrackData = event.value
+    String descriptionText = "${device.displayName} trackData is $audioTrackData"
+    sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
     log.trace event
     log.trace event.value
     log.trace event.value.album
-    log.trace event.value.artist
+    log.trace event.value.artist   
     log.trace event.value.title
-    log.trace event.value.albumArtUrl
-    logInfo audioTrackData
-//    String descriptionText = "${device.displayName} is $audioTrackData"
-    sendEvent(name: "audioTrackData", value: audioTrackData, descriptionText: descriptionText)
-//    trackDescription = new JsonSlurper().parseText(audioTrackData)
-//    trackDescription = "$trackDescription.title by $trackDescription.artist"
-//    String nowPlayingText = "${device.displayName} is now playing $trackDescription"
-//    sendEvent(name: "trackDescription", value: trackDescription, nowPlayingText: nowPlayingText)
-//    logInfo nowPlayingText
+    log.trace event.value.albumArtUrl                //Not always present
 }
 
 //capability audioTrackData in SmartThings 

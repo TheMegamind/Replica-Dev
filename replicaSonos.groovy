@@ -17,8 +17,6 @@ public static String version() {return "1.3.0"}
 
 import groovy.json.JsonBuilder
 
-Random rnd = new Random()
-
 metadata 
 {
     definition(name: "Replica Sonos", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Drivers/main/replicaSonos.groovy")

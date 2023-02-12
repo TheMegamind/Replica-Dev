@@ -14,6 +14,7 @@
 */
 @SuppressWarnings('unused')
 public static String version() {return "1.3.0"}
+
 import groovy.json.JsonBuilder
 
 metadata 

@@ -204,11 +204,9 @@ def setPresetsValue(event) {
     state.presets = presets
     if(settings?.presetsAsAttribute != true) {
         sendEvent(name: "presets", value: null)
-        device.deleteCurrentState('presets')
-        logInfo "EXECUTED FALSE"  
+        device.deleteCurrentState('presets') 
     } else {
         sendEvent(name: "presets", value: presets)
-        logInfo "EXECUTED TRUE"
     }
     // logInfo descriptionText = "${device.displayName} is $presets" 
 }

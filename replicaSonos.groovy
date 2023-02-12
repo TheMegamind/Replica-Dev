@@ -17,6 +17,8 @@ public static String version() {return "1.3.0"}
 
 import groovy.json.JsonBuilder
 
+Random rnd = new Random()
+
 metadata 
 {
     definition(name: "Replica Sonos", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Drivers/main/replicaSonos.groovy")
@@ -59,6 +61,7 @@ metadata
 	//capability mediaPreset in SmartThings
 	command "playPresetId", [[name: "presetId*", type: "STRING", description: "Play the selected preset (number)"]]
 	command "playPresetName", [[name: "presetName*", type: "STRING", description: "Play the selected preset (name)"]]
+	command "playRandomPreset"
 
 	//capability mediaGroup in SmartThings
 	command "groupVolumeUp"
@@ -125,11 +128,12 @@ Map getReplicaCommands() {
 def setTrackDataValue(event) {
     trackData = event.value
     trackData = new JsonBuilder(event.value).toPrettyString()
-    sendEvent(name: "trackData", value: trackData)
     String descriptionText = "${device.displayName}'s trackData is $trackData"
+    sendEvent(name: "trackData", value: trackData, descriptionText: descriptionText)
     logInfo descriptionText
     trackDescription = "${event.value.title} by ${event.value.artist}"
     sendEvent(name: "trackDescription", value: trackDescription)
+    device.deleteCurrentState('presets')
 }
 
 //capability audioTrackData in SmartThings 
@@ -204,7 +208,7 @@ def setPresetsValue(event) {
     state.presets = presets
     if(settings?.presetsAsAttribute != true) {
         sendEvent(name: "presets", value: null)
-        device.deleteCurrentState('presets') 
+        device.deleteCurrentState('presets')  
     } else {
         sendEvent(name: "presets", value: presets)
     }
@@ -253,9 +257,10 @@ Map getReplicaTriggers() {
 		"volumeDown":[],
 		"volumeUp":[],
 		"setVolume":[[name:"volume*",type:"NUMBER"]],
-	    	"setLevel":[[name:"volume*",type:"NUMBER"]],
+		"setLevel":[[name:"volume*",type:"NUMBER"]],
 		"playPresetId":[[name:"presetId*",type:"STRING"]],
 		"playPresetName":[[name:"presetName*",type:"STRING"]],
+		"playRandomPreset":[],
 		"groupVolumeUp":[],
 		"groupVolumeDown":[],
 		"muteGroup":[],
@@ -327,9 +332,17 @@ def playPresetId(presetId) {
 }
         
 def playPresetName(presetName) {
+    selectedPreset = state.presets.find {it.name==presetName}
+    sendCommand("playPreset",selectedPreset.id)
+}
+
+def playRandomPreset() {
+    Random rnd = new Random()
+    selectedPreset = (rnd.nextInt(state.presets.size))
+    presetId = state.presets[selectedPreset].id
+    presetName = state.presets[selectedPreset].name
+    logInfo"${device.displayName} playing random preset ID: $presetId | $presetName"
     sendCommand("playPreset",presetId)
-    myPreset = state.presets.find {it.name==presetName}
-    sendCommand("playPreset",myPreset.id)
 }
 
 def groupVolumeUp() {

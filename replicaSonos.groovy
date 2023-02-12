@@ -126,10 +126,10 @@ def setTrackDataValue(event) {
     trackData = event.value
     trackData = new JsonBuilder(event.value).toPrettyString()
     sendEvent(name: "trackData", value: trackData)
-    logInfo "${device.displayName}'s trackData is $trackData"
+    String descriptionText = "${device.displayName}'s trackData is $trackData"
+    logInfo descriptionText
     trackDescription = "${event.value.title} by ${event.value.artist}"
     sendEvent(name: "trackDescription", value: trackDescription)
-    logInfo "${device.displayName} playing $trackDescription"
 }
 
 //capability audioTrackData in SmartThings 

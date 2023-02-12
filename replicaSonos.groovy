@@ -29,15 +29,15 @@ metadata
 	capability "Refresh"
 
 	//capability audioTrackData in SmartThings 
-	//attribute "audioTrackData", "JSON_OBJECT"         	// use native 'trackData' in Hubitat 
+	//attribute "audioTrackData", "JSON_OBJECT"         // use native 'trackData' in Hubitat 
 	attribute "elapsedTime", "number"    	    	    // Omitted as elapsedTime is reporting null values
 	attribute "totalTime", "number"             	    // Omitted as totalTime is reporting null values
-    attribute "artist", "string"
-    attribute "album", "string"
-    attribute "title", "string"
-    attribute "albumArtUrl", "string"
-        
-	    
+	attribute "artist", "string"
+	attribute "album", "string"
+	attribute "title", "string"
+	attribute "albumArtUrl", "string"
+
+
 	//capability mediaGroup in SmartThings
 	attribute "groupMute", "enum"	             	
 	attribute "groupPrimaryDeviceId", "string"   	
@@ -46,7 +46,7 @@ metadata
 	attribute "groupRole", "enum"   	     	
 
 	//capability mediaPlayback in SmartThings
-	//attribute "playbackStatus", "enum"               // use native 'status' in Hubitat    	
+	//attribute "playbackStatus", "enum"               // use native 'status' in Hubitat
 	attribute "supportedPlaybackCommands","enum"	
 
 	//capability mediaPreset in SmartThings
@@ -57,8 +57,8 @@ metadata
 	attribute "healthStatus", "enum", ["offline", "online"]
 
 	//capability mediaPreset in SmartThings
-    command "playPresetId", [[name: "presetId*", type: "STRING", description: "Play the selected preset (number)"]]
-    command "playPresetName", [[name: "presetName*", type: "STRING", description: "Play the selected preset (name)"]]
+	command "playPresetId", [[name: "presetId*", type: "STRING", description: "Play the selected preset (number)"]]
+	command "playPresetName", [[name: "presetName*", type: "STRING", description: "Play the selected preset (name)"]]
 
 	//capability mediaGroup in SmartThings
 	command "groupVolumeUp"
@@ -66,7 +66,7 @@ metadata
 	command "muteGroup"
 	command "setGroupVolume"
 	command "unmuteGroup"
-	    
+
 	//custom command to work around native mediaPlayer 'playTrack' command, which does not have the volumelevel argument
 	command "playTrack", [[name: "trackuri*", type: "STRING", description: "Play the selected track"],[name: "volumelevel", type: "NUMBER", description: "Volume (0-100)%"]]
 
@@ -262,8 +262,8 @@ Map getReplicaTriggers() {
 		"volumeDown":[],
 		"volumeUp":[],
 		"setVolume":[[name:"volume*",type:"NUMBER"]],
-        "playPresetId":[[name:"presetId*",type:"STRING"]],
-        "playPresetName":[[name:"presetName*",type:"STRING"]],
+		"playPresetId":[[name:"presetId*",type:"STRING"]],
+		"playPresetName":[[name:"presetName*",type:"STRING"]],
 		"groupVolumeUp":[],
 		"groupVolumeDown":[],
 		"muteGroup":[],
@@ -272,7 +272,7 @@ Map getReplicaTriggers() {
 		"playTrack":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
 		"playTrackAndResume":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
 		"playTrackAndRestore":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
-	    
+
 		"refresh":[]
     ])
 }

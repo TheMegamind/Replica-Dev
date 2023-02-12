@@ -262,6 +262,7 @@ Map getReplicaTriggers() {
 		"volumeDown":[],
 		"volumeUp":[],
 		"setVolume":[[name:"volume*",type:"NUMBER"]],
+	    	"setLevel":[[name:"volume*",type:"NUMBER"]],
 		"playPresetId":[[name:"presetId*",type:"STRING"]],
 		"playPresetName":[[name:"presetName*",type:"STRING"]],
 		"groupVolumeUp":[],
@@ -319,6 +320,10 @@ def volumeDown() {
 }
 
 def setVolume(volume) {
+    sendCommand("setVolume",volume)
+}
+
+def setLevel(volume) {
     sendCommand("setVolume",volume)
 }
 

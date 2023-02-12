@@ -202,12 +202,10 @@ def setStatusValue(value) {
 def setPresetsValue(event) {
     presets = event.value
     state.presets = presets
-    // logInfo descriptionText = "${device.displayName} is $presets"
     if(settings?.presetsAsAttribute != true) {
-        // presets = new JsonBuilder(presets).toPrettyString()
         sendEvent(name: "presets", value: presets)
-        // logInfo descriptionText = "${device.displayName} is $presets"
     }
+    // logInfo descriptionText = "${device.displayName} is $presets"
 }
 
 //capability audioVolume in SmartThings

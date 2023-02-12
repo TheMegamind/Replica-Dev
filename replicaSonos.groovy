@@ -73,6 +73,7 @@ metadata
     }
     preferences {
         input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
+        input(name:"presetsAsAttribute", type: "bool", title: "Include Presets in Attributes:", defaultValue: false)
     }
 }
 
@@ -199,17 +200,14 @@ def setStatusValue(value) {
 
 //capability mediaPresets in SmartThings
 def setPresetsValue(event) {
-    //log.trace event.value 
     presets = event.value
-    //presets = new JsonBuilder(presets).toPrettyString()
     state.presets = presets
-    //  String descriptionText = "${device.displayName} is $presets"
-    //  sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
-    //  logInfo descriptionText
-    
-    
-    def myPreset = state.presets.find {it.name=="Best of Paul Simon"}
-    log.info myPreset.id
+    // logInfo descriptionText = "${device.displayName} is $presets"
+    if(settings?.presetsAsAttribute != true) {
+        // presets = new JsonBuilder(presets).toPrettyString()
+        sendEvent(name: "presets", value: presets)
+        // logInfo descriptionText = "${device.displayName} is $presets"
+    }
 }
 
 //capability audioVolume in SmartThings

@@ -203,9 +203,14 @@ def setPresetsValue(event) {
     presets = event.value
     state.presets = presets
     if(settings?.presetsAsAttribute != true) {
+        sendEvent(name: "presets", value: null)
+        device.deleteCurrentState('presets')
+        logInfo "EXECUTED FALSE"  
+    } else {
         sendEvent(name: "presets", value: presets)
+        logInfo "EXECUTED TRUE"
     }
-    // logInfo descriptionText = "${device.displayName} is $presets"
+    // logInfo descriptionText = "${device.displayName} is $presets" 
 }
 
 //capability audioVolume in SmartThings

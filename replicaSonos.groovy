@@ -14,7 +14,6 @@
 */
 @SuppressWarnings('unused')
 public static String version() {return "1.3.0"}
-import groovy.json.JsonSlurper
 import groovy.json.JsonBuilder
 
 metadata 
@@ -57,7 +56,8 @@ metadata
 	attribute "healthStatus", "enum", ["offline", "online"]
 
 	//capability mediaPreset in SmartThings
-	command "playPreset", [[name: "presetId*", type: "STRING", description: "Play the selected preset"]]
+    command "playPresetId", [[name: "presetId*", type: "STRING", description: "Play the selected preset (number)"]]
+    command "playPresetName", [[name: "presetName*", type: "STRING", description: "Play the selected preset (name)"]]
 
 	//capability mediaGroup in SmartThings
 	command "groupVolumeUp"
@@ -121,6 +121,7 @@ Map getReplicaCommands() {
 
 //capability audioTrackData in SmartThings 
 def setTrackDataValue(event) {
+    trackData = event.value
     trackData = new JsonBuilder(event.value).toPrettyString()
     sendEvent(name: "trackData", value: trackData)
     String descriptionText = "${device.displayName}'s trackData is $trackData"
@@ -260,7 +261,8 @@ Map getReplicaTriggers() {
 		"volumeDown":[],
 		"volumeUp":[],
 		"setVolume":[[name:"volume*",type:"NUMBER"]],
-		"playPreset":[[name:"presetId*",type:"STRING"]],
+        "playPresetId":[[name:"presetId*",type:"STRING"]],
+        "playPresetName":[[name:"presetName*",type:"STRING"]],
 		"groupVolumeUp":[],
 		"groupVolumeDown":[],
 		"muteGroup":[],
@@ -321,6 +323,16 @@ def setVolume(volume) {
 
 def playPreset(presetId) {
     sendCommand("playPreset",presetId)
+}
+        
+def playPresetId(presetId) {
+    sendCommand("playPreset",presetId)
+}
+        
+def playPresetName(presetName) {
+    sendCommand("playPreset",presetId)
+    myPreset = state.presets.find {it.name==presetName}
+    sendCommand("playPreset",myPreset.id)
 }
 
 def groupVolumeUp() {

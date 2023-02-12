@@ -206,14 +206,17 @@ def setPlaybackStatusValue(value) {
 
 //capability mediaPresets in SmartThings
 def setPresetsValue(event) {
-    //log.trace event  
+    //log.trace event.value 
     presets = event.value
-    presets = new JsonBuilder(event).toPrettyString()
+    //presets = new JsonBuilder(presets).toPrettyString()
     state.presets = presets
     //  String descriptionText = "${device.displayName} is $presets"
     //  sendEvent(name: "presets", value: presets, descriptionText: descriptionText)
     //  logInfo descriptionText
-
+    
+    
+    def myPreset = state.presets.find {it.name=="Best of Paul Simon"}
+    log.info myPreset.id
 }
 
 //capability audioVolume in SmartThings

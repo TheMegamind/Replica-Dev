@@ -49,12 +49,12 @@ metadata
 
 	//capability mediaPlayback in SmartThings
 	//attribute "playbackStatus", "enum"               // use native 'status' in Hubitat
-	attribute "supportedPlaybackCommands","enum"	//Omitted from Rules; not needed by Hubitat
+	attribute "supportedPlaybackCommands","enum"	// Omitted from Rules; not needed by Hubitat
 
 	//capability mediaPreset in SmartThings
-    attribute "presets", "JSON_OBJECT"
-	//attribute "favorites", "JSON_OBJECT"                 //"Favorites" in Sonos; "Presets" in ST Driver. Exclude from Current States by default due to length
-	attribute "supportedTrackControlCommands","enum"	//Omitted from Rules; not needed by Hubitat
+    //attribute "presets", "JSON_OBJECT"                // "Presets" in ST Driver; "Favorites" in Sonos UI; use the latter instead
+	attribute "favorites", "JSON_OBJECT"                // Exclude from Current States by default due to length
+	attribute "supportedTrackControlCommands","enum"	// Omitted from Rules; not needed by Hubitat
 
 	//capability mediaTrackControl in SmartThings
 	attribute "healthStatus", "enum", ["offline", "online"]
@@ -206,13 +206,13 @@ def setStatusValue(value) {
 //capability mediaPresets in SmartThings
 def setFavoritesValue(event) {
     favorites = event.value
-    //favorites = new JsonBuilder(event.value).toPrettyString()
-    state.favorites = favorites
-    if(settings?.favoritesAsAttribute != true) {
-        sendEvent(name: "favorites", value: null)
-        
-    } else {
+    state.favorites = event.value
+    if(settings?.favoritesAsAttribute == true) {
+        favorites = new JsonBuilder(event.value).toPrettyString()
         sendEvent(name: "favorites", value: favorites)
+    } else if (device.currentValue("favorites") != null) {       
+        sendEvent(name: "favorites", value: null)
+        device.deleteCurrentState("favorites")
     }
     // logInfo descriptionText = "${device.displayName} is $presets" 
 }

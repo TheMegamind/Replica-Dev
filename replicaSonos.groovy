@@ -52,7 +52,7 @@ metadata
 	attribute "supportedPlaybackCommands","enum"	// Omitted from Rules; not needed by Hubitat
 
 	//capability mediaPreset in SmartThings
-    //attribute "presets", "JSON_OBJECT"                // "Presets" in ST Driver; "Favorites" in Sonos UI; use the latter instead
+	//attribute "presets", "JSON_OBJECT"                // "Presets" in ST Driver; "Favorites" in Sonos UI; use the latter instead
 	attribute "favorites", "JSON_OBJECT"                // Exclude from Current States by default due to length
 	attribute "supportedTrackControlCommands","enum"	// Omitted from Rules; not needed by Hubitat
 
@@ -62,7 +62,7 @@ metadata
 	//capability mediaPreset in SmartThings
 	command "playFavorite", [[name: "favoriteId*", type: "STRING", description: "Play the selected favorite (number)"]]
 	command "playFavoriteByName", [[name: "favoriteName*", type: "STRING", description: "Play the selected favorite (name)"]]
-    command "playRandomFavorite"
+	command "playRandomFavorite"
 
 	//capability mediaGroup in SmartThings
 	command "groupVolumeUp"
@@ -214,7 +214,8 @@ def setFavoritesValue(event) {
         sendEvent(name: "favorites", value: null)
         device.deleteCurrentState("favorites")
     }
-    // logInfo descriptionText = "${device.displayName} is $presets" 
+    // logInfo "${device.displayName} is $favorites" 		// Creates very large log entry
+    logInfo "Sonos Favorites have been updated"
 }
 
 //capability audioVolume in SmartThings

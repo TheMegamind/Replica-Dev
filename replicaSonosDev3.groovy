@@ -1,3 +1,33 @@
+Skip to content
+Pull requests
+Issues
+Codespaces
+Marketplace
+Explore
+@TheMegamind
+TheMegamind /
+Replica-Dev
+Private
+
+Cannot fork because you own this repository and are not a member of any organizations.
+
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+
+    Settings
+
+Replica-Dev/replicaSonosDev3.groovy
+@TheMegamind
+TheMegamind Create replicaSonosDev3.groovy
+Latest commit ca1d2be Feb 13, 2023
+History
+1 contributor
+392 lines (325 sloc) 23.3 KB
 /**
 *  Copyright 2023 bthrock
 *
@@ -390,3 +420,20 @@ private logDebug(msg) { if(settings?.deviceDebugEnable == true) { log.debug "${m
 private logTrace(msg) { if(settings?.deviceTraceEnable == true) { log.trace "${msg}" } }
 private logWarn(msg)  { log.warn   "${msg}" }
 private logError(msg) { log.error  "${msg}" }
+Footer
+© 2023 GitHub, Inc.
+Footer navigation
+
+    Terms
+    Privacy
+    Security
+    Status
+    Docs
+    Contact GitHub
+    Pricing
+    API
+    Training
+    Blog
+    About
+
+Replica-Dev/replicaSonosDev3.groovy at main · TheMegamind/Replica-Dev

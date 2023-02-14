@@ -218,7 +218,7 @@ def setFavoritesValue(event) {
 }
 
 //capability audioVolume in SmartThings
-//Native HE Integration uses both Volume and Level
+//Native HE Integration uses both Volume and Level, So Both are Included Here
 def setVolumeValue(value) {
     String unit = "%"
     String descriptionText = "${device.displayName} is $value $unit"

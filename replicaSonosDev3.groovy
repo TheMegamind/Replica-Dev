@@ -32,8 +32,8 @@ metadata
 
 	//capability audioTrackData in SmartThings 
 	//attribute "audioTrackData", "JSON_OBJECT"         // use native 'trackData' in Hubitat 
-	attribute "elapsedTime", "number"    	    	    // Omitted as elapsedTime is reporting null values
-	attribute "totalTime", "number"             	    // Omitted as totalTime is reporting null values
+	attribute "elapsedTime", "number"    	    	    // Omitted from Rules as elapsedTime is reporting null values
+	attribute "totalTime", "number"             	    // Omitted from Rules as totalTime is reporting null values
 	attribute "artist", "string"
 	attribute "album", "string"
 	attribute "title", "string"
@@ -332,12 +332,17 @@ def playPreset(favoriteId) {
 }
         
 def playFavoriteById(favoriteId) {
+    selectedFavorite = state.favorites.find {it.id==favoriteId}
+    favoriteName = selectedFavorite.name
     sendCommand("playFavoriteById",favoriteId)
+    logInfo"${device.displayName} playing favorite by ID: $favoriteId | $favoriteName"
+    
 }
         
-def playFavoriteName(favoriteName) {
-    selectedFavorite = state.favorites.find {it.name==favoriteName}
+def playFavoriteByName(favoriteName) {
+    selectedFavorite = state.favorites.find {it.name==favoriteName}   
     sendCommand("playFavoriteById",selectedFavorite.id)
+    logInfo"${device.displayName} playing favorite by Name: ID: $selectedFavorite.id | $selectedFavorite.name"
 }
 
 def playRandomFavorite() {
@@ -345,8 +350,8 @@ def playRandomFavorite() {
     selectedFavorite = (rnd.nextInt(state.favorites.size))
     favoriteId = state.favorites[selectedFavorite].id
     favoriteName = state.favorites[selectedFavorite].name
-    logInfo"${device.displayName} playing random favorite ID: $favoriteId | $favoriteName"
     sendCommand("playFavoriteById",favoriteId)
+    logInfo"${device.displayName} playing random favorite ID: $favoriteId | $favoriteName"
 }
 
 def groupVolumeUp() {

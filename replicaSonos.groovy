@@ -49,14 +49,14 @@ metadata
 	attribute "groupRole", "enum"   	     	
 
 	//capability mediaPlayback in SmartThings
-	//attribute "playbackStatus", "enum"               // use native 'status' in Hubitat
-	attribute "supportedPlaybackCommands","enum"	// Omitted from Rules; not needed by Hubitat
+	//attribute "playbackStatus", "enum"               	// Use native 'status' in Hubitat
+	attribute "supportedPlaybackCommands","enum"		// Omitted from Rules; not needed by Hubitat
 
 	//capability mediaPreset in SmartThings
-	//attribute "presets", "JSON_OBJECT"                // "Presets" in ST Driver; "Favorites" in Sonos UI; use the latter instead
-	attribute "favorites", "JSON_OBJECT"                // Exclude from Current States by default due to length
+	//attribute "presets", "JSON_OBJECT"                	// "Presets" in ST Driver; "Favorites" in Sonos UI; use the latter instead
+	attribute "favorites", "JSON_OBJECT"                	// Exclude from Current States by default due to length
 	attribute "supportedTrackControlCommands","enum"	// Omitted from Rules; not needed by Hubitat
-    attribute "lastFavoriteRequest", "JSON_OBJECT"
+	attribute "lastFavoriteRequest", "JSON_OBJECT"
         
 	//capability mediaTrackControl in SmartThings
 	attribute "healthStatus", "enum", ["offline", "online"]
@@ -232,7 +232,7 @@ def setVolumeValue(value) {
 //Omitted from Rules; not needed by Hubitat
 def setSupportedPlaybackCommandsValue(value) {
     String descriptionText = "${device.displayName} is $value"
-    
+    sendEvent(name: "supportedPlaybackCommands", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
 
@@ -243,7 +243,6 @@ def setSupportedTrackControlCommandsValue(value) {
     sendEvent(name: "supportedTrackControlCommands", value: value, descriptionText: descriptionText)
     logInfo descriptionText
 }
-	
 	
 def setHealthStatusValue(value) {    
     sendEvent(name: "healthStatus", value: value, descriptionText: "${device.displayName} healthStatus set to $value")

@@ -62,7 +62,7 @@ metadata
 	attribute "healthStatus", "enum", ["offline", "online"]
 
 	//capability mediaPreset in SmartThings
-    command "playFavorite", [[name: "favoriteId", type: "STRING", description: "Favorite Id Number"],[name: "favoriteName", type: "STRING", description: "Favorite Name"]]
+	command "playFavorite", [[name: "favoriteId", type: "STRING", description: "Favorite Id Number"],[name: "favoriteName", type: "STRING", description: "Favorite Name"]]
 
 	//capability mediaGroup in SmartThings
 	command "groupVolumeUp"

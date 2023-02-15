@@ -68,7 +68,6 @@ metadata
 
 	attribute "healthStatus", "enum", ["offline", "online"]
 
-
     }
     preferences {
         input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)

@@ -14,8 +14,9 @@
 */
 @SuppressWarnings('unused')
 public static String version() {return "1.3.0"}
-
 import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+import java.text.SimpleDateFormat
 
 Random rnd = new Random()
 
@@ -55,12 +56,13 @@ metadata
 	//attribute "presets", "JSON_OBJECT"                // "Presets" in ST Driver; "Favorites" in Sonos UI; use the latter instead
 	attribute "favorites", "JSON_OBJECT"                // Exclude from Current States by default due to length
 	attribute "supportedTrackControlCommands","enum"	// Omitted from Rules; not needed by Hubitat
-
+    attribute "lastFavoriteRequest", "JSON_OBJECT"
+        
 	//capability mediaTrackControl in SmartThings
 	attribute "healthStatus", "enum", ["offline", "online"]
 
 	//capability mediaPreset in SmartThings
-	command "playFavorite", [[name: "favoriteId*", type: "STRING", description: "Play the selected favorite (number)"]]
+	command "playFavoriteById", [[name: "favoriteId*", type: "STRING", description: "Play the selected favorite (number)"]]
 	command "playFavoriteByName", [[name: "favoriteName*", type: "STRING", description: "Play the selected favorite (name)"]]
 	command "playRandomFavorite"
 
@@ -230,7 +232,7 @@ def setVolumeValue(value) {
 //Omitted from Rules; not needed by Hubitat
 def setSupportedPlaybackCommandsValue(value) {
     String descriptionText = "${device.displayName} is $value"
-    sendEvent(name: "supportedPlaybackCommands", value: value, descriptionText: descriptionText)
+    
     logInfo descriptionText
 }
 
@@ -261,7 +263,7 @@ Map getReplicaTriggers() {
 		"volumeUp":[],
 		"setVolume":[[name:"volume*",type:"NUMBER"]],
 		"setLevel":[[name:"volume*",type:"NUMBER"]],
-		"playFavorite":[[name:"favoriteId*",type:"STRING"]],
+		"playFavoriteById":[[name:"favoriteId*",type:"STRING"]],
 		"playFavoriteByName":[[name:"favoriteName*",type:"STRING"]],
 		"playRandomFavorite":[],
 		"groupVolumeUp":[],
@@ -325,20 +327,29 @@ def setVolume(volume) {
 def setLevel(volume) {
     sendCommand("setVolume",volume)
 }
-      
-def playFavorite(favoriteId) {
+
+def playFavoriteById(favoriteId) {
     selectedFavorite = state.favorites.find {it.id==favoriteId}
     favoriteName = selectedFavorite.name
     sendCommand("playFavorite",favoriteId)
-    // sendEvent(name: "lastFavorite", value: favoriteName)
-    logInfo "${device.displayName} playing favorite by ID: $favoriteId | $favoriteName}"
-    
+    logInfo "${device.displayName} playing favorite by ID: $favoriteId | $favoriteName}"  
+    date = new Date()
+    sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    requestDate = sdf.format(date)   
+    lastFavoriteRequest = JsonOutput.toJson([ Id: favoriteId, Name: favoriteName, Time: requestDate ])   
+    sendEvent(name: "lastFavoriteRequest", value: lastFavoriteRequest)
 }
         
 def playFavoriteByName(favoriteName) {
-    selectedFavorite = state.favorites.find {it.name==favoriteName}   
+    selectedFavorite = state.favorites.find {it.name==favoriteName}  
+    favoriteId = selectedFavorite.id
     sendCommand("playFavorite",selectedFavorite.id)
     logInfo"${device.displayName} playing favorite by Name: ID: $selectedFavorite.id | $selectedFavorite.name"
+    date = new Date()
+    sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    requestDate = sdf.format(date)   
+    lastFavoriteRequest = JsonOutput.toJson([ Id: favoriteId, Name: favoriteName, Time: requestDate ])   
+    sendEvent(name: "lastFavoriteRequest", value: lastFavoriteRequest)
 }
 
 def playRandomFavorite() {
@@ -346,8 +357,13 @@ def playRandomFavorite() {
     selectedFavorite = (rnd.nextInt(state.favorites.size))
     favoriteId = state.favorites[selectedFavorite].id
     favoriteName = state.favorites[selectedFavorite].name
-    sendCommand("playFavorite",favoriteId)
-    logInfo "${device.displayName} playing random favorite ID: $favoriteId | $favoriteName}"
+    sendCommand("playFavorite",favoriteId)  
+    logInfo "${device.displayName} playing random favorite ID: $favoriteId | $favoriteName}" 
+    date = new Date()
+    sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    requestDate = sdf.format(date)   
+    lastFavoriteRequest = JsonOutput.toJson([ Id: favoriteId, Name: favoriteName, Time: requestDate ])   
+    sendEvent(name: "lastFavoriteRequest", value: lastFavoriteRequest)
 }
 
 def groupVolumeUp() {

@@ -55,7 +55,7 @@ metadata
 	//capability mediaPlayback in SmartThings
 	//attribute "playbackStatus", "enum"               	// Use native 'status' in Hubitat
 	attribute "supportedPlaybackCommands","enum"		// Omitted from Rules; not needed by Hubitat
-	command "playFavorite", [[name: "favoriteId", type: "STRING", description: "Favorite Id Number"],[name: "favoriteName", type: "STRING", description: "Favorite Name"]]
+	command "playFavorite", [[name: "favoriteId", type: "STRING", description: "Favorite Id Number"],[name: "favoriteName", type: "STRING", description: "Favorite Name (case insensitive)"]]
 
 	//capability mediaPreset in SmartThings
 	//attribute "presets", "JSON_OBJECT"                	// "Presets" in ST Driver; "Favorites" in Sonos UI; use the latter instead
@@ -328,7 +328,7 @@ def playFavorite(favoriteId=null,favoriteName=null) {
         }
     } else if(favoriteName != null) {       
         try {
-            selectedFavorite = state.favorites.find {it.name==favoriteName}
+            selectedFavorite = state.favorites.find {it.name.toLowerCase()==favoriteName.toLowerCase()}
             method = "name"
         }
         catch (Exception ex) {

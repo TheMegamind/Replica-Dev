@@ -55,7 +55,7 @@ metadata
 	//capability mediaPlayback in SmartThings
 	//attribute "playbackStatus", "enum"               	// Use native 'status' in Hubitat
 	attribute "supportedPlaybackCommands","enum"		// Omitted from Rules; not needed by Hubitat
-	command "playFavorite", [[name: "favoriteId", type: "STRING", description: "Favorite Id Number"],[name: "favoriteName", type: "STRING", description: "Favorite Name (case insensitive)"]]
+	command "playFavorite", [[name: "favoriteId", type: "STRING", description: "Favorite Id Number"],[name: "favoriteName", type: "STRING", description: "Favorite Name"]]
 
 	//capability mediaPreset in SmartThings
 	//attribute "presets", "JSON_OBJECT"                	// "Presets" in ST Driver; "Favorites" in Sonos UI; use the latter instead
@@ -72,6 +72,7 @@ metadata
     preferences {
         input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
         input(name:"favoritesAsAttribute", type: "bool", title: "Include Favorites in Attributes:", defaultValue: false)
+        input(name:"partialMatches", type: "bool", title: "Allow Partial Matches for Favorite Name:", defaultValue: false)
     }
 }
 
@@ -317,34 +318,35 @@ def setLevel(volume) {
     sendCommand("setVolume",volume)
 }
 
-def playFavorite(favoriteId=null,favoriteName=null) {
+def playFavorite(favoriteId=null,favoriteName=null) {   
     if(favoriteId != null) {
-        try {
-            selectedFavorite = state.favorites.find {it.id==favoriteId}
-            method = "id"
-        }
-        catch (Exception ex) {
-            logInfo "No match for Favorite Id entered. Selecting Random Favorite instead."
-        }
-    } else if(favoriteName != null) {       
-        try {
-            selectedFavorite = state.favorites.find {it.name.toLowerCase()==favoriteName.toLowerCase()}
-            method = "name"
-        }
-        catch (Exception ex) {
-            logInfo "No match for Favorite Name entered. Selecting Random Favorite instead."
+        selectedFavorite = state.favorites.find {it.id==favoriteId}
+        method = "id"
+        if(selectedFavorite == null) { 
+            log.info  "No match for Favorite Id requested. Selecting Random Favorite." 
+        } 
+    } else if((favoriteName != null) && (settings?.partialMatches == false)) {   
+        selectedFavorite = state.favorites.find {it.name.toLowerCase()==favoriteName.toLowerCase()}
+        method = "name"
+        if(selectedFavorite == null) { 
+            log.info  "No match for Favorite Name requested. Selecting Random Favorite." 
+        } 
+    } else if((favoriteName != null) && (settings?.partialMatches == true) ) {     
+        selectedFavorite = state.favorites.find {it.name.toLowerCase().contains(favoriteName.toLowerCase())}
+        method = "name (partial match)"
+        if(selectedFavorite == null) { 
+            logInfo "No match for partial Favorite Name requested. Selecting Random Favorite."
         }
     }
     if (selectedFavorite == null) {
         Random rnd = new Random()
-        //selectedFavorite = (rnd.nextInt(state.favorites.size))
         selectedFavorite = state.favorites[(rnd.nextInt(state.favorites.size))]
         method = "random"
     }
     id = selectedFavorite.id
     name = selectedFavorite.name
     sendCommand("playFavorite",id)
-    logInfo "${device.displayName} requested Favorite $name (ID $id) by $method"
+    logInfo "Requesting Favorite ${name} (ID ${id}) by ${method} on ${device.displayName}"
     date = new Date()
     sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     requestDate = sdf.format(date)   

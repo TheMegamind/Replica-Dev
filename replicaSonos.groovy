@@ -200,7 +200,7 @@ def setStatusValue(value) {
 //capability mediaPresets in SmartThings
 def setFavoritesValue(event) {
     favorites = event.value
-    favorites = favorites.sort { a,b -> a.name <=> b.name}       //Sort by Name for potential dropdown  
+    favorites = favorites.sort { a,b -> a.name <=> b.name}       	//Sort by Name for potential use later  
     state.favorites = favorites
     if(settings?.favoritesAsAttribute == true) {
         favorites = new JsonBuilder(event.value).toPrettyString()

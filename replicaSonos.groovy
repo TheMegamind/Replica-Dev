@@ -346,12 +346,23 @@ def playFavorite(favoriteId=null,favoriteName=null) {
     }
     id = selectedFavorite.id
     name = selectedFavorite.name
+    mediaSource = selectedFavorite.mediaSource
+    imageUrl = selectedFavorite.imageUrl
     sendCommand("playFavorite",id)
     logInfo "Requesting Favorite ${name} (ID ${id}) by ${method} on ${device.displayName}"
     date = new Date()
     sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     requestDate = sdf.format(date)   
-    lastFavoriteRequest = JsonOutput.toJson([id: id, name: name, method: method, time: requestDate ])   
+    lastFavoriteRequest = JsonOutput.toJson(
+        [
+            id: id, 
+            name: name, 
+            mediaSource: mediaSource,
+            imageUrl: imageUrl,
+            method: method, 
+            time: requestDate 
+        ]
+    )   
     sendEvent(name: "lastFavoriteRequest", value: lastFavoriteRequest)                         
 }  
 

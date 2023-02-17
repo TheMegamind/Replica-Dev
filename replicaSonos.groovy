@@ -200,7 +200,7 @@ def setStatusValue(value) {
 //capability mediaPresets in SmartThings
 def setFavoritesValue(event) {
     favorites = event.value
-    favorites = favorites.sort { a,b -> a.name <=> b.name}       	//Sort by Name for potential use later  
+    favorites = favorites.sort { a,b -> a.name <=> b.name}       //Sort by Name for potential dropdown  
     state.favorites = favorites
     if(settings?.favoritesAsAttribute == true) {
         favorites = new JsonBuilder(event.value).toPrettyString()
@@ -351,7 +351,7 @@ def playFavorite(favoriteId=null,favoriteName=null) {
     date = new Date()
     sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     requestDate = sdf.format(date)   
-    lastFavoriteRequest = JsonOutput.toJson([Id: id, Name: name, By: method, Time: requestDate ])   
+    lastFavoriteRequest = JsonOutput.toJson([id: id, name: name, method: method, time: requestDate ])   
     sendEvent(name: "lastFavoriteRequest", value: lastFavoriteRequest)                         
 }  
 

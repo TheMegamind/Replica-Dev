@@ -54,15 +54,15 @@ metadata
 
 	//capability mediaPlayback in SmartThings
 	//attribute "playbackStatus", "enum"               	// Use native 'status' in Hubitat
-	attribute "supportedPlaybackCommands","enum"		// Omitted from Rules; not needed by Hubitat
+	//attribute "supportedPlaybackCommands","enum"		// Omitted here and from Rules; not needed by Hubitat
 	command "playFavorite", [[name: "favoriteId", type: "STRING", description: "Favorite Id Number"],[name: "favoriteName", type: "STRING", description: "Favorite Name"]]
 
 	//capability mediaPreset in SmartThings
+	attribute "favorites", "string"                		// json String; "string" is correct here
+	attribute "lastFavoriteRequest", "string"		// json String; "string" is correct here
 	//attribute "presets", "JSON_OBJECT"                	// "Presets" in ST Driver; "Favorites" in Sonos UI; use the latter instead
-	attribute "favorites", "JSON_OBJECT"                	// Exclude from Current States by default due to length
-	attribute "supportedTrackControlCommands","enum"	// Omitted from Rules; not needed by Hubitat
-	attribute "lastFavoriteRequest", "JSON_OBJECT"
-
+	//attribute "supportedTrackControlCommands","enum"	// Omitted here and from Rules; not needed by Hubitat
+	
 	//workaround for native mediaPlayer 'playTrack' command, which does not have the volumelevel argument
 	command "playTrack", [[name: "trackuri*", type: "STRING", description: "Play the selected track"],[name: "volumelevel", type: "NUMBER", description: "Volume (0-100)%"]]
 

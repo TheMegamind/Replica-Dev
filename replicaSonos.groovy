@@ -49,7 +49,7 @@ metadata
 	command "groupVolumeUp"
 	command "groupVolumeDown"
 	command "muteGroup"
-	command "setGroupVolume"
+	command "setGroupVolume", [[name:"groupVolume*",type:"NUMBER"]]
 	command "unmuteGroup"
 
 	//capability mediaPlayback in SmartThings
@@ -372,6 +372,10 @@ def groupVolumeUp() {
 		
 def groupVolumeDown() {
     sendCommand("groupVolumeDown")
+}
+
+def setGroupVolume(groupVolume) {
+    sendCommand("setGroupVolume",groupVolume)
 }
 		
 def muteGroup() {

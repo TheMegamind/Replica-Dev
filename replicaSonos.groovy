@@ -45,12 +45,14 @@ metadata
 	attribute "groupPrimaryDeviceId", "string"   	
 	attribute "groupId", "string"   		    
 	attribute "groupVolume", "number"   	     	
-	attribute "groupRole", "enum"   
+	attribute "groupRole", "enum"  
+    command "setGroupVolume", [[name:"groupVolume*",type:"NUMBER"]]
 	command "groupVolumeUp"
 	command "groupVolumeDown"
+    command "setGroupMute", [[name: "state*", type: "ENUM", description: "Set Group Mute", constraints: ["muted","unmuted"]]]
 	command "muteGroup"
-	command "setGroupVolume", [[name:"groupVolume*",type:"NUMBER"]]
 	command "unmuteGroup"
+    
 
 	//capability mediaPlayback in SmartThings
 	//attribute "playbackStatus", "enum"               	// Use native 'status' in Hubitat
@@ -261,6 +263,7 @@ Map getReplicaTriggers() {
 		"groupVolumeDown":[],
 		"muteGroup":[],
 		"unmuteGroup":[],
+        "setGroupMute":[[name: "state*", type: "ENUM"]],
 		"setGroupVolume":[[name:"groupVolume*",type:"NUMBER"]],
 		"playTrack":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
 		"playTrackAndResume":[[name:"trackuri*",type:"STRING"],[name:"volumelevel*",type:"NUMBER",data:"volumelevel"]],
@@ -384,6 +387,10 @@ def muteGroup() {
 
 def unmuteGroup() {
     sendCommand("unmuteGroup")
+}
+
+def setGroupMute(state) {
+    sendCommand("setGroupMute",state)
 }
 
 def playTrack(trackuri, volumelevel=null) {

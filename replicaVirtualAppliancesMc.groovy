@@ -1,5 +1,6 @@
 /**
-*  Copyright 2022 Bloodtick
+*  Original Driver Copyright 2022 Bloodtick
+*  Modified to include both Number & Test Field capbilites in Mariano Colmenarejo's VirtualAppliancesMc Driver
 *
 *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 *  in compliance with the License. You may obtain a copy of the License at:
@@ -12,7 +13,7 @@
 *
 */
 @SuppressWarnings('unused')
-public static String version() {return "1.2.1"}
+public static String version() {return "1.3.0"}
 
 metadata 
 {

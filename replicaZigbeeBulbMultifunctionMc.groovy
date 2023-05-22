@@ -1,5 +1,6 @@
 /**
-*  Copyright 2023 David Gutheinz
+*  Original Driver Copyright 2023 David Gutheinz
+*  Modified to include capabilites & commands in MarianoColmenarejo'sZigbee Bulb Multifunction Mc by Bob Throckmorton
 *
 *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 *  in compliance with the License. You may obtain a copy of the License at:
@@ -17,7 +18,7 @@ import groovy.json.JsonSlurper
 import groovy.transform.CompileStatic
 import groovy.transform.Field
 @Field volatile static Map<String,Long> g_mEventSendTime = [:]
-public static String driverVer() { return "0.1.1" }
+public static String driverVer() { return "1.3.0" }
 
 //	Beta Status:  Tested on Sengled and Kasa Bulbs integrated in SmartThings.
 

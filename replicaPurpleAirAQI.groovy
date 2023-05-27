@@ -83,8 +83,8 @@ def setCategoryValue(value) {
     log.info descriptionText
 }
 
-def setSitesValue(value) {
-    // ST driver provides an HTML Table; Convert to JSON
+// ST driver provides an HTML Table; Convert to JSON
+def setSitesValue(value) {    
     def rows = value.findAll(/<tr>(.*?)<\/tr>/)  	// Extract table rows
     def tableData = [] 					// Define a list to store table data
     // Iterate over rows and extract table data
@@ -99,10 +99,20 @@ def setSitesValue(value) {
     log.info descriptionText
 }
 
-def setIntervalValue(value) {
-    String descriptionText = "${device.displayName} Update Interval is $value"
-    sendEvent(name: "interval", value: value, descriptionText: descriptionText)
-    log.info descriptionText
+// The setInterval command in the ST driver overrides the preference setting and will
+// report a value ONLY when the command is sent. The last command setting may not be 
+// accurate if the preference setting has subsequently been changed, thereby overriding 
+// the command value. If no value is provide, the status is set to "Not Reported"
+def setIntervalValue(value) {    
+    if (value != " ") {
+        String descriptionText = "${device.displayName} Update Interval is $value"
+        sendEvent(name: "interval", value: value, descriptionText: descriptionText)
+        log.info descriptionText
+    } else {
+        String descriptionText = "${device.displayName} Update Interval Not Reported"
+        sendEvent(name: "interval", value: "Not Reported", descriptionText: descriptionText)
+        log.info descriptionText
+    }  
 }
 
 def setHealthStatusValue(value) {    

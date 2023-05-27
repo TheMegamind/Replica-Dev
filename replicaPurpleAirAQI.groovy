@@ -26,9 +26,10 @@ metadata
         attribute "aqi", "number"   		// Current AQI
         attribute "category", "string"		// Description of Current Air Quality
         attribute "sites", "string"		// List of Sensor Sites used 
-        attribute "updateInterval", "number" 	// Time in Minutes Between Updates
+        attribute "updateInterval", "enum", ["1 minute","5 minutes","10 minutes","15 minutes","30 minutes","1 hour","3 hours"] 	// Interval Between Updates
         
-        command "setInterval", [[name: "interval*", type: "STRING", description: "Update Interval in Minutes"]]
+        command "setInterval", [[name: "interval*", type: "ENUM", description: "Set Interval Between Updates", constraints: ["1 minute","5 minutes","10 minutes","15 minutes","30 minutes","1 hour","3 hours"]
+]] // Override Interval Between Updates
         
         attribute "healthStatus", "enum", ["offline", "online"]
     }

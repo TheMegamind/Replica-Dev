@@ -28,7 +28,7 @@ metadata
         attribute "sites", "string"		// List of Sensor Sites used 
         attribute "updateInterval", "number" 	// Time in Minutes Between Updates
         
-        command "setInterval", [[name: "value*", type: "number", description: "Set Update Interval (Minutes)"]]
+        command "setInterval", [[name: "interval*", type: "number", description: "Update Interval in Minutes"]]
         
         attribute "healthStatus", "enum", ["offline", "online"]
     }
@@ -64,7 +64,7 @@ static Map getReplicaCommands() {
     	"setAqiValue":[[name:"aqi*",type:"NUMBER"]], 
 	"setCategoryValue":[[name:"category*",type:"STRING"]], 
 	"setSitesValue":[[name:"sites*",type:"STRING"]],
-	"setIntervalValue":[[name:"updateInterval*",type:"NUMBER"]],
+	"setIntervalValue":[[name:"interval*",type:"NUMBER"]],
 	    
 	"setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]
    ]])
@@ -90,7 +90,7 @@ def setSitesValue(value) {
 
 def setIntervalValue(value) {
     String descriptionText = "${device.displayName} AQI Polling Interval is $value"
-    sendEvent(name: "updateInterval", value: value, descriptionText: descriptionText)
+    sendEvent(name: "interval", value: value, descriptionText: descriptionText)
     log.info descriptionText
 }
 
@@ -99,9 +99,9 @@ def setHealthStatusValue(value) {
 }
 
 // Methods documented here will show up in the Replica Trigger Configuration. These should be all of the native capability commands
-Map getReplicaTriggers() {
+static Map getReplicaTriggers() {
     return ([ 
-        "setInterval":[[name:"value*",type:"STRING"]],  
+        "setInterval":[[name:"interval*",type:"STRING"]],  
 	"refresh":[]])
 }
 
@@ -110,15 +110,15 @@ private def sendCommand(String name, def value=null, String unit=null, data=[:])
     parent?.deviceTriggerHandler(device, [name:name, value:value, unit:unit, data:data, now:now()])
 }
 
-def setInterval(value) {
-    sendCommand("setInterval", value)    
+def setInterval(interval) {
+    sendCommand("setInterval", interval)    
 }
 
 void refresh() {
     sendCommand("refresh")
 }
 
-String getReplicaRules() {
+static String getReplicaRules() {
     return """ {"version":1,"components":[{"trigger":{"name":"setInterval","label":"command: setInterval(value*)","type":"command","parameters":[{"name":"value*","type":"STRING"}]},"command":{"name":"setInterval","arguments":[{"name":"interval","optional":false,"schema":{"type":"string","maxLength":20}}],"type":"command","capability":"partyvoice23922.aqisetinterval","label":"command: setInterval(interval*)"},"type":"hubitatTrigger"},{"trigger":{"type":"attribute","properties":{"value":{"type":"integer","minimum":0,"maximum":1000},"unit":{"type":"string","enum":["AQI"],"default":"AQI"}},"additionalProperties":false,"required":["value"],"capability":"partyvoice23922.purpleaqi","attribute":"aqi","label":"attribute: aqi.*"},"command":{"name":"setAqiValue","label":"command: setAqiValue(aqi*)","type":"command","parameters":[{"name":"aqi*","type":"NUMBER"}]},"type":"smartTrigger"},{"trigger":{"type":"attribute","properties":{"value":{"type":"string"}},"additionalProperties":false,"required":["value"],"capability":"partyvoice23922.aqicategory","attribute":"category","label":"attribute: category.*"},"command":{"name":"setCategoryValue","label":"command: setCategoryValue(category*)","type":"command","parameters":[{"name":"category*","type":"STRING"}]},"type":"smartTrigger"},{"trigger":{"type":"attribute","properties":{"value":{"title":"HealthState","type":"string"}},"additionalProperties":false,"required":["value"],"capability":"healthCheck","attribute":"healthStatus","label":"attribute: healthStatus.*"},"command":{"name":"setHealthStatusValue","label":"command: setHealthStatusValue(healthStatus*)","type":"command","parameters":[{"name":"healthStatus*","type":"ENUM"}]},"type":"smartTrigger"},{"trigger":{"type":"attribute","properties":{"value":{"type":"string","maxLength":20}},"additionalProperties":false,"required":["value"],"capability":"partyvoice23922.aqisetinterval","attribute":"interval","label":"attribute: interval.*"},"command":{"name":"setIntervalValue","label":"command: setIntervalValue(updateInterval*)","type":"command","parameters":[{"name":"updateInterval*","type":"NUMBER"}]},"type":"smartTrigger"},{"trigger":{"type":"attribute","properties":{"value":{"type":"string"}},"additionalProperties":false,"required":["value"],"capability":"partyvoice23922.aqisites","attribute":"sites","label":"attribute: sites.*"},"command":{"name":"setSitesValue","label":"command: setSitesValue(sites*)","type":"command","parameters":[{"name":"sites*","type":"STRING"}]},"type":"smartTrigger"}]} """
 }
 

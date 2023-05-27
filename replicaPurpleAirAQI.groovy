@@ -58,19 +58,13 @@ def configure() {
 }
 
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
-Map getReplicaCommands() {
+static Map getReplicaCommands() {
     return ([ 
-    	"setNumberFieldOneValue":[[name:"numberFieldOne*",type:"NUMBER"]], 
-	"setNumberFieldTwoValue":[[name:"numberFieldTwo*",type:"NUMBER"]], 
-	"setNumberFieldThreeValue":[[name:"numberFieldThree*",type:"NUMBER"]],
-	"setNumberFieldFourValue":[[name:"numberFieldFour*",type:"NUMBER"]],
+    	"setAqiValue":[[name:"aqi*",type:"NUMBER"]], 
+	"setAqiCategoryValue":[[name:"category*",type:"string"]], 
+	"setAqiSitesValue":[[name:"sites*",type:"string"]],
+	"setPollingIntervalValue":[[name:"pollingInterval*",type:"string"]],
 	"setNumberFieldFiveValue":[[name:"numberFieldFive*",type:"NUMBER"]], 
-	    
-	"setTextFieldOneValue":[[name:"textFieldOne*",type:"STRING"]], 
-	"setTextFieldTwoValue":[[name:"textFieldTwo*",type:"STRING"]], 
-	"setTextFieldThreeValue":[[name:"textFieldThree*",type:"STRING"]], 
-        "setTextFieldFourValue":[[name:"textFieldFour*",type:"STRING"]], 
-	"setTextFieldFiveValue":[[name:"textFieldFive*",type:"STRING"]],
 	    
 	"setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]
    ]])

@@ -1,5 +1,5 @@
 /**
-*  Original Driver Copyright 2022 Bloodtick
+*  Original Driver Copyright 2022 bthrock
 *  Modified to include both Number & Test Field capbilites in Mariano Colmenarejo's VirtualAppliancesMc Driver
 *
 *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -17,39 +17,23 @@ public static String version() {return "1.3.0"}
 
 metadata 
 {
-    definition(name: "Replica VirtualAppliancesMc", namespace: "replica", author: "bloodtick", importUrl:"https://raw.githubusercontent.com/bloodtick/Hubitat/main/hubiThingsReplica/devices/replicaVirtualAppliancesMc.groovy.groovy")
+    definition(name: "replica PurpleAirAQI", namespace: "replica", author: "bbthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Drivers/main/replicaPurpleAirAQI.groovy")
     {
-        capability "Actuator"
+        capability "Sensor"
         capability "Configuration"
         capability "Refresh"
         
-        attribute "numberFieldOne", "number"
-        attribute "numberFieldTwo", "number"
-        attribute "numberFieldThree", "number"
-        attribute "numberFieldFour", "number"
-        attribute "numberFieldFive", "number"
-     
-	attribute "textFieldOne", "string"
-        attribute "textFieldTwo", "string"
-        attribute "textFieldThree", "string"
-        attribute "textFieldFour", "string"
-        attribute "textFieldFive", "string"
+        attribute "aqi", "number"
+        attribute "category", "string"
+        attribute "sites", "string"
+        attribute "pollinginterval", "string"
         
-        command "setNumberFieldOne", [[name: "value*", type: "NUMBER", description: "Set Number Field One"]]
-        command "setNumberFieldTwo", [[name: "value*", type: "NUMBER", description: "Set Number Field One"]]
-        command "setNumberFieldThree", [[name: "value*", type: "NUMBER", description: "Set Number Field One"]]
-        command "setNumberFieldFour", [[name: "value*", type: "NUMBER", description: "Set Number Field One"]]
-        command "setNumberFieldFive", [[name: "value*", type: "NUMBER", description: "Set Number Field One"]]
-	    
-	command "setTextFieldOne", [[name: "value*", type: "STRING", description: "Set Text Field One"]]
-        command "setTextFieldTwo", [[name: "value*", type: "STRING", description: "Set Text Field One"]]
-        command "setTextFieldThree", [[name: "value*", type: "STRING", description: "Set Text Field One"]]
-        command "setTextFieldFour", [[name: "value*", type: "STRING", description: "Set Text Field One"]]
-        command "setTextFieldFive", [[name: "value*", type: "STRING", description: "Set Text Field One"]]
+        command "setPollingInterval", [[name: "value*", type: "String", description: "Set Polling Interval"]]
         
         attribute "healthStatus", "enum", ["offline", "online"]
     }
     preferences {   
+	input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
     }
 }
 
@@ -234,3 +218,9 @@ String getReplicaRules() {
     
     ]}"""
 }
+
+private logInfo(msg)  { if(settings?.deviceInfoDisable != true) { log.info  "${msg}" } }
+private logDebug(msg) { if(settings?.deviceDebugEnable == true) { log.debug "${msg}" } }
+private logTrace(msg) { if(settings?.deviceTraceEnable == true) { log.trace "${msg}" } }
+private logWarn(msg)  { log.warn   "${msg}" }
+private logError(msg) { log.error  "${msg}" }

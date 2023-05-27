@@ -90,7 +90,7 @@ def setSitesValue(value) {
 }
 
 def setIntervalValue(value) {
-    String descriptionText = "${device.displayName} AQI Polling Interval is $value"
+    String descriptionText = "${device.displayName} Update Interval is $value"
     sendEvent(name: "interval", value: value, descriptionText: descriptionText)
     log.info descriptionText
 }

@@ -93,7 +93,7 @@ def setSitesValue(value) {
 	    def cell = row.replaceFirst(/<tr><td>(.*?)<\/td><\/tr>/, '$1')
 	    tableData.add(cell)
 	}
-    def value = new groovy.json.JsonBuilder(tableData).toPrettyString()  // Convert table data to JSON
+    value = new groovy.json.JsonBuilder(tableData).toPrettyString()  // Convert tableData to JSON
     String descriptionText = "${device.displayName} Sensor Sites are $value"
     sendEvent(name: "sites", value: value, descriptionText: descriptionText)
     log.info descriptionText

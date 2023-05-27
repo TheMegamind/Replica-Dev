@@ -1,6 +1,8 @@
 /**
-*  Original Driver Copyright 2022 bthrock
-*  Modified to include both Number & Test Field capbilites in Mariano Colmenarejo's VirtualAppliancesMc Driver
+*  Copyright 2022 bthrock
+*
+*  The driver is for use with Todd Austin's PurpleAir AQI driver, the primary advantage of which is the ability
+*  to change the update interval on the fly in response to serious and rapidly changing air quality conditions. 
 *
 *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 *  in compliance with the License. You may obtain a copy of the License at:

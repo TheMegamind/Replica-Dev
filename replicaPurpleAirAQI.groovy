@@ -28,7 +28,7 @@ metadata
         attribute "sites", "string"		// List of Sensor Sites used 
         attribute "updateInterval", "number" 	// Time in Minutes Between Updates
         
-        command "setInterval", [[name: "interval*", type: "number", description: "Update Interval in Minutes"]]
+        command "setInterval", [[name: "interval*", type: "string", description: "Update Interval in Minutes"]]
         
         attribute "healthStatus", "enum", ["offline", "online"]
     }
@@ -64,7 +64,7 @@ static Map getReplicaCommands() {
     	"setAqiValue":[[name:"aqi*",type:"NUMBER"]], 
 	"setCategoryValue":[[name:"category*",type:"STRING"]], 
 	"setSitesValue":[[name:"sites*",type:"STRING"]],
-	"setIntervalValue":[[name:"interval*",type:"NUMBER"]],
+	"setIntervalValue":[[name:"interval*",type:"STRING"]],
 	    
 	"setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]
    ]])

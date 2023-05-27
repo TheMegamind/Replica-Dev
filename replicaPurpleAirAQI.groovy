@@ -64,69 +64,32 @@ static Map getReplicaCommands() {
 	"setAqiCategoryValue":[[name:"category*",type:"string"]], 
 	"setAqiSitesValue":[[name:"sites*",type:"string"]],
 	"setPollingIntervalValue":[[name:"pollingInterval*",type:"string"]],
-	"setNumberFieldFiveValue":[[name:"numberFieldFive*",type:"NUMBER"]], 
 	    
 	"setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]
    ]])
 }
 
-def setNumberFieldOneValue(value) {
-    String descriptionText = "${device.displayName} Number Field One is $value"
-    sendEvent(name: "numberFieldOne", value: value, descriptionText: descriptionText)
+def setAqiValue(value) {
+    String descriptionText = "${device.displayName} AQI is $value"
+    sendEvent(name: "aqi", value: value, descriptionText: descriptionText)
     log.info descriptionText
 }
 
-def setNumberFieldTwoValue(value) {
-    String descriptionText = "${device.displayName} Number Field Two is $value"
-    sendEvent(name: "numberFieldTwo", value: value, descriptionText: descriptionText)
+def setAqiCategoryValue(value) {
+    String descriptionText = "${device.displayName} AQI Category is $value"
+    sendEvent(name: "category", value: value, descriptionText: descriptionText)
     log.info descriptionText
 }
 
-def setNumberFieldThreeValue(value) {
-    String descriptionText = "${device.displayName} Number Field Three is $value"
-    sendEvent(name: "numberFieldThree", value: value, descriptionText: descriptionText)
+def setAqiSitesValue(value) {
+    String descriptionText = "${device.displayName} AQI Sites are $value"
+    sendEvent(name: "sites", value: value, descriptionText: descriptionText)
     log.info descriptionText
 }
 
-def setNumberFieldFourValue(value) {
-    String descriptionText = "${device.displayName} Number Field Four is $value"
-    sendEvent(name: "numberFieldFour", value: value, descriptionText: descriptionText)
-    log.info descriptionText
-}
-
-def setNumberFieldFiveValue(value) {
-    String descriptionText = "${device.displayName} Number Field Five is $value"
-    sendEvent(name: "numberFieldFive", value: value, descriptionText: descriptionText)
-    log.info descriptionText
-}
-
-def setTextFieldOneValue(value) {
-    String descriptionText = "${device.displayName} text Field One is $value"
-    sendEvent(name: "textFieldOne", value: value, descriptionText: descriptionText)
-    log.info descriptionText
-}
-
-def setTextFieldTwoValue(value) {
-    String descriptionText = "${device.displayName} text Field Two is $value"
-    sendEvent(name: "textFieldTwo", value: value, descriptionText: descriptionText)
-    log.info descriptionText
-}
-
-def setTextFieldThreeValue(value) {
-    String descriptionText = "${device.displayName} text Field Three is $value"
-    sendEvent(name: "textFieldThree", value: value, descriptionText: descriptionText)
-    log.info descriptionText
-}
-
-def setTextFieldFourValue(value) {
-    String descriptionText = "${device.displayName} text Field Four is $value"
-    sendEvent(name: "textFieldFour", value: value, descriptionText: descriptionText)
-    log.info descriptionText
-}
-
-def setTextFieldFiveValue(value) {
-    String descriptionText = "${device.displayName} text Field Five is $value"
-    sendEvent(name: "textFieldFive", value: value, descriptionText: descriptionText)
+def setPollingIntervalValue(value) {
+    String descriptionText = "${device.displayName} AQI Polling Interval is $value"
+    sendEvent(name: "pollingInterval", value: value, descriptionText: descriptionText)
     log.info descriptionText
 }
 
@@ -137,18 +100,7 @@ def setHealthStatusValue(value) {
 // Methods documented here will show up in the Replica Trigger Configuration. These should be all of the native capability commands
 Map getReplicaTriggers() {
     return ([ 
-        "setNumberFieldOne":[[name:"value*",type:"NUMBER"]], 
-	"setNumberFieldTwo":[[name:"value*",type:"NUMBER"]], 
-	"setNumberFieldThree":[[name:"value*",type:"NUMBER"]], 
-	"setNumberFieldFour":[[name:"value*",type:"NUMBER"]], 
-	"setNumberFieldFive":[[name:"value*",type:"NUMBER"]], 
-	
-	"setTextFieldOne":[[name:"value*",type:"STRING"]], 
-	"setTextFieldTwo":[[name:"value*",type:"STRING"]], 
-	"setTextFieldThree":[[name:"value*",type:"STRING"]], 
-	"setTextFieldFour":[[name:"value*",type:"STRING"]], 
-	"setTextFieldFive":[[name:"value*",type:"STRING"]],    
-	    
+        "setPollingInterval":[[name:"value*",type:"STRING"]],  
 	"refresh":[]])
 }
 
@@ -157,44 +109,8 @@ private def sendCommand(String name, def value=null, String unit=null, data=[:])
     parent?.deviceTriggerHandler(device, [name:name, value:value, unit:unit, data:data, now:now()])
 }
 
-def setNumberFieldOne(value) {
-    sendCommand("setNumberFieldOne", value)    
-}
-
-def setNumberFieldTwo(value) {
-    sendCommand("setNumberFieldTwo", value)    
-}
-
-def setNumberFieldThree(value) {
-    sendCommand("setNumberFieldThree", value)    
-}
-
-def setNumberFieldFour(value) {
-    sendCommand("setNumberFieldFour", value)    
-}
-
-def setNumberFieldFive(value) {
-    sendCommand("setNumberFieldFive", value)    
-}
-
-def setTextFieldOne(value) {
-    sendCommand("setTextFieldOne", value)    
-}
-
-def setTextFieldTwo(value) {
-    sendCommand("setTextFieldTwo", value)    
-}
-
-def setTextFieldThree(value) {
-    sendCommand("setTextFieldThree", value)    
-}
-
-def setTextFieldFour(value) {
-    sendCommand("setTextFieldFour", value)    
-}
-
-def setTextFieldFive(value) {
-    sendCommand("setTextFieldFive", value)    
+def setPollingInterval(value) {
+    sendCommand("setInterval", value)    
 }
 
 void refresh() {

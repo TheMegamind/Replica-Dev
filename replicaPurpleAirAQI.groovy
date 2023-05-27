@@ -28,7 +28,7 @@ metadata
         attribute "sites", "string"		// List of Sensor Sites used 
         attribute "updateInterval", "number" 	// Time in Minutes Between Updates
         
-        command "setInterval", [[name: "interval*", type: "string", description: "Update Interval in Minutes"]]
+        command "setInterval", [[name: "interval*", type: "STRING", description: "Update Interval in Minutes"]]
         
         attribute "healthStatus", "enum", ["offline", "online"]
     }

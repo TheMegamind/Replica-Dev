@@ -72,7 +72,7 @@ static Map getReplicaCommands() {
 }
 
 def setAqiValue(value) {
-    String descriptionText = "${device.displayName} AQI is $value"
+    String descriptionText = "${device.displayName} is $value"
     sendEvent(name: "aqi", value: value, descriptionText: descriptionText)
     log.info descriptionText
 }
@@ -93,7 +93,7 @@ def setSitesValue(value) {
 	    def cell = row.replaceFirst(/<tr><td>(.*?)<\/td><\/tr>/, '$1')
 	    tableData.add(cell)
 	}
-    value = new groovy.json.JsonBuilder(tableData).toPrettyString()  // Convert tableData to JSON
+    value = new groovy.json.JsonBuilder(tableData).toPrettyString()  // Convert table data to JSON
     String descriptionText = "${device.displayName} Sensor Sites are $value"
     sendEvent(name: "sites", value: value, descriptionText: descriptionText)
     log.info descriptionText

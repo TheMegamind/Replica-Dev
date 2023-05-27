@@ -26,7 +26,7 @@ metadata
         attribute "aqi", "number"   		// Current AQI
         attribute "category", "string"		// Description of Current Air Quality
         attribute "sites", "string"		// List of Sensor Sites used 
-        attribute "updateinterval", "number" 	// Time in Minutes Between Updates
+        attribute "updateInterval", "number" 	// Time in Minutes Between Updates
         
         command "setInterval", [[name: "value*", type: "number", description: "Set Update Interval (Minutes)"]]
         
@@ -64,7 +64,7 @@ static Map getReplicaCommands() {
     	"setAqiValue":[[name:"aqi*",type:"NUMBER"]], 
 	"setCategoryValue":[[name:"category*",type:"STRING"]], 
 	"setSitesValue":[[name:"sites*",type:"STRING"]],
-	"setIntervalValue":[[name:"updateinterval*",type:"NUMBER"]],
+	"setIntervalValue":[[name:"updateInterval*",type:"NUMBER"]],
 	    
 	"setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]
    ]])
@@ -90,7 +90,7 @@ def setSitesValue(value) {
 
 def setIntervalValue(value) {
     String descriptionText = "${device.displayName} AQI Polling Interval is $value"
-    sendEvent(name: "updateinterval", value: value, descriptionText: descriptionText)
+    sendEvent(name: "updateInterval", value: value, descriptionText: descriptionText)
     log.info descriptionText
 }
 

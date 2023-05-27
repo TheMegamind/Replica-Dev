@@ -84,6 +84,16 @@ def setCategoryValue(value) {
 }
 
 def setSitesValue(value) {
+    // ST driver provides an HTML Table; Convert to JSON
+    def rows = value.findAll(/<tr>(.*?)<\/tr>/)  	// Extract table rows
+    def tableData = [] 					// Define a list to store table data
+    // Iterate over rows and extract table data
+	rows.each { row ->
+	    // Extract cell value from the row
+	    def cell = row.replaceFirst(/<tr><td>(.*?)<\/td><\/tr>/, '$1')
+	    tableData.add(cell)
+	}
+    def value = new groovy.json.JsonBuilder(tableData).toPrettyString()  // Convert table data to JSON
     String descriptionText = "${device.displayName} Sensor Sites are $value"
     sendEvent(name: "sites", value: value, descriptionText: descriptionText)
     log.info descriptionText

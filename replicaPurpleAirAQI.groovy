@@ -23,12 +23,12 @@ metadata
         capability "Configuration"
         capability "Refresh"
         
-        attribute "aqi", "number"
-        attribute "category", "string"
-        attribute "sites", "string"
-        attribute "pollinginterval", "string"
+        attribute "aqi", "number"   		// Current AQI
+        attribute "category", "string"		// Description of Current Air Quality
+        attribute "sites", "string"		// List of Sensor Sites used 
+        attribute "updateinterval", "number" 	// Time in Minutes Between Updates
         
-        command "setPollingInterval", [[name: "value*", type: "String", description: "Set Polling Interval"]]
+        command "setInterval", [[name: "value*", type: "number", description: "Set Update Interval (Minutes)"]]
         
         attribute "healthStatus", "enum", ["offline", "online"]
     }
@@ -48,6 +48,7 @@ def updated() {
 def initialize() {
     updateDataValue("triggers", groovy.json.JsonOutput.toJson(getReplicaTriggers()))
     updateDataValue("commands", groovy.json.JsonOutput.toJson(getReplicaCommands()))
+    refresh()
 }
 
 def configure() {
@@ -61,9 +62,9 @@ def configure() {
 static Map getReplicaCommands() {
     return ([ 
     	"setAqiValue":[[name:"aqi*",type:"NUMBER"]], 
-	"setAqiCategoryValue":[[name:"category*",type:"string"]], 
-	"setAqiSitesValue":[[name:"sites*",type:"string"]],
-	"setPollingIntervalValue":[[name:"pollingInterval*",type:"string"]],
+	"setCategoryValue":[[name:"category*",type:"STRING"]], 
+	"setSitesValue":[[name:"sites*",type:"STRING"]],
+	"setIntervalValue":[[name:"updateinterval*",type:"NUMBER"]],
 	    
 	"setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]
    ]])
@@ -75,21 +76,21 @@ def setAqiValue(value) {
     log.info descriptionText
 }
 
-def setAqiCategoryValue(value) {
+def setCategoryValue(value) {
     String descriptionText = "${device.displayName} AQI Category is $value"
     sendEvent(name: "category", value: value, descriptionText: descriptionText)
     log.info descriptionText
 }
 
-def setAqiSitesValue(value) {
-    String descriptionText = "${device.displayName} AQI Sites are $value"
+def setSitesValue(value) {
+    String descriptionText = "${device.displayName} Sensor Sites are $value"
     sendEvent(name: "sites", value: value, descriptionText: descriptionText)
     log.info descriptionText
 }
 
-def setPollingIntervalValue(value) {
+def setIntervalValue(value) {
     String descriptionText = "${device.displayName} AQI Polling Interval is $value"
-    sendEvent(name: "pollingInterval", value: value, descriptionText: descriptionText)
+    sendEvent(name: "updateinterval", value: value, descriptionText: descriptionText)
     log.info descriptionText
 }
 
@@ -100,7 +101,7 @@ def setHealthStatusValue(value) {
 // Methods documented here will show up in the Replica Trigger Configuration. These should be all of the native capability commands
 Map getReplicaTriggers() {
     return ([ 
-        "setPollingInterval":[[name:"value*",type:"STRING"]],  
+        "setInterval":[[name:"value*",type:"STRING"]],  
 	"refresh":[]])
 }
 
@@ -109,7 +110,7 @@ private def sendCommand(String name, def value=null, String unit=null, data=[:])
     parent?.deviceTriggerHandler(device, [name:name, value:value, unit:unit, data:data, now:now()])
 }
 
-def setPollingInterval(value) {
+def setInterval(value) {
     sendCommand("setInterval", value)    
 }
 

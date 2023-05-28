@@ -1,7 +1,7 @@
 /**
 *  Copyright 2022 bthrock
 *
-*  The driver is for use with Todd Austin's PurpleAir AQI driver for SmartThings, which is effectively identical to 
+*  This driver is for use with Todd Austin's PurpleAir AQI driver for SmartThings, which is effectively identical to 
 *  the "PurpleAir AQI Virtual Sensor" for Hubitat with one notable exception. The SmartThings driver allows the user 
 *  to adjust the reporting interval when air quality conditions change rapidly. This ensures that any HVAC or other 
 *  automations that rely on air quality data are using the most current data available. 

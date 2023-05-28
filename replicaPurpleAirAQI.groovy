@@ -1,8 +1,10 @@
 /**
 *  Copyright 2022 bthrock
 *
-*  The driver is for use with Todd Austin's PurpleAir AQI driver, the primary advantage of which is the ability
-*  to change the update interval on the fly in response to serious and rapidly changing air quality conditions. 
+*  The driver is for use with Todd Austin's PurpleAir AQI driver for SmartThings, which is effectively identical to 
+*  the "PurpleAir AQI Virtual Sensor" for Hubitat with one notable exception. The SmartThings allows the user to 
+*  adjust the reporting interval when air quality conditions change rapidly. This ensures that any HVAC or other 
+*  automations that rely on air quality data are using the most current data available. 
 *
 *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 *  in compliance with the License. You may obtain a copy of the License at:
@@ -108,8 +110,7 @@ def setSitesValue(value) {
 // 
 // When the setInterval command is used, the "interval" attribute in the Hubitat driver presentation
 // will report the chosen interval. If the interval is controlled by the the ST driver's preference 
-// setting, that interval attribute notes that. The value of that setting is not
-// availble here. 
+// setting, that interval attribute notes that. The value of that setting is not available here.
 def setIntervalValue(value) {    
     if (value != " ") {
         log.info value

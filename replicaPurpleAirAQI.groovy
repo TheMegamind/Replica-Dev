@@ -22,17 +22,18 @@ metadata
     definition(name: "replica PurpleAirAQI", namespace: "replica", author: "bbthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Drivers/main/replicaPurpleAirAQI.groovy")
     {
         capability "Actuator"
-	capability "Sensor"
+        capability "Sensor"
         capability "Configuration"
         capability "Refresh"
         
         attribute "aqi", "number"   		// Current AQI
         attribute "category", "string"		// Description of Current Air Quality
         attribute "sites", "string"		// List of Sensor Sites used 
-        attribute "interval", "string"    // Interval Between Updates (Preference Override)
+        attribute "interval", "string"    	// Interval Between Updates 
         
-	// "setInterval" command allows the user to override driver preference setting for interval
-        command "setInterval", [[name: "interval*", type: "ENUM", description: "Update Interval", constraints: ["1min", "5min", "10min", "15min"," 30min","60min", "180min"]]] 
+	// "setInterval" command allows the user to override the interval selection in the SmartThings app driver presentation
+	command "setInterval", [[name: "interval*", type: "ENUM", description: "Update Interval", constraints: ["1min", "5min", "10min", "15min"," 30min","60min", "180min"]]] 
+        
         
         attribute "healthStatus", "enum", ["offline", "online"]
     }
@@ -86,34 +87,38 @@ def setCategoryValue(value) {
     log.info descriptionText
 }
 
-// ST driver provides an HTML Table; Convert to JSON
+
 def setSitesValue(value) {    
-    def rows = value.findAll(/<tr>(.*?)<\/tr>/)  	// Extract table rows
-    def tableData = [] 					// Define a list to store table data
-    // Iterate over rows and extract table data
-	rows.each { row ->
-	    // Extract cell value from the row
-	    def cell = row.replaceFirst(/<tr><td>(.*?)<\/td><\/tr>/, '$1')
-	    tableData.add(cell)
-	}
+    // ST driver supplies an HTML Table; Convert Table to JSON
+    def rows = value.findAll(/<tr>(.*?)<\/tr>/)
+    def tableData = []
+    rows.each { row ->
+       def cell = row.replaceFirst(/<tr><td>(.*?)<\/td><\/tr>/, '$1')
+       tableData.add(cell)
+    }
     value = new groovy.json.JsonBuilder(tableData).toPrettyString()  // Convert table data to JSON
     String descriptionText = "${device.displayName} Sensor Sites are $value"
     sendEvent(name: "sites", value: value, descriptionText: descriptionText)
     log.info descriptionText
 }
 
-// The setInterval command in the ST driver overrides the preference setting and will
-// report a value ONLY when the command is sent. The last command setting may not be 
-// accurate if the preference setting has subsequently been changed, thereby overriding 
-// the command value. If no value is provide, the status is set to "Not Reported"
+// The setInterval command in the ST Purple AQI driver overrides the preference setting in the 
+// driver presentation in the SmartThings app. However, if the preference setting is modified
+// after a setInterval command, the preference setting will take precedence. 
+// 
+// When the setInterval command is used, the "interval" attribute in the Hubitat driver presentation
+// will report the chosen interval. If the interval is controlled by the the ST driver's preference 
+// setting, that interval attribute notes that. The value of that setting is not
+// availble here. 
 def setIntervalValue(value) {    
     if (value != " ") {
-        String descriptionText = "${device.displayName} Update Interval is $value"
+        log.info value
+        String descriptionText = "${device.displayName} Interval is $value"
         sendEvent(name: "interval", value: value, descriptionText: descriptionText)
         log.info descriptionText
     } else {
-        String descriptionText = "${device.displayName} Update Interval Not Reported"
-        sendEvent(name: "interval", value: "Not Reported", descriptionText: descriptionText)
+        String descriptionText = "${device.displayName} interval is managed by ST driver reference Setting"
+        sendEvent(name: "interval", value: "Managed by ST Preference Setting", descriptionText: descriptionText)
         log.info descriptionText
     }  
 }

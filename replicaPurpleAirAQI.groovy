@@ -21,17 +21,18 @@ metadata
 {
     definition(name: "replica PurpleAirAQI", namespace: "replica", author: "bbthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Drivers/main/replicaPurpleAirAQI.groovy")
     {
-        capability "Sensor"
+        capability "Actuator"
+	capability "Sensor"
         capability "Configuration"
         capability "Refresh"
         
         attribute "aqi", "number"   		// Current AQI
         attribute "category", "string"		// Description of Current Air Quality
         attribute "sites", "string"		// List of Sensor Sites used 
-        attribute "updateInterval", "string"    // Interval Between Updates (Preference Override)
+        attribute "interval", "string"    // Interval Between Updates (Preference Override)
         
-        command "setInterval", [[name: "interval*", type: "ENUM", description: "Set Interval Between Updates", constraints: ["1min","5min","10min","15min","30min","60min","180min"]
-]] // Override Interval Between Updates
+	// "setInterval" command allows the user to override driver preference setting for interval
+        command "setInterval", [[name: "interval*", type: "ENUM", description: "Update Interval", constraints: ["1min", "5min", "10min", "15min"," 30min","60min", "180min"]]] 
         
         attribute "healthStatus", "enum", ["offline", "online"]
     }

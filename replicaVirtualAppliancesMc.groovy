@@ -1,6 +1,6 @@
 /**
 *  Original Driver Copyright 2022 Bloodtick
-*  Modified to include both Number & Test Field capbilites in Mariano Colmenarejo's VirtualAppliancesMc Driver
+*  Modified to include both Number & Test Field capabilites in Mariano Colmenarejo's VirtualAppliancesMc Driver
 *
 *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
 *  in compliance with the License. You may obtain a copy of the License at:
@@ -13,11 +13,11 @@
 *
 */
 @SuppressWarnings('unused')
-public static String version() {return "1.3.0"}
+public static String version() {return "1.3.1"}
 
 metadata 
 {
-    definition(name: "Replica VirtualAppliancesMc", namespace: "replica", author: "bloodtick", importUrl:"https://raw.githubusercontent.com/bloodtick/Hubitat/main/hubiThingsReplica/devices/replicaVirtualAppliancesMc.groovy.groovy")
+    definition(name: "Replica VirtualAppliancesMc", namespace: "replica", author: "bthrock", importUrl:"https://raw.githubusercontent.com/TheMegamind/Replica-Drivers/main/replicaVirtualAppliancesMc.groovy")
     {
         capability "Actuator"
         capability "Configuration"
@@ -74,7 +74,7 @@ def configure() {
 }
 
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
-Map getReplicaCommands() {
+static Map getReplicaCommands() {
     return ([ 
     	"setNumberFieldOneValue":[[name:"numberFieldOne*",type:"NUMBER"]], 
 	"setNumberFieldTwoValue":[[name:"numberFieldTwo*",type:"NUMBER"]], 
@@ -157,7 +157,7 @@ def setHealthStatusValue(value) {
 }
 
 // Methods documented here will show up in the Replica Trigger Configuration. These should be all of the native capability commands
-Map getReplicaTriggers() {
+static Map getReplicaTriggers() {
     return ([ 
         "setNumberFieldOne":[[name:"value*",type:"NUMBER"]], 
 	"setNumberFieldTwo":[[name:"value*",type:"NUMBER"]], 
@@ -223,7 +223,7 @@ void refresh() {
     sendCommand("refresh")
 }
 
-String getReplicaRules() {
+static String getReplicaRules() {
     return """{"version":1,"components":[{
     
     "trigger":{"type":"attribute","properties":{"value":{"title":"HealthState","type":"string"}},"additionalProperties":false,"required":["value"],"capability":"healthCheck","attribute":"healthStatus","label":"attribute: healthStatus.*"},"command":{"name":"setHealthStatusValue","label":"command: setHealthStatusValue(healthStatus*)","type":"command","parameters":[{"name":"healthStatus*","type":"ENUM"}]},"type":"smartTrigger","mute":true},

@@ -61,9 +61,17 @@ def configure() {
 
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
 static Map getReplicaCommands() {
-    return ([ "setSwitchValue":[[name:"switch*",type:"ENUM"]], "setSwitchOff":[], "setSwitchOn":[], "setFanSpeedValue":[[name:"fanSpeed*",type:"NUMBER"]], "setLevelValue":[[name:"level*",type:"NUMBER"]], 
-              "setTemperatureValue":[[name:"temperature*",type:"NUMBER"]], "setHumidityValue":[[name:"humidity*",type:"NUMBER"]], "setFanOscillationModeValue":[[name:"fanOscillationMode*",type:"ENUM"]], 
-              "setSupportedFanOscillationModesValue":[[name:"supportedFanOscillationModes*",type:"JSON_OBJECT"]], "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]])
+    return ([ 
+	    "setSwitchValue":[[name:"switch*",type:"ENUM"]], 
+	    "setSwitchOff":[], 
+	    "setSwitchOn":[], 
+	    "setFanSpeedValue":[[name:"fanSpeed*",type:"NUMBER"]], 
+	    "setLevelValue":[[name:"level*",type:"NUMBER"]], 
+	    "setTemperatureValue":[[name:"temperature*",type:"NUMBER"]], 
+	    "setHumidityValue":[[name:"humidity*",type:"NUMBER"]], 
+	    "setFanOscillationModeValue":[[name:"fanOscillationMode*",type:"ENUM"]],
+	    "setSupportedFanOscillationModesValue":[[name:"supportedFanOscillationModes*",type:"JSON_OBJECT"]],
+	    "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]])
 }
 
 def setTemperatureValue(value) {
@@ -126,7 +134,13 @@ def setHealthStatusValue(value) {
 
 // Methods documented here will show up in the Replica Trigger Configuration. These should be all of the native capability commands
 static Map getReplicaTriggers() {
-    return ([ "off":[] , "on":[], "setFanSpeed":[[name:"speed*",type:"NUMBER"]], "setFanOscillationMode":[[name:"fanOscillationMode*",type:"ENUM"]], "refresh":[]])
+    return ([ 
+	    "off":[] , 
+	    "on":[], 
+	    "setFanSpeed":[[name:"speed*",type:"NUMBER"]], 
+	    "setLevel": [[name:"level*",type:"NUMBER]],
+	    "setFanOscillationMode":[[name:"fanOscillationMode*",type:"ENUM"]], 
+	    "refresh":[]])
 }
 
 private def sendCommand(String name, def value=null, String unit=null, data=[:]) {
@@ -143,7 +157,7 @@ def on() {
 }
 
 def setLevel(level, rate=null) {
-    setFanSpeed(level)
+    sendCommand("setLevel",rate)
 }
 
 //capability "fanSpeed"

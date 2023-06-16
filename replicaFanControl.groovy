@@ -138,7 +138,7 @@ static Map getReplicaTriggers() {
 	    "off":[] , 
 	    "on":[], 
 	    "setFanSpeed":[[name:"speed*",type:"NUMBER"]], 
-	    "setLevel": [[name:"level*",type:"NUMBER"].[name:"rate",type:"NUMBER"],
+	    "setLevel": [[name:"level*",type:"NUMBER"].[name:"duration",type:"NUMBER"],
 	    "setFanOscillationMode":[[name:"fanOscillationMode*",type:"ENUM"]], 
 	    "refresh":[]])
 }
@@ -156,8 +156,8 @@ def on() {
     sendCommand("on")
 }
 
-def setLevel(level, rate=null) {
-    sendCommand("setLevel",rate)
+def setLevel(level, duration=null) {
+    sendCommand("setLevel",level,duration)
 }
 
 //capability "fanSpeed"

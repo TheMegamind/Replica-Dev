@@ -138,7 +138,7 @@ static Map getReplicaTriggers() {
 	    "off":[] , 
 	    "on":[], 
 	    "setFanSpeed":[[name:"speed*",type:"NUMBER"]], 
-	    "setLevel": [[name:"level*",type:"NUMBER"].[name:"duration",type:"NUMBER"],
+	    "setLevel":[[name:"level*",type:"NUMBER"],[name:"duration",type:"NUMBER"],
 	    "setFanOscillationMode":[[name:"fanOscillationMode*",type:"ENUM"]], 
 	    "refresh":[]])
 }

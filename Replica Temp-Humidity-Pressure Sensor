@@ -29,7 +29,7 @@ metadata
     }
         preferences {
         input(name:"stTemperatureScale", type: "enum", title: "SmartThings Device Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
-	    input(name:"temperatureScale", type: "enum", title: "Replica Device Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
+	    input(name:"outputTempScale", type: "enum", title: "Replica Device Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
         input(name:"stPressureScale", type: "enum", title: "SmartThings Device Pressure Scale", options: [ "inHg":"inHg", "mbar":"millibars", , "kPa":"kPA"], defaultValue: "inches", required: false)
 	    input(name:"pressureScale", type: "enum", title: "Replica Device Pressure Scale", options: [ "inHg":"inHg", "mbar":"millibars", , "kPa":"kPA"], defaultValue: "inches", required: false)
         
@@ -87,7 +87,7 @@ def setHumidityValue(value) {
 def setTemperatureValue(value) {
     //debug
     logInfo stTemperatureScale
-    logInfo temperatureScale
+    logInfo outputTempScale
     logInfo value
     
     // Define conversion functions
@@ -107,10 +107,10 @@ def setTemperatureValue(value) {
             throw new IllegalArgumentException("Unsupported input scale: $stTemperatureScale")
     }
 
-    // Convert temp to the desired output scale (temperatureScale)
+    // Convert temp to the desired output scale (outputTempScale)
     double convertedTemp
     String unit
-    switch (temperatureScale) {
+    switch (outputTempScale) {
         case "farenheit":
             convertedTemp = temp.round(1)
             unit = "°F"
@@ -120,7 +120,7 @@ def setTemperatureValue(value) {
             unit = "°C"
             break
         default:
-            throw new IllegalArgumentException("Unsupported output scale: $temperatureScale")
+            throw new IllegalArgumentException("Unsupported output scale: $outputTempScale")
     }
 
     // Prepare description text

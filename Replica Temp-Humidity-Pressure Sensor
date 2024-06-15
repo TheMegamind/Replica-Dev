@@ -28,8 +28,9 @@ metadata
         attribute "pressure", "number"
         attribute "healthStatus", "enum", ["offline", "online"]
     }
-    preferences {   
-	input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
+        preferences {
+        input(name:"temperatureScale", type: "enum", title: "Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
+        input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
     }
 }
 
@@ -44,10 +45,15 @@ def updated() {
 def initialize() {
     updateDataValue("triggers", groovy.json.JsonOutput.toJson(getReplicaTriggers()))
     updateDataValue("commands", groovy.json.JsonOutput.toJson(getReplicaCommands()))
+    
+    unschedule()
+    if(settings?.deviceRefreshPollInterval && settings.deviceRefreshPollInterval!="manual") {
+        "${settings.deviceRefreshPollInterval}"(refresh)
+    }
 }
 
 def configure() {
-    log.info "${device.displayName} configured default rules"
+    logInfo "${device.displayName} configured default rules"
     initialize()
     updateDataValue("rules", getReplicaRules())
     sendCommand("configure")
@@ -117,13 +123,7 @@ void refresh() {
 static String getReplicaRules() {
     return """{"version":1,"components":[
         
-        {"trigger":{"title":"IntegerPercent","type":"attribute","properties":{"value":{"type":"integer","minimum":0,"maximum":100},"unit":{"type":"string","enum":["%"],"default":"%"}},"additionalProperties":false,"required":["value"],"capability":"battery","attribute":"battery","label":"attribute: battery.*"},"command":{"name":"setBatteryValue","label":"command: setBatteryValue(battery*)","type":"command","parameters":[{"name":"battery*","type":"NUMBER"}]},"type":"smartTrigger","mute":true},
-
-        {"trigger":{"title":"Percent","type":"attribute","properties":{"value":{"type":"number","minimum":0,"maximum":100},"unit":{"type":"string","enum":["%"],"default":"%"}},"additionalProperties":false,"required":["value"],"capability":"relativeHumidityMeasurement","attribute":"humidity","label":"attribute: humidity.*"},"command":{"name":"setHumidityValue","label":"command: setHumidityValue(humidity*)","type":"command","parameters":[{"name":"humidity*","type":"NUMBER"}]},"type":"smartTrigger"},
-        
-        {"trigger":{"type":"attribute","properties":{"value":{"title":"TemperatureValue","type":"number","minimum":-460,"maximum":10000},"unit":{"type":"string","enum":["F","C"]}},"additionalProperties":false,"required":["value","unit"],"capability":"temperatureMeasurement","attribute":"temperature","label":"attribute: temperature.*"},"command":{"name":"setTemperatureValue","label":"command: setTemperatureValue(temperature*)","type":"command","parameters":[{"name":"temperature*","type":"NUMBER"}]},"type":"smartTrigger"},
-
-    {"trigger":{"type":"attribute","properties":{"value":{"title":"HealthState","type":"string"}},"additionalProperties":false,"required":["value"],"capability":"healthCheck","attribute":"healthStatus","label":"attribute: healthStatus.*"},"command":{"name":"setHealthStatusValue","label":"command: setHealthStatusValue(healthStatus*)","type":"command","parameters":[{"name":"healthStatus*","type":"ENUM"}]},"type":"smartTrigger","mute":true}
+         {"version":1,"components":[{"command":{"label":"command: setBatteryValue(battery*)","name":"setBatteryValue","parameters":[{"name":"battery*","type":"NUMBER"}],"type":"command"},"mute":true,"trigger":{"additionalProperties":false,"attribute":"battery","capability":"battery","label":"attribute: battery.*","properties":{"unit":{"default":"%","enum":["%"],"type":"string"},"value":{"maximum":100,"minimum":0,"type":"integer"}},"required":["value"],"title":"IntegerPercent","type":"attribute"},"type":"smartTrigger"},{"command":{"label":"command: setHumidityValue(humidity*)","name":"setHumidityValue","parameters":[{"name":"humidity*","type":"NUMBER"}],"type":"command"},"trigger":{"additionalProperties":false,"attribute":"humidity","capability":"relativeHumidityMeasurement","label":"attribute: humidity.*","properties":{"unit":{"default":"%","enum":["%"],"type":"string"},"value":{"maximum":100,"minimum":0,"type":"number"}},"required":["value"],"title":"Percent","type":"attribute"},"type":"smartTrigger"},{"command":{"label":"command: setTemperatureValue(temperature*)","name":"setTemperatureValue","parameters":[{"name":"temperature*","type":"NUMBER"}],"type":"command"},"trigger":{"additionalProperties":false,"attribute":"temperature","capability":"temperatureMeasurement","label":"attribute: temperature.*","properties":{"unit":{"enum":["F","C"],"type":"string"},"value":{"maximum":10000,"minimum":-460,"title":"TemperatureValue","type":"number"}},"required":["value","unit"],"type":"attribute"},"type":"smartTrigger"},{"command":{"label":"command: setHealthStatusValue(healthStatus*)","name":"setHealthStatusValue","parameters":[{"name":"healthStatus*","type":"ENUM"}],"type":"command"},"mute":true,"trigger":{"additionalProperties":false,"attribute":"healthStatus","capability":"healthCheck","label":"attribute: healthStatus.*","properties":{"value":{"title":"HealthState","type":"string"}},"required":["value"],"type":"attribute"},"type":"smartTrigger"},{"trigger":{"additionalProperties":false,"attribute":"atmosphericPressure","capability":"atmosphericPressureMeasurement","label":"attribute: atmosphericPressure.*","properties":{"unit":{"default":"kPa","enum":["kPa","hPa","bar","mbar","mmHg","inHg","atm","psi"],"type":"string"},"value":{"minimum":0,"type":"number"}},"required":["value"],"type":"attribute"},"command":{"name":"setAtmosphericPressureValue","label":"command: setAtmosphericPressureValue(atmosphericPressure*)","type":"command","parameters":[{"name":"atmosphericPressure*","type":"STRING"}]},"type":"smartTrigger"}
 
     ]}"""
 }

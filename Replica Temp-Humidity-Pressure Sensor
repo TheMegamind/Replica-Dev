@@ -92,15 +92,22 @@ def setTemperatureValue(value) {
     logInfo descriptionText
 }
 
+// Testing
+// Function to convert kPa to inHg
+def kPaToInHg(value) {
+    // 1 kilopascal is equal to 0.2953 inches of mercury
+    return kPa * 0.2953
+}
+
 def setAtmosphericPressureValue(value) {
     String unit = "kPa"
     String descriptionText = "${device.displayName} atmospheric pressure is $value $unit"
     sendEvent(name: "atmosphericPressure", value: value, unit: unit, descriptionText: descriptionText)
     logInfo descriptionText
     //testing
-    doubleValue = value.toDouble()
-    pressure = doubleValue * 0.2953
-    sendEvent(name: "pressure", value: value, unit: unit, descriptionText: descriptionText)
+    pressure = kPaToInHg(value)
+    String descriptionText2 = "${device.displayName} pressure in inches is $pressure inHg"
+    sendEvent(name: "pressure", value: value, unit: unit, descriptionText2: descriptionText)
     logInfo descriptionText
 }
 

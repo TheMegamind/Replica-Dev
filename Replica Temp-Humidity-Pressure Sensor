@@ -20,7 +20,6 @@ metadata
     {
         capability "Battery"
         capability "Configuration"
-        // capability "Pressure Measurement"
         capability "RelativeHumidityMeasurement"
         capability "TemperatureMeasurement"
         

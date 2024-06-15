@@ -64,7 +64,8 @@ def configure() {
 
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
 static Map getReplicaCommands() {
-    return ([ "setBatteryValue":[[name:"battery*",type:"NUMBER"]],
+    return ([ "setAtmosphericPressureValue":[[name:"atmosphericPressure*",type:"STRING"]],
+              "setBatteryValue":[[name:"battery*",type:"NUMBER"]],
               "setHumidityValue":[[name:"humidity*",type:"NUMBER"]],
               "setTemperatureValue":[[name:"temperature*",type:"NUMBER"]],
               "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
@@ -129,6 +130,7 @@ def setTemperatureValue(value) {
 
 
 def setAtmosphericPressureValue(value) {
+    
     // Define conversion factors
     def kPaToInHg = 0.2953
     def kPaToMbar = 10.0

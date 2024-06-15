@@ -12,7 +12,7 @@
 *
 */
 @SuppressWarnings('unused')
-public static String version() {return "1.3.4.j"}
+public static String version() {return "1.3.4.i"}
 
 metadata 
 {
@@ -30,9 +30,9 @@ metadata
     }
         preferences {
         input(name:"stTemperatureScale", type: "enum", title: "SmartThings Device Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
-	input(name:"temperatureScale", type: "enum", title: "Replica Device Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
-	input(name:"stPressureScale", type: "enum", title: "SmartThings Device Pressure Scale", options: [ "inches":"inHg", "millibars":"mbar", , "kilopascal":"kPa"], defaultValue: "inches", required: false)
-	input(name:"pressureScale", type: "enum", title: "Replica Device Pressure Scale", options: [ "inches":"inHg", "millibars":"mbar", , "kilopascal":"kPa"], defaultValue: "inches", required: false)
+	input(name:"temperatureScale", type: "enum", title: "Replica Device Temperature Scale", options: [ "farenheit":"farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
+	input(name:"stPressureScale", type: "enum", title: "SmartThings Device Pressure Scale", options: [ "inHg":"inHg", "mbar":"millibars", , "kPa":"kPA"], defaultValue: "inches", required: false)
+	input(name:"pressureScale", type: "enum", title: "Replica Device Pressure Scale", options: [ "inHg":"inHg", "mbar":"millibars", , "kPa":"kPA"], defaultValue: "inches", required: false)
         input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
     }
 }
@@ -93,14 +93,53 @@ def setTemperatureValue(value) {
 }
 
 def setAtmosphericPressureValue(value) {
-    // Convert kPa to inHg
-    double kPa = value.toDouble()
-    double pressure = (kPa * 0.2953).round(3)
-    String unit = "inHg"
-    
-    // Prepare description text, Send Event, & Log Information
+    // Define conversion factors
+    def kPaToInHg = 0.2953
+    def kPaToMbar = 10.0
+    def inHgToKPa = 1 / kPaToInHg
+    def mbarToKPa = 1 / kPaToMbar
+
+    // Parse the input value based on stPressureScale
+    double kPa
+    switch (stPressureScale) {
+        case "inHg":
+            kPa = value.toDouble() * inHgToKPa
+            break
+        case "mbar":
+            kPa = value.toDouble() * mbarToKPa
+            break
+        case "kPa":
+            kPa = value.toDouble()
+            break
+        default:
+            throw new IllegalArgumentException("Unsupported input scale: $stPressureScale")
+    }
+
+    // Convert kPa to the desired output scale (pressureScale)
+    double pressure
+    String unit
+    switch (pressureScale) {
+        case "inHg":
+            pressure = (kPa * kPaToInHg).round(2)
+            unit = "inHg"
+            break
+        case "mbar":
+            pressure = (kPa * kPaToMbar).round(0)
+            unit = "mbar"
+            break
+        case "kPa":
+            pressure = kPa.round(1)
+            unit = "kPa"
+            break
+        default:
+            throw new IllegalArgumentException("Unsupported output scale: $pressureScale")
+    }
+
+    // Prepare description text
     String descriptionText = "${device.displayName} atmospheric pressure is $pressure $unit"
-    sendEvent(name: "pressure", value: pressure, unit: "inHg", descriptionText: pressureText)
+    
+    // Send Event & Log Information
+    sendEvent(name: "pressure", value: pressure, unit: unit, descriptionText: descriptionText)
     logInfo descriptionText
 }
 

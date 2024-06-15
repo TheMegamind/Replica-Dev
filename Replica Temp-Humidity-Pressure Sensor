@@ -93,23 +93,15 @@ def setTemperatureValue(value) {
 }
 
 def setAtmosphericPressureValue(value) {
-    String unit = "kPa"
-    double kPa = value.toDouble()
-    
     // Convert kPa to inHg
-    double pressureInHg = (kPa * 0.2953).round(3)
+    double kPa = value.toDouble()
+    double pressure = (kPa * 0.2953).round(3)
+    String unit = "inHg"
     
-    // Prepare description text
-    String descriptionText = "${device.displayName} atmospheric pressure is $value $unit"
-    String pressureText = "${device.displayName} atmospheric pressure inHg is $pressureInHg inHg"
-    
-    // Send events
-    sendEvent(name: "atmosphericPressure", value: value, unit: unit, descriptionText: descriptionText)
-    sendEvent(name: "atmosphericPressureInHg", value: pressureInHg, unit: "inHg", descriptionText: pressureText)
-    
-    // Log information
+    // Prepare description text, Send Event, & Log Information
+    String descriptionText = "${device.displayName} atmospheric pressure is $pressure $unit"
+    sendEvent(name: "pressure", value: pressure, unit: "inHg", descriptionText: pressureText)
     logInfo descriptionText
-    logInfo pressureText
 }
 
 

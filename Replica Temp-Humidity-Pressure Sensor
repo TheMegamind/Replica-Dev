@@ -24,15 +24,15 @@ metadata
         capability "Sensor"
         capability "Temperature Measurement"
         
-        attribute "atmosphericPressure", "string"
         attribute "pressure", "number"
         attribute "healthStatus", "enum", ["offline", "online"]
     }
         preferences {
         input(name:"stTemperatureScale", type: "enum", title: "SmartThings Device Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
-	input(name:"temperatureScale", type: "enum", title: "Replica Device Temperature Scale", options: [ "farenheit":"farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
-	input(name:"stPressureScale", type: "enum", title: "SmartThings Device Pressure Scale", options: [ "inHg":"inHg", "mbar":"millibars", , "kPa":"kPA"], defaultValue: "inches", required: false)
-	input(name:"pressureScale", type: "enum", title: "Replica Device Pressure Scale", options: [ "inHg":"inHg", "mbar":"millibars", , "kPa":"kPA"], defaultValue: "inches", required: false)
+	    input(name:"temperatureScale", type: "enum", title: "Replica Device Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
+        input(name:"stPressureScale", type: "enum", title: "SmartThings Device Pressure Scale", options: [ "inHg":"inHg", "mbar":"millibars", , "kPa":"kPA"], defaultValue: "inches", required: false)
+	    input(name:"pressureScale", type: "enum", title: "Replica Device Pressure Scale", options: [ "inHg":"inHg", "mbar":"millibars", , "kPa":"kPA"], defaultValue: "inches", required: false)
+        
         input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
     }
 }
@@ -64,8 +64,7 @@ def configure() {
 
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
 static Map getReplicaCommands() {
-    return ([ "setBatteryValue":[[name:"battery*",type:"NUMBER"]], 
-              "setAtmosphericPressureValue":[[name:"atmosphericPressure*",type:"STRING"]],
+    return ([ "setBatteryValue":[[name:"battery*",type:"NUMBER"]],
               "setHumidityValue":[[name:"humidity*",type:"NUMBER"]],
               "setTemperatureValue":[[name:"temperature*",type:"NUMBER"]],
               "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
@@ -86,11 +85,52 @@ def setHumidityValue(value) {
 }
 
 def setTemperatureValue(value) {
-    String unit = "°${getTemperatureScale()}"
-    String descriptionText = "${device.displayName} temperature is $value $unit"
-    sendEvent(name: "temperature", value: value, unit: unit, descriptionText: descriptionText)
+    //debug
+    logInfo stTemperatureScale
+    logInfo temperatureScale
+    logInfo value
+    
+    // Define conversion functions
+    def fahrenheitToCelsius = { f -> (f - 32) * 5 / 9 }
+    def celsiusToFahrenheit = { c -> (c * 9 / 5) + 32 }
+    
+    // Parse the input value based on stTemperatureScale
+    double temp
+    switch (stTemperatureScale) {
+        case "farenheit":
+            temp = value.toDouble()
+            break
+        case "celsius":
+            temp = celsiusToFahrenheit(value.toDouble())
+            break
+        default:
+            throw new IllegalArgumentException("Unsupported input scale: $stTemperatureScale")
+    }
+
+    // Convert temp to the desired output scale (temperatureScale)
+    double convertedTemp
+    String unit
+    switch (temperatureScale) {
+        case "farenheit":
+            convertedTemp = temp.round(1)
+            unit = "°F"
+            break
+        case "celsius":
+            convertedTemp = fahrenheitToCelsius(temp).round(1)
+            unit = "°C"
+            break
+        default:
+            throw new IllegalArgumentException("Unsupported output scale: $temperatureScale")
+    }
+
+    // Prepare description text
+    String descriptionText = "${device.displayName} temperature is $convertedTemp $unit"
+    
+    // Send Event & Log Information
+    sendEvent(name: "temperature", value: convertedTemp, unit: unit, descriptionText: descriptionText)
     logInfo descriptionText
 }
+
 
 def setAtmosphericPressureValue(value) {
     // Define conversion factors

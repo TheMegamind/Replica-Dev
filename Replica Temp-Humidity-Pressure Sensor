@@ -29,6 +29,7 @@ metadata
     }
         preferences {
         input(name:"temperatureScale", type: "enum", title: "Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
+	input(name:"pressureScalee", type: "enum", title: "Pressure Scale", options: [ "inches":"inHg", "millibars":"mbar", , "kilopascal":"kPa"], defaultValue: "inHg", required: false)
         input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
     }
 }

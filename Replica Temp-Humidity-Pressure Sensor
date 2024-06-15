@@ -28,10 +28,10 @@ metadata
         attribute "healthStatus", "enum", ["offline", "online"]
     }
         preferences {
-        input(name:"stTemperatureScale", type: "enum", title: "ST Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
-	input(name:"temperatureScale", type: "enum", title: "Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
-	input(name:"stPressureScale", type: "enum", title: "ST Pressure Scale", options: [ "inches":"inHg", "millibars":"mbar", , "kilopascal":"kPa"], defaultValue: "inches", required: false)
-	input(name:"pressureScale", type: "enum", title: "Pressure Scale", options: [ "inches":"inHg", "millibars":"mbar", , "kilopascal":"kPa"], defaultValue: "inches", required: false)
+        input(name:"stTemperatureScale", type: "enum", title: "SmartThings Device Temp Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
+	input(name:"temperatureScale", type: "enum", title: "Replica Device Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
+	input(name:"stPressureScale", type: "enum", title: "SmartThings Device Pressure Scale", options: [ "inches":"inHg", "millibars":"mbar", , "kilopascal":"kPa"], defaultValue: "inches", required: false)
+	input(name:"pressureScale", type: "enum", title: "Replica Device Pressure Scale", options: [ "inches":"inHg", "millibars":"mbar", , "kilopascal":"kPa"], defaultValue: "inches", required: false)
         input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
     }
 }

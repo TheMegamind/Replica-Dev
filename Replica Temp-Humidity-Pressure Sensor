@@ -99,7 +99,7 @@ def setAtmosphericPressureValue(value) {
     //testing
     //String unit = "inHg"
     //pressure = atmosphericPressure * 0.2953
-    pressure = atmosphericPressure
+    pressure = atmosphericPressure * 0.2953
     //String descriptionText = "${device.displayName} atmospheric pressure is $value $unit"
     sendEvent(name: "pressure", value: value, unit: unit, descriptionText: descriptionText)
     logInfo descriptionText

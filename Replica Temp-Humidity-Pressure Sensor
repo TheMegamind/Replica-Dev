@@ -28,10 +28,10 @@ metadata
         attribute "healthStatus", "enum", ["offline", "online"]
     }
         preferences {
-        input(name:"inputTempScale", type: "enum", title: "SmartThings Device Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
-    	input(name:"outputTempScale", type: "enum", title: "Replica Device Temperature Scale", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
-        input(name:"inputPressureScale", type: "enum", title: "SmartThings Device Pressure Scale", options: [ "inHg":"inHg", "mbar":"millibars", , "kPa":"kPa"], defaultValue: "inches", required: false)
-    	input(name:"outputPressureScale", type: "enum", title: "Replica Device Pressure Scale", options: [ "inHg":"inHg", "mbar":"millibars", , "kPa":"kPa"], defaultValue: "inches", required: false)
+        input(name:"inputTempUnit", type: "enum", title: "SmartThings Device Temperature Unit", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
+    	input(name:"outputTempUnit", type: "enum", title: "Display Unit - Temperature", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
+        input(name:"inputPressureUnit", type: "enum", title: "SmartThings Device Pressure Unit", options: [ "bar":"bar", "cmHg":"cmHg", "inHg":"inHg", "kPa":"kPa", "mbar":"mbar", "mmHg":"mmHg", "Pa":"Pa"], defaultValue: "inHg", required: false)
+    	input(name:"outputPressureUnit", type: "enum", title: "Diplay Unit - Pressure", options: [ "bar":"bar", "cmHg":"cmHg", "inHg":"inHg", "kPa":"kPa", "mbar":"mbar", "mmHg":"mmHg", "Pa":"Pa"], defaultValue: "inHg", required: false)
         
         input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
     }
@@ -91,9 +91,9 @@ def setTemperatureValue(value) {
     def fahrenheitToCelsius = { f -> (f - 32) * 5 / 9 }
     def celsiusToFahrenheit = { c -> (c * 9 / 5) + 32 }
     
-    // Parse the input value based on inputTempScale
+    // Parse the input value based on inputTempUnit
     double temp
-    switch (inputTempScale) {
+    switch (inputTempUnit) {
         case "farenheit":
             temp = value.toDouble()
             break
@@ -101,13 +101,13 @@ def setTemperatureValue(value) {
             temp = celsiusToFahrenheit(value.toDouble())
             break
         default:
-            throw new IllegalArgumentException("Unsupported input scale: $inputTempScale")
+            throw new IllegalArgumentException("Unsupported input scale: $inputTempUnit")
     }
 
-    // Convert temp to the desired output scale (outputTempScale)
+    // Convert temp to the desired output scale (outputTempUnit)
     double convertedTemp
     String unit
-    switch (outputTempScale) {
+    switch (outputTempUnit) {
         case "farenheit":
             convertedTemp = temp.round(1)
             unit = "°F"
@@ -117,7 +117,7 @@ def setTemperatureValue(value) {
             unit = "°C"
             break
         default:
-            throw new IllegalArgumentException("Unsupported output scale: $outputTempScale")
+            throw new IllegalArgumentException("Unsupported output scale: $outputTempUnit")
     }
 
     // Prepare description text
@@ -137,9 +137,9 @@ def setPressureValue(value) {
     def inHgToKPa = 1 / kPaToInHg
     def mbarToKPa = 1 / kPaToMbar
 
-    // Parse the input value based on inputPressureScale
+    // Parse the input value based on outputPressureUnit
     double kPa
-    switch (inputPressureScale) {
+    switch (outputPressureUnit) {
         case "inHg":
             kPa = value.toDouble() * inHgToKPa
             break
@@ -150,13 +150,13 @@ def setPressureValue(value) {
             kPa = value.toDouble()
             break
         default:
-            throw new IllegalArgumentException("Unsupported input scale: $inputPressureScale")
+            throw new IllegalArgumentException("Unsupported input scale: $inputPressureUnit")
     }
 
-    // Convert kPa to the desired output scale (outputPressureScale)
+    // Convert kPa to the desired output scale (inputPressureUnit)
     double pressure
     String unit
-    switch (outputPressureScale) {
+    switch (inputPressureUnit) {
         case "inHg":
             pressure = (kPa * kPaToInHg).round(2)
             unit = "inHg"
@@ -170,7 +170,7 @@ def setPressureValue(value) {
             unit = "kPa"
             break
         default:
-            throw new IllegalArgumentException("Unsupported output scale: $outputPressureScale")
+            throw new IllegalArgumentException("Unsupported output scale: $inputPressureUnit")
     }
 
     // Prepare description text

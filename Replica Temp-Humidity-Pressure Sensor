@@ -128,49 +128,85 @@ def setTemperatureValue(value) {
     logInfo descriptionText
 }
 
-
-def setPressureValue(value) {
-    
-    // Define conversion factors
+def setAtmosphericPressureValue(value) {
+    // Define conversion factors from kPa
     def kPaToInHg = 0.2953
     def kPaToMbar = 10.0
+    def kPaToBar = 0.01
+    def kPaToCmHg = 0.750062
+    def kPaToMmHg = 7.50062
+    def kPaToPa = 1000.0
+
+    // Define conversion factors to kPa
     def inHgToKPa = 1 / kPaToInHg
     def mbarToKPa = 1 / kPaToMbar
+    def barToKPa = 1 / kPaToBar
+    def cmHgToKPa = 1 / kPaToCmHg
+    def mmHgToKPa = 1 / kPaToMmHg
+    def paToKPa = 1 / kPaToPa
 
-    // Parse the input value based on outputPressureUnit
+    // Parse the input value based on inputPressureUnit
     double kPa
-    switch (outputPressureUnit) {
+    switch (inputPressureUnit) {
         case "inHg":
             kPa = value.toDouble() * inHgToKPa
             break
         case "mbar":
             kPa = value.toDouble() * mbarToKPa
             break
+        case "bar":
+            kPa = value.toDouble() * barToKPa
+            break
+        case "cmHg":
+            kPa = value.toDouble() * cmHgToKPa
+            break
+        case "mmHg":
+            kPa = value.toDouble() * mmHgToKPa
+            break
+        case "Pa":
+            kPa = value.toDouble() * paToKPa
+            break
         case "kPa":
             kPa = value.toDouble()
             break
         default:
-            throw new IllegalArgumentException("Unsupported input scale: $inputPressureUnit")
+            throw new IllegalArgumentException("Unsupported input unit: $inputPressureUnit")
     }
 
-    // Convert kPa to the desired output scale (inputPressureUnit)
+    // Convert kPa to the desired output scale (outputPressureUnit)
     double pressure
     String unit
-    switch (inputPressureUnit) {
+    switch (outputPressureUnit) {
         case "inHg":
-            pressure = (kPa * kPaToInHg).round(2)
+            pressure = (kPa * kPaToInHg).round(3)
             unit = "inHg"
             break
         case "mbar":
-            pressure = (kPa * kPaToMbar).round(0)
+            pressure = (kPa * kPaToMbar).round(3)
             unit = "mbar"
             break
+        case "bar":
+            pressure = (kPa * kPaToBar).round(3)
+            unit = "bar"
+            break
+        case "cmHg":
+            pressure = (kPa * kPaToCmHg).round(3)
+            unit = "cmHg"
+            break
+        case "mmHg":
+            pressure = (kPa * kPaToMmHg).round(3)
+            unit = "mmHg"
+            break
+        case "Pa":
+            pressure = (kPa * kPaToPa).round(3)
+            unit = "Pa"
+            break
         case "kPa":
-            pressure = kPa.round(1)
+            pressure = kPa.round(3)
             unit = "kPa"
             break
         default:
-            throw new IllegalArgumentException("Unsupported output scale: $inputPressureUnit")
+            throw new IllegalArgumentException("Unsupported output unit: $outputPressureUnit")
     }
 
     // Prepare description text
@@ -180,7 +216,6 @@ def setPressureValue(value) {
     sendEvent(name: "pressure", value: pressure, unit: unit, descriptionText: descriptionText)
     logInfo descriptionText
 }
-
 
 def setHealthStatusValue(value) {    
     sendEvent(name: "healthStatus", value: value, descriptionText: "${device.displayName} healthStatus set to $value")

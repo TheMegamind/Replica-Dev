@@ -23,6 +23,7 @@ metadata
         capability "Relative Humidity Measurement"
         capability "Sensor"
         capability "Temperature Measurement"
+        capability "Refresh"
         
         attribute "pressure", "number"
         attribute "healthStatus", "enum", ["offline", "online"]

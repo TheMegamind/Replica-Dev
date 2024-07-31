@@ -30,7 +30,7 @@ metadata {
     preferences {
         input(name: "inputTempUnit", type: "enum", title: "SmartThings Device Temperature Unit", options: [ "farenheit": "Farenheit", "celsius": "Celsius"], defaultValue: "farenheit", required: false)
         input(name: "outputTempUnit", type: "enum", title: "Display Unit - Temperature", options: [ "farenheit": "Farenheit", "celsius": "Celsius"], defaultValue: "farenheit", required: false)
-        input("tempOffset", "number", title: "Temperature Offset/Adjustment -10 to +10 in Degrees?", range: "-10..10", description: "Use this offset to adjust for any inaccuracies in your sensor.", defaultValue: 0, required: false)
+        input("tempOffset", "number", title: "Temperature Offset/Adjustment -10.0 to +10.0 in Degrees?", range: "-10..10", description: "Use this offset to adjust for any inaccuracies in your sensor.", defaultValue: 0, required: false)
         input(name: "inputPressureUnit", type: "enum", title: "SmartThings Device Pressure Unit", options: [ "bar": "bar", "cmHg": "cmHg", "inHg": "inHg", "kPa": "kPa", "mbar": "mbar", "mmHg": "mmHg", "Pa": "Pa"], defaultValue: "inHg", required: false)
         input(name: "outputPressureUnit", type: "enum", title: "Display Unit - Pressure", options: [ "bar": "bar", "cmHg": "cmHg", "inHg": "inHg", "kPa": "kPa", "mbar": "mbar", "mmHg": "mmHg", "Pa": "Pa"], defaultValue: "inHg", required: false)
         input(name: "deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
@@ -109,11 +109,11 @@ def setTemperatureValue(value) {
     String unit
     switch (outputTempUnit) {
         case "farenheit":
-            convertedTemp = temp.round(1)
+            convertedTemp = temp.round(1)  // Round to 1 decimal point
             unit = "°F"
             break
         case "celsius":
-            convertedTemp = fahrenheitToCelsius(temp).round(1)
+            convertedTemp = fahrenheitToCelsius(temp).round(1)  // Round to 1 decimal point
             unit = "°C"
             break
         default:
@@ -121,7 +121,11 @@ def setTemperatureValue(value) {
     }
 
     // Apply temperature offset to the converted temperature
-    convertedTemp += tempOffset ?: 0
+    double offset = tempOffset ? tempOffset.toDouble() : 0
+    convertedTemp += offset
+
+    // Round the final temperature output to 1 decimal point
+    convertedTemp = convertedTemp.round(1)
 
     // Prepare description text
     String descriptionText = "${device.displayName} temperature is $convertedTemp $unit"
@@ -130,6 +134,7 @@ def setTemperatureValue(value) {
     sendEvent(name: "temperature", value: convertedTemp, unit: unit, descriptionText: descriptionText)
     logInfo descriptionText
 }
+
 
 def setPressureValue(BigDecimal value) {
     // Conversion factors from kPa

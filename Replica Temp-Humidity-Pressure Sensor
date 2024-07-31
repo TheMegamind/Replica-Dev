@@ -27,23 +27,22 @@ metadata
         attribute "pressure", "number"
         attribute "healthStatus", "enum", ["offline", "online"]
     }
-        preferences {
+    preferences {
         input(name:"inputTempUnit", type: "enum", title: "SmartThings Device Temperature Unit", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
-    	input(name:"outputTempUnit", type: "enum", title: "Display Unit - Temperature", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
-	input("tempOffset", "number", title: "Temperature Offset/Adjustment -10 to +10 in Degrees?",range: "-10..10", description: "Use this offset to adjust for any inaccuracies in your sensor.", defaultValue: 0, required: false)
+        input(name:"outputTempUnit", type: "enum", title: "Display Unit - Temperature", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
+        input("tempOffset", "number", title: "Temperature Offset/Adjustment -10 to +10 in Degrees?", range: "-10..10", description: "Use this offset to adjust for any inaccuracies in your sensor.", defaultValue: 0, required: false)
         input(name:"inputPressureUnit", type: "enum", title: "SmartThings Device Pressure Unit", options: [ "bar":"bar", "cmHg":"cmHg", "inHg":"inHg", "kPa":"kPa", "mbar":"mbar", "mmHg":"mmHg", "Pa":"Pa"], defaultValue: "inHg", required: false)
-    	input(name:"outputPressureUnit", type: "enum", title: "Diplay Unit - Pressure", options: [ "bar":"bar", "cmHg":"cmHg", "inHg":"inHg", "kPa":"kPa", "mbar":"mbar", "mmHg":"mmHg", "Pa":"Pa"], defaultValue: "inHg", required: false)
-        
+        input(name:"outputPressureUnit", type: "enum", title: "Display Unit - Pressure", options: [ "bar":"bar", "cmHg":"cmHg", "inHg":"inHg", "kPa":"kPa", "mbar":"mbar", "mmHg":"mmHg", "Pa":"Pa"], defaultValue: "inHg", required: false)
         input(name:"deviceInfoDisable", type: "bool", title: "Disable Info logging:", defaultValue: false)
     }
 }
 
 def installed() {
-	initialize()
+    initialize()
 }
 
 def updated() {
-	initialize()    
+    initialize()    
 }
 
 def initialize() {
@@ -51,7 +50,7 @@ def initialize() {
     updateDataValue("commands", groovy.json.JsonOutput.toJson(getReplicaCommands()))
     
     unschedule()
-    if(settings?.deviceRefreshPollInterval && settings.deviceRefreshPollInterval!="manual") {
+    if(settings?.deviceRefreshPollInterval && settings.deviceRefreshPollInterval != "manual") {
         "${settings.deviceRefreshPollInterval}"(refresh)
     }
 }
@@ -65,11 +64,11 @@ def configure() {
 
 // Methods documented here will show up in the Replica Command Configuration. These should be mostly setter in nature. 
 static Map getReplicaCommands() {
-    return ([ "setPressureValue":[[name:"pressure*",type:"STRING"]],
-              "setBatteryValue":[[name:"battery*",type:"NUMBER"]],
-              "setHumidityValue":[[name:"humidity*",type:"NUMBER"]],
-              "setTemperatureValue":[[name:"temperature*",type:"NUMBER"]],
-              "setHealthStatusValue":[[name:"healthStatus*",type:"ENUM"]]
+    return ([ "setPressureValue":[[name:"pressure*", type:"STRING"]],
+              "setBatteryValue":[[name:"battery*", type:"NUMBER"]],
+              "setHumidityValue":[[name:"humidity*", type:"NUMBER"]],
+              "setTemperatureValue":[[name:"temperature*", type:"NUMBER"]],
+              "setHealthStatusValue":[[name:"healthStatus*", type:"ENUM"]]
             ])
 }
 
@@ -122,15 +121,6 @@ def setTemperatureValue(value) {
 
     // Apply temperature offset to the converted temperature
     convertedTemp += tempOffset ?: 0
-
-    // Prepare description text
-    String descriptionText = "${device.displayName} temperature is $convertedTemp $unit"
-
-    // Send Event & Log Information
-    sendEvent(name: "temperature", value: convertedTemp, unit: unit, descriptionText: descriptionText)
-    logInfo descriptionText
-}
-
 
     // Prepare description text
     String descriptionText = "${device.displayName} temperature is $convertedTemp $unit"

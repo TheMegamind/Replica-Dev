@@ -27,7 +27,7 @@ metadata
         attribute "pressure", "number"
         attribute "healthStatus", "enum", ["offline", "online"]
     }
-    preferences {
+preferences {
         input(name:"inputTempUnit", type: "enum", title: "SmartThings Device Temperature Unit", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
         input(name:"outputTempUnit", type: "enum", title: "Display Unit - Temperature", options: [ "farenheit":"Farenheit", "celsius":"Celsius"], defaultValue: "farenheit", required: false)
         input("tempOffset", "number", title: "Temperature Offset/Adjustment -10 to +10 in Degrees?", range: "-10..10", description: "Use this offset to adjust for any inaccuracies in your sensor.", defaultValue: 0, required: false)

@@ -24,20 +24,49 @@
 #include dwinks.UtilitiesAndLoggingLibrary
 
 metadata {
-  definition(
-    name: 'SAC Favorites - Modified',
-    version: '0.7.3',
-    namespace: 'dwinks',
-    author: 'Daniel Winks',
-    component: true,
-    importUrl:'https://raw.githubusercontent.com/TheMegamind/Replica-Dev/main/SAC%20Favorites'
-  ) {
-    capability 'Actuator'
-    command 'getFavorites'
-  }
+    definition(
+        name: 'Sonos Advanced Favorites',
+        version: '0.7.4',
+        namespace: 'dwinks',
+        author: 'Daniel Winks',
+        component: true,
+        importUrl: 'https://raw.githubusercontent.com/DanielWinks/Hubitat-Public/main/Drivers/Component/SonosAdvFavorites.groovy'
+    ) {
+        capability 'Actuator'
+        command 'getFavorites'
+    }
+
+    preferences {
+        input name: 'enableJsonAttribute', type: 'bool', title: 'Enable JSON Attribute', defaultValue: false, required: true
+        input name: 'omitImage', type: 'bool', title: 'Omit Image from JSON', defaultValue: false, required: true
+    }
 }
 
-void initialize() {configure()}
-void configure() {getFavorites()}
-void getFavorites() {parent?.getFavorites()}
-void setFavorites(String favorites) {state.favorites = favorites}
+void initialize() { configure() }
+void configure() { getFavorites() }
+void getFavorites() { parent?.getFavorites() }
+void setFavorites(String favorites) {
+    state.favorites = favorites
+    if (settings.enableJsonAttribute) {
+        def jsonFavorites = htmlToJson(favorites)
+        sendEvent(name: 'jsonFavorites', value: jsonFavorites, isStateChange: true)
+    }
+}
+
+String htmlToJson(String html) {
+    def json = []
+    def matcher = html =~ /<li>(Favorite #[\d]+ .*?)<\/li>/
+    matcher.each { match ->
+        def favorite = [:]
+        def itemMatcher = match[1] =~ /Favorite #(\d+) (.*?)<img src="(.*?)"/
+        if (itemMatcher.find()) {
+            favorite.id = itemMatcher[0][1]
+            favorite.name = itemMatcher[0][2]
+            if (!settings.omitImage) {
+                favorite.image = itemMatcher[0][3]
+            }
+            json << favorite
+        }
+    }
+    return groovy.json.JsonOutput.toJson(json)
+}

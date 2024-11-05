@@ -2705,6 +2705,7 @@ function logOptions() { # option state
 	logItem "PARTITIONS_TO_BACKUP=$PARTITIONS_TO_BACKUP"
 	logItem "PUSHOVER_TOKEN=$PUSHOVER_TOKEN"
 	logItem "PUSHOVER_USER=$PUSHOVER_USER"
+        logItem "PUSHOVER_DEVICE=$PUSHOVER_DEVICE"
 	logItem "PUSHOVER_NOTIFICATIONS=$PUSHOVER_NOTIFICATIONS"
 	logItem "PUSHOVER_SOUND_SUCCESS=$PUSHOVER_SOUND_SUCCESS"
 	logItem "PUSHOVER_SOUND_FAILURE=$PUSHOVER_SOUND_FAILURE"
@@ -2884,6 +2885,8 @@ function initializeDefaultConfigVariables() {
 	DEFAULT_PUSHOVER_TOKEN=""
 	# Pushover user
 	DEFAULT_PUSHOVER_USER=""
+ 	# Pushover device
+  	DEFAULT_PUSHOVER_DEVICE=""
 	# Pushover notifications to send. S(uccess), F(ailure), M(essages)
 	DEFAULT_PUSHOVER_NOTIFICATIONS="F"
 	# Pushover sound for success
@@ -2950,6 +2953,7 @@ function copyDefaultConfigVariables() {
 	PARTITIONS_TO_BACKUP="$DEFAULT_PARTITIONS_TO_BACKUP"
 	PUSHOVER_TOKEN="$DEFAULT_PUSHOVER_TOKEN"
 	PUSHOVER_USER="$DEFAULT_PUSHOVER_USER"
+ 	PUSHOVER_DEVICE="$DEFAULT_PUSHOVER_DEVICE"
 	PUSHOVER_NOTIFICATIONS="$DEFAULT_PUSHOVER_NOTIFICATIONS"
 	PUSHOVER_SOUND_SUCCESS="$DEFAULT_PUSHOVER_SOUND_SUCCESS"
 	PUSHOVER_SOUND_FAILURE="$DEFAULT_PUSHOVER_SOUND_FAILURE"
@@ -4249,6 +4253,7 @@ function sendPushoverMessage() { # message 0/1->success/failure sound
 		local cmd=(--form-string message="$1")
 		cmd+=(--form-string "token=$PUSHOVER_TOKEN" \
 				--form-string "user=$PUSHOVER_USER"\
+    				--form-string "device=$PUSHOVER_DEVICE"\
 				--form-string "priority=$prio"\
 				--form-string "html=1"\
 				--form-string "message=$msg"\
